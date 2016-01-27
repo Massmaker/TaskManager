@@ -8,17 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		0A4C3AF992366C9799D067099925EF77 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E7E5AF37923BFA48D6994B9BFC6535F /* Foundation.framework */; };
-		32BC28F2D8F762BB77955237D0B1733A /* Controllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA831DBB586943DB75AA7840ACB2597 /* Controllers.swift */; };
-		376DCCF04020C1BF909E1C9434160EC9 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB61740B9FE41D16B90B9D80DA26CEB /* Helpers.swift */; };
+		32BC28F2D8F762BB77955237D0B1733A /* Controllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB13C715152F5A82B388F14A9EFAAA1 /* Controllers.swift */; };
+		376DCCF04020C1BF909E1C9434160EC9 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD5DDA32E188FFDD13B4253E018F9DD /* Helpers.swift */; };
 		37E573C3F6AE3AF91A6DF6B629EC57F2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B7BDF5CE5CB8F095FE12DA55D9A9BB /* UIKit.framework */; };
 		3E55AD7CFD6D05B74C3E308CFC4A40DE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E7E5AF37923BFA48D6994B9BFC6535F /* Foundation.framework */; };
-		4CC8D349E1F05E10C3FBEB82314971FE /* Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3272DFC9E199A21DD773A03979919F3 /* Cells.swift */; };
-		94026EE895026B940FB818A7E6538B50 /* Rows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98559305A60D72E00F9051C6DB8C6CF7 /* Rows.swift */; };
-		9F55540302E9D0F8DBE8C934DCF64838 /* Eureka-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 981CDE9D1D28098344394CD2A72C19FA /* Eureka-dummy.m */; };
+		4CC8D349E1F05E10C3FBEB82314971FE /* Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EA069B0C9B8EE2204A346CAAF416E3 /* Cells.swift */; };
+		94026EE895026B940FB818A7E6538B50 /* Rows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19829B85E6CF5313CF76D40AFC9A57AE /* Rows.swift */; };
+		9F55540302E9D0F8DBE8C934DCF64838 /* Eureka-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9848F4059FE61AA497DCAD6FD440558F /* Eureka-dummy.m */; };
 		B64694DDB6DC8F86D29D4FBDD0DF79BB /* Pods-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BCC458FDD5F692BBB2BFC64BB5701FC /* Pods-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D5D7160B5C5D79F84493E13D7EED749C /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 894E5DA93A9F359521A89826BE6DA777 /* Pods-dummy.m */; };
-		E52D5180B8080C290DB1BE94C2B97172 /* Eureka-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A30E6368F07D062C2FB80C069272185D /* Eureka-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F4549889D2DD51FD242EF19E8DE29A7A /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A2345C17EB881906B6A73059DC0F8B /* Core.swift */; };
+		E52D5180B8080C290DB1BE94C2B97172 /* Eureka-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9122B84BE536079C3C1A64BAC8BFD5EE /* Eureka-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F4549889D2DD51FD242EF19E8DE29A7A /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD942B2B4BD2825FDC20A6DDD338F94 /* Core.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,32 +32,36 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0FB61740B9FE41D16B90B9D80DA26CEB /* Helpers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Helpers.swift; path = Source/Helpers.swift; sourceTree = "<group>"; };
-		263F6FBC167A01D12F748A811160090D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		08C7825D08F0BBE286AB597A2A134B9E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1873A4F4FEB0D03DA45016066942283F /* Eureka.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Eureka.xcconfig; sourceTree = "<group>"; };
+		19829B85E6CF5313CF76D40AFC9A57AE /* Rows.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Rows.swift; path = Source/Rows.swift; sourceTree = "<group>"; };
+		20EA069B0C9B8EE2204A346CAAF416E3 /* Cells.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Cells.swift; path = Source/Cells.swift; sourceTree = "<group>"; };
+		2AD942B2B4BD2825FDC20A6DDD338F94 /* Core.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Core.swift; path = Source/Core.swift; sourceTree = "<group>"; };
 		2BCC458FDD5F692BBB2BFC64BB5701FC /* Pods-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-umbrella.h"; sourceTree = "<group>"; };
-		68A0B0D6A1ED647E20F26D46CB7F3206 /* Eureka-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Eureka-prefix.pch"; sourceTree = "<group>"; };
+		471F6FDB67CA23A0F6873606FC614D6D /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = iOS/Fabric.framework; sourceTree = "<group>"; };
+		61D1EAEBF1D8116D41E2174389B0D0AB /* Eureka.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Eureka.modulemap; sourceTree = "<group>"; };
 		6E7E5AF37923BFA48D6994B9BFC6535F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		77105B2B9DC0041400BE27A8C20FE172 /* TwitterCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwitterCore.framework; path = iOS/TwitterCore.framework; sourceTree = "<group>"; };
 		79A9DEDC89FE8336BF5FEDAAF75BF7FC /* Pods.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Pods.modulemap; sourceTree = "<group>"; };
-		80A2345C17EB881906B6A73059DC0F8B /* Core.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Core.swift; path = Source/Core.swift; sourceTree = "<group>"; };
 		87B213035BAC5F75386F62D3C75D2342 /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
 		894E5DA93A9F359521A89826BE6DA777 /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
+		9122B84BE536079C3C1A64BAC8BFD5EE /* Eureka-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Eureka-umbrella.h"; sourceTree = "<group>"; };
 		977577C045EDA9D9D1F46E2598D19FC7 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
-		981CDE9D1D28098344394CD2A72C19FA /* Eureka-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Eureka-dummy.m"; sourceTree = "<group>"; };
-		98559305A60D72E00F9051C6DB8C6CF7 /* Rows.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Rows.swift; path = Source/Rows.swift; sourceTree = "<group>"; };
-		A30E6368F07D062C2FB80C069272185D /* Eureka-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Eureka-umbrella.h"; sourceTree = "<group>"; };
-		A63780400505B27ED7CB3FC84591D7F0 /* Eureka.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Eureka.modulemap; sourceTree = "<group>"; };
+		9848F4059FE61AA497DCAD6FD440558F /* Eureka-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Eureka-dummy.m"; sourceTree = "<group>"; };
+		B943FE07B3E83DCE84FEE5147728002B /* DigitsKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DigitsKit.framework; path = iOS/DigitsKit.framework; sourceTree = "<group>"; };
 		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		BB05267740E36EAD2567356A9B5EC89E /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3B7BDF5CE5CB8F095FE12DA55D9A9BB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		C564A19B151A95DB5916935AC7B003B7 /* Eureka.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Eureka.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9D08381EBFDD6716792D48407BB4725 /* Eureka-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Eureka-prefix.pch"; sourceTree = "<group>"; };
 		CBC0F7C552B739C909B650A0F42F7F38 /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
-		CD237EA22BF05C14613B378AA38FFC43 /* Eureka.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Eureka.xcconfig; sourceTree = "<group>"; };
 		D0405803033A2A777B8E4DFA0C1800ED /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
 		DA312349A49333542E6F4B36B329960E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
+		DAB13C715152F5A82B388F14A9EFAAA1 /* Controllers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Controllers.swift; path = Source/Controllers.swift; sourceTree = "<group>"; };
+		E4C493FFA9EFF559F6E15BE505902B10 /* DigitsKitResources.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = DigitsKitResources.bundle; path = iOS/DigitsKit.framework/Versions/A/Resources/DigitsKitResources.bundle; sourceTree = "<group>"; };
 		E7F21354943D9F42A70697D5A5EF72E9 /* Pods-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-frameworks.sh"; sourceTree = "<group>"; };
 		E8446514FBAD26C0E18F24A5715AEF67 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EBA831DBB586943DB75AA7840ACB2597 /* Controllers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Controllers.swift; path = Source/Controllers.swift; sourceTree = "<group>"; };
-		F3272DFC9E199A21DD773A03979919F3 /* Cells.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Cells.swift; path = Source/Cells.swift; sourceTree = "<group>"; };
+		FCD5DDA32E188FFDD13B4253E018F9DD /* Helpers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Helpers.swift; path = Source/Helpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,17 +94,12 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		2D03D975C6D6BF75833B3ACB057BBE01 /* Eureka */ = {
+		1E1F1872DDCF5EF85F5B562906EE91E0 /* Fabric */ = {
 			isa = PBXGroup;
 			children = (
-				F3272DFC9E199A21DD773A03979919F3 /* Cells.swift */,
-				EBA831DBB586943DB75AA7840ACB2597 /* Controllers.swift */,
-				80A2345C17EB881906B6A73059DC0F8B /* Core.swift */,
-				0FB61740B9FE41D16B90B9D80DA26CEB /* Helpers.swift */,
-				98559305A60D72E00F9051C6DB8C6CF7 /* Rows.swift */,
-				A84FEA66FD0B20FB16BDF72F8EE8D76D /* Support Files */,
+				4E62B28AED9BD6EC99DCB162E3E8EC0D /* Frameworks */,
 			);
-			path = Eureka;
+			path = Fabric;
 			sourceTree = "<group>";
 		};
 		433CD3331B6C3787F473C941B61FC68F /* Frameworks */ = {
@@ -111,10 +110,29 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6CAAFD360481B9D3F9590DF8376ECF1A /* Pods */ = {
+		4E62B28AED9BD6EC99DCB162E3E8EC0D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2D03D975C6D6BF75833B3ACB057BBE01 /* Eureka */,
+				471F6FDB67CA23A0F6873606FC614D6D /* Fabric.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		50EC8924E83D6A3EF3B3100EC812BB24 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E4C493FFA9EFF559F6E15BE505902B10 /* DigitsKitResources.bundle */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		58466C11CB5E591C237A557EB922BC66 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8E2A91AB2B97F4ECFBA519DAA69CC692 /* Digits */,
+				C5BCE9C564027DD7DD617427991DD5A5 /* Eureka */,
+				1E1F1872DDCF5EF85F5B562906EE91E0 /* Fabric */,
+				FD54DF72D1FD7E6DB2998B5DBBE272A6 /* TwitterCore */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -142,10 +160,18 @@
 			children = (
 				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
 				433CD3331B6C3787F473C941B61FC68F /* Frameworks */,
-				6CAAFD360481B9D3F9590DF8376ECF1A /* Pods */,
+				58466C11CB5E591C237A557EB922BC66 /* Pods */,
 				826172752AF546CE9B385BDB06A3BB4F /* Products */,
 				B7B80995527643776607AFFA75B91E24 /* Targets Support Files */,
 			);
+			sourceTree = "<group>";
+		};
+		7F59A7D181725F47546D4916CC977ABF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				77105B2B9DC0041400BE27A8C20FE172 /* TwitterCore.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		826172752AF546CE9B385BDB06A3BB4F /* Products */ = {
@@ -157,18 +183,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A84FEA66FD0B20FB16BDF72F8EE8D76D /* Support Files */ = {
+		8E2A91AB2B97F4ECFBA519DAA69CC692 /* Digits */ = {
 			isa = PBXGroup;
 			children = (
-				A63780400505B27ED7CB3FC84591D7F0 /* Eureka.modulemap */,
-				CD237EA22BF05C14613B378AA38FFC43 /* Eureka.xcconfig */,
-				981CDE9D1D28098344394CD2A72C19FA /* Eureka-dummy.m */,
-				68A0B0D6A1ED647E20F26D46CB7F3206 /* Eureka-prefix.pch */,
-				A30E6368F07D062C2FB80C069272185D /* Eureka-umbrella.h */,
-				263F6FBC167A01D12F748A811160090D /* Info.plist */,
+				F8CB4B03844FCB49B62AC968ABE8D88F /* Frameworks */,
+				50EC8924E83D6A3EF3B3100EC812BB24 /* Resources */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/Eureka";
+			path = Digits;
 			sourceTree = "<group>";
 		};
 		B7B80995527643776607AFFA75B91E24 /* Targets Support Files */ = {
@@ -177,6 +198,49 @@
 				75D98FF52E597A11900E131B6C4E1ADA /* Pods */,
 			);
 			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		C5BCE9C564027DD7DD617427991DD5A5 /* Eureka */ = {
+			isa = PBXGroup;
+			children = (
+				20EA069B0C9B8EE2204A346CAAF416E3 /* Cells.swift */,
+				DAB13C715152F5A82B388F14A9EFAAA1 /* Controllers.swift */,
+				2AD942B2B4BD2825FDC20A6DDD338F94 /* Core.swift */,
+				FCD5DDA32E188FFDD13B4253E018F9DD /* Helpers.swift */,
+				19829B85E6CF5313CF76D40AFC9A57AE /* Rows.swift */,
+				E84BB4D2F7F1BB6820FE599E249BF24F /* Support Files */,
+			);
+			path = Eureka;
+			sourceTree = "<group>";
+		};
+		E84BB4D2F7F1BB6820FE599E249BF24F /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				61D1EAEBF1D8116D41E2174389B0D0AB /* Eureka.modulemap */,
+				1873A4F4FEB0D03DA45016066942283F /* Eureka.xcconfig */,
+				9848F4059FE61AA497DCAD6FD440558F /* Eureka-dummy.m */,
+				C9D08381EBFDD6716792D48407BB4725 /* Eureka-prefix.pch */,
+				9122B84BE536079C3C1A64BAC8BFD5EE /* Eureka-umbrella.h */,
+				08C7825D08F0BBE286AB597A2A134B9E /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Eureka";
+			sourceTree = "<group>";
+		};
+		F8CB4B03844FCB49B62AC968ABE8D88F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B943FE07B3E83DCE84FEE5147728002B /* DigitsKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FD54DF72D1FD7E6DB2998B5DBBE272A6 /* TwitterCore */ = {
+			isa = PBXGroup;
+			children = (
+				7F59A7D181725F47546D4916CC977ABF /* Frameworks */,
+			);
+			path = TwitterCore;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,7 +363,7 @@
 /* Begin XCBuildConfiguration section */
 		6D007073E7663AB21ED8AE7A7EA68080 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD237EA22BF05C14613B378AA38FFC43 /* Eureka.xcconfig */;
+			baseConfigurationReference = 1873A4F4FEB0D03DA45016066942283F /* Eureka.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -326,7 +390,7 @@
 		};
 		73466AA04B9C1500D6AE2099E92FF37C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD237EA22BF05C14613B378AA38FFC43 /* Eureka.xcconfig */;
+			baseConfigurationReference = 1873A4F4FEB0D03DA45016066942283F /* Eureka.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;

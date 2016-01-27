@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import DigitsKit
 import Fabric
+import DigitsKit
 import CloudKit
 
 class PhoneAndCloudAuthenticator : UserAuthenticating {
