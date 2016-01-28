@@ -66,7 +66,19 @@ class TasksCloudHandler:TaskCloudHandling
         
     }
     func deleteTask(task: TaskInfo) {
-        
+        anAppDelegate()?.cloudKitHandler.deleteTask(task) {[weak self] (deletedId, deletionError) -> () in
+            
+            dispatchMain(){
+                if let _ = deletedId
+                {
+                    self?.delegate?.taskCloudHandlerDidDeleteTask(task)
+                }
+                else
+                {
+                    self?.delegate?.taskCloudHandlerDidFailToDeleteTask(task, error: deletionError!)
+                }
+            }
+        }
     }
     
     func fetchTasksForBoardId(boardId: CKRecordID) {

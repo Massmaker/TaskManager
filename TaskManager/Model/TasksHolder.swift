@@ -104,6 +104,16 @@ class TasksHolder:TasksHolding {
         return true
     }
     
+    func deleteTask(task: TaskInfo)
+    {
+        if let index = indexOf(task, inArray: self.currentTasks)
+        {
+            self.delegate?.tasksHolderWillStartUpdatingHandledTasks()
+            self.currentTasks.removeAtIndex(index)
+            self.delegate?.tasksHolderDidFinishUpdatingHandledTasks()
+        }
+    }
+    
     //MARK: - 
     func tryFetchingTasksForBoard(boardId:CKRecordID)
     {

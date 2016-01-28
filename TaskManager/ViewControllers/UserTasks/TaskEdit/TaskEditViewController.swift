@@ -281,7 +281,11 @@ class TaskEditViewController: FormViewController {
     //MARK: - Action buttons methods
     func deleteTaskPressed()
     {
-        
+        guard let task = currentTask, _ = anAppDelegate()?.cloudKitHandler.publicCurrentUser else
+        {
+            return
+        }
+        self.weakCloudHandler?.deleteTask(task)
     }
     
     func takeTaskPressed()

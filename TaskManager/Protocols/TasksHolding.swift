@@ -20,6 +20,7 @@ protocol TasksHolding:class {
     func addTask(taskInfo:TaskInfo)
     func updateTask(taskInfo:TaskInfo)
     func deleteTaskAtIndex(index:Int) -> Bool
+    func deleteTask(task:TaskInfo)
     
     func tryFetchingTasksForBoard(boardId:CKRecordID)
 }

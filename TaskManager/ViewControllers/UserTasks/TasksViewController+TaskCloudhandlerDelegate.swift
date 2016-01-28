@@ -82,12 +82,12 @@ extension TasksViewController:TaskCloudHandlerDelegate {
     
     func taskCloudHandlerDidDeleteTask(task:TaskInfo)
     {
-        
+        self.tasksSource?.deleteTask(task)
     }
     
     func taskCloudHandlerDidFailToDeleteTask(task:TaskInfo, error:ErrorType)
     {
-        
+        self.cancelEditingTask()
     }
     
 }
