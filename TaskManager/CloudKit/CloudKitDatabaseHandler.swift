@@ -189,7 +189,7 @@ class CloudKitDatabaseHandler{
             let errorResult = CloudKitErrorParser.handleCloudKitErrorAs(error)
             switch errorResult
             {
-                case .Success:
+                case .Success, .RecoverableError:
                     var numbersToReturn:[String]?
                     if let recInfo = recordInfo
                     {
@@ -212,7 +212,7 @@ class CloudKitDatabaseHandler{
                     else
                     {//return empty response
                         completion(foundNumbers: [String](), error: nil)
-                    }
+                    }                
                 default:
                     print(errorResult)
                     completion(foundNumbers: [String()], error: error)

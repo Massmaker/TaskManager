@@ -16,5 +16,18 @@ class ContactCollectionViewCell: UICollectionViewCell {
     override func drawRect(rect: CGRect) {
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = imageView.bounds.size.height / 2.0
+        imageView.layer.borderWidth = 2.0
+    }
+    
+    func setRegistered(boolValue :Bool)
+    {
+        if boolValue
+        {
+            imageView.layer.borderColor = UIColor.greenColor().CGColor
+        }
+        else
+        {
+            imageView.layer.borderColor = UIColor.grayColor().CGColor
+        }
     }
 }

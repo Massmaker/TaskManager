@@ -34,6 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let completionBlock = {(initialized:Bool, error:ErrorType?) in
             print("\n - initialized CoreData: \(initialized), error: \(error) \n")
+            if initialized == false
+            {
+                self.coreDatahandler = nil
+            }
         }
         
         if let dataModel = CoreDataManager.getManagedObjectModel()
@@ -41,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             {
                 if let store = try CoreDataManager.getPersistentStoreCoordinatorForModel(dataModel)
                 {
-                    coreDatahandler = CoreDataManager(storeCoordinator: store, completion: { (initialized) -> () in
+                    self.coreDatahandler = CoreDataManager(storeCoordinator: store, completion: { (initialized) -> () in
                         completionBlock(initialized, nil)
                     })
                 }

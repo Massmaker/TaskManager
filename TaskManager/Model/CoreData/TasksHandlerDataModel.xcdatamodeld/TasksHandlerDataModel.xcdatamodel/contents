@@ -28,12 +28,11 @@
         <attribute name="lastName" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
         <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="registered" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <relationship name="boards" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Board" syncable="YES"/>
         <relationship name="currentTask" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="currentOwner" inverseEntity="Task" syncable="YES"/>
     </entity>
     <elements>
         <element name="Board" positionX="-297" positionY="-135" width="128" height="165"/>
         <element name="Task" positionX="-65" positionY="50" width="128" height="180"/>
-        <element name="User" positionX="-468" positionY="78" width="128" height="165"/>
+        <element name="User" positionX="-468" positionY="78" width="128" height="148"/>
     </elements>
 </model>

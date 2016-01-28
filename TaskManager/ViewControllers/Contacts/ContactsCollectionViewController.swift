@@ -101,6 +101,7 @@ class ContactsCollectionViewController: UICollectionViewController, UICollection
         
         cell.imageView.image = contactFound.avatarImage ?? noContactImage
         cell.elementLabel.text = contactFound.displayName
+        cell.setRegistered(contactFound.isRegistered)
         
         return cell
     }

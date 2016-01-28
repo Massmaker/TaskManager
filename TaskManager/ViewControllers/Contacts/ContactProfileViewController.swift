@@ -17,7 +17,7 @@ class ContactProfileViewController: FormViewController {
             if let aUser = contact, task = aUser.currentTask
             {
                 let boardId = CKRecordID(recordName:task.board!.recordId!)
-                let creatorId = CKRecordID(recordName: task.board!.creator!.phone!)
+                let creatorId = CKRecordID(recordName: task.board!.creatorId!)
                 
                 let taskInfo = TaskInfo(taskBoardRecordId:boardId , creatorRecordId: creatorId, title: task.title!, details: task.details)
                 

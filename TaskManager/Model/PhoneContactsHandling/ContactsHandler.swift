@@ -156,6 +156,9 @@ class ContactsHandler {
                         let failedContacts = try coreDataHandler.insert(self.pContacts!)
                         
                         print(" - Inserted \(contacts!.count - failedContacts.count )")
+//                        dispatchMainSync(){[unowned self] in
+//                            self.dbContacts = coreDataHandler.allContacts()
+//                        }
                     }
                     catch let savingError {
                         self.delegate?.contactsHandlerDidFinishFetchingContacts(savingError)
@@ -177,14 +180,14 @@ class ContactsHandler {
     {
         self.fetchingFromCoreDataOperation = NSBlockOperation(){ [unowned self] in
             
-            guard let coreDataHandler = anAppDelegate()?.coreDatahandler else
+            guard let _ = anAppDelegate()?.coreDatahandler else
             {
                 return
             }
             
             self.delegate?.contactsWillUpdate()
             
-            let allContactsFromDB = coreDataHandler.allContacts()
+            let allContactsFromDB = anAppDelegate()?.coreDatahandler?.allContacts()
             
             self.dbContacts = allContactsFromDB
             

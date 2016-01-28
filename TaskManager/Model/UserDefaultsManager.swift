@@ -88,6 +88,7 @@ class UserDefaultsManager{
         {
             setUserNameToDefaults(name)
         }
+            
         else
         {
             NSUserDefaults.standardUserDefaults().removeObjectForKey(nameKey)

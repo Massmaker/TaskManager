@@ -62,6 +62,8 @@ class CloudKitErrorParser
             case .ChangeTokenExpired,  .ServerRecordChanged:
                 NSLog("Info: \(error)")
                 return .RecoverableError
+            case .PartialFailure:
+                return .RecoverableError
             default:
                 NSLog("Error: \(error)") //New error introduced in iOS...?
                 return .Fail(message:nil);

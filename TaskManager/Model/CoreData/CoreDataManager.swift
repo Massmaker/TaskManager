@@ -55,8 +55,11 @@ class CoreDataManager
         self.persistentStoreCoordinator = storeCoordinator
         self.mainQueueManagedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
         self.mainQueueManagedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
-        
-        completion?(true)
+        let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.2))
+        dispatch_after(timeout, dispatch_get_main_queue(), { () -> Void in
+             completion?(true)
+        })
+       
     }
 
     //MARK: - Contacts
@@ -98,6 +101,7 @@ class CoreDataManager
             {
                 do{
                     try self.mainQueueManagedObjectContext.save()
+                    print("Context saved after inserting Contacts.....")
                 }
                 catch let saveError{
                     print("Context saving vailed: ")
@@ -106,8 +110,6 @@ class CoreDataManager
                 }
             }
         }
-        
-        
         
         if let _ = errorToThrow
         {
