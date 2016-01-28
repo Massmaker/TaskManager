@@ -100,6 +100,7 @@
 		F88669971C5786D100F56C0A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669961C5786D100F56C0A /* CoreDataManager.swift */; };
 		F88669991C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */; };
 		F8DD67581C5A0EB300258E44 /* Extensions+NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */; };
+		F8DD675E1C5A15C500258E44 /* BoardDetailsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -201,6 +202,7 @@
 		F88669961C5786D100F56C0A /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactsCollectionViewController+ContactsHandlerDelegate.swift"; sourceTree = "<group>"; };
 		F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+NSDate.swift"; sourceTree = "<group>"; };
+		F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardDetailsHeader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -290,6 +292,7 @@
 				F84D686E1C4CEB2E00EF8A16 /* LaunchScreen.storyboard */,
 				F84D68EF1C4CEDFB00EF8A16 /* TaskManager.storyboard */,
 				F84CAD111C5628D400BC2ECC /* UserProfileHeader.xib */,
+				F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */,
 				F84CAD131C562AF700BC2ECC /* UserProfileHeader.swift */,
 				F84D68711C4CEB2E00EF8A16 /* Info.plist */,
 			);
@@ -673,6 +676,7 @@
 				F84D68E21C4CEB6900EF8A16 /* BoardEditNavigationController.swift in Sources */,
 				F84D69091C4D3DF400EF8A16 /* BoardEditingType.swift in Sources */,
 				F88669971C5786D100F56C0A /* CoreDataManager.swift in Sources */,
+				F8DD675E1C5A15C500258E44 /* BoardDetailsHeader.swift in Sources */,
 				F84CAD161C562E0600BC2ECC /* DocumentsFolderFileHandler.swift in Sources */,
 				F84D68BA1C4CEB6900EF8A16 /* TaskInfo.swift in Sources */,
 				F84D68D41C4CEB6900EF8A16 /* BoardsHolding.swift in Sources */,
