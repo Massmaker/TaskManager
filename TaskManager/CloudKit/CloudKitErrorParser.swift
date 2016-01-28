@@ -64,9 +64,9 @@ class CloudKitErrorParser
                 return .RecoverableError
             case .PartialFailure:
                 return .RecoverableError
-            default:
-                NSLog("Error: \(error)") //New error introduced in iOS...?
-                return .Fail(message:nil);
+//            default:
+//                NSLog("Error: \(error)") //New error introduced in iOS...?
+//                return .Fail(message:nil);
         }
     }
 

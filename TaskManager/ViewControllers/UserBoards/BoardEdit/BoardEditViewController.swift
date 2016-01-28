@@ -36,6 +36,7 @@ class BoardEditViewController: FormViewController {
     
     private var initialParticipantIDs = Set<String>()
 
+    private var editingDisabledForBoard:Condition = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,8 +105,11 @@ class BoardEditViewController: FormViewController {
             return
         }
         
-        setupInitialValuesWithBoard(editableBoard)
         self.currentBoard = editableBoard
+        
+        setupInitialValuesWithBoard(editableBoard)
+        checkEditingEnabled()
+        
         
         form +++
             Section(){ section in
@@ -140,16 +144,30 @@ class BoardEditViewController: FormViewController {
         
             +++
             Section(titleSectionTitle)
-            <<< TextAreaRow(){$0.value = editableBoard.title}.onChange(){[unowned self] (textAreaRow) -> () in
+            <<< TextAreaRow(){
+                
+                    $0.disabled = editingDisabledForBoard
+                    $0.value = editableBoard.title
+                
+                    }.onChange(){[unowned self] (textAreaRow) -> () in
+                        
                     if let titleText = textAreaRow.value
                     {
                         self.currentBoard?.title = titleText
                         self.checkSaveButtonEnabled()
                     }
                 }
+            
             +++
+            
             Section(detailsSectionTitle)
-            <<< TextAreaRow(){$0.value = editableBoard.details}.onChange(){ [unowned self](textAreaRow) -> () in
+            <<< TextAreaRow(){
+                
+                    $0.value = editableBoard.details
+                    $0.disabled = editingDisabledForBoard
+                
+                    }.onChange(){ [unowned self](textAreaRow) -> () in
+                        
                     if let detailsText = textAreaRow.value
                     {
                         self.currentBoard?.details = detailsText
@@ -168,6 +186,17 @@ class BoardEditViewController: FormViewController {
     {
         self.initialTitle = board.title
         self.initialDetails = board.details
+    }
+    
+    private func checkEditingEnabled() -> Bool
+    {
+        if let creatorId = self.currentBoard?.creatorId, currentUserId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName
+        {
+            editingDisabledForBoard = (creatorId == currentUserId) ? false : true
+            //print("editing: \(editingDisabledForBoard)")
+            return creatorId == currentUserId
+        }
+        return false
     }
     
     private func checkSaveButtonEnabled()
@@ -213,22 +242,32 @@ class BoardEditViewController: FormViewController {
     
     private func addRegisteredContacts(contacts:[User], toSection section:Section)
     {
+        let editable = checkEditingEnabled()
+        
         for aUser in contacts
         {
             let contactCheckRow = CheckRow().cellSetup(){ (cell, row) -> () in
                 row.title = aUser.displayName
                 row.value = (self.tempParticimantIDs.contains(aUser.phone!))
-            }.onChange(){ (chRow) -> () in
-                if chRow.value == true
-                {
-                    self.tempParticimantIDs.insert(aUser.phone!)
-                }
-                else
-                {
-                    self.tempParticimantIDs.remove(aUser.phone!)
-                }
+                row.disabled = self.editingDisabledForBoard
                 
-                self.checkSaveButtonEnabled()
+            }
+            
+            if editable
+            {
+                contactCheckRow.onChange(){ (chRow) -> () in
+                    
+                    if chRow.value == true
+                    {
+                        self.tempParticimantIDs.insert(aUser.phone!)
+                    }
+                    else
+                    {
+                        self.tempParticimantIDs.remove(aUser.phone!)
+                    }
+                    
+                    self.checkSaveButtonEnabled()
+                }
             }
             
             section <<< contactCheckRow

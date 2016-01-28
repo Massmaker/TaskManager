@@ -95,6 +95,10 @@ extension TaskBoardInfo:SortableByIndex{
     
 }
 
+extension TaskBoardInfo:RecordIdIndexable{
+    
+}
+
 extension TaskBoardInfo {
     
     var shortDateString:String?{

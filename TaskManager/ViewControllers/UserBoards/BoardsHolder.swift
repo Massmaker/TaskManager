@@ -81,7 +81,7 @@ class BoardsHolder:BoardsHolding {
     
     func updateBoard(board:TaskBoardInfo)
     {
-        guard let boardId = board.recordId else
+        guard let _ = board.recordId else
         {
             delegate?.boardsHolderDidUpdateBoards(self)
             return
@@ -93,26 +93,12 @@ class BoardsHolder:BoardsHolding {
         
         var index:Int = 0
         
-        InternalLoop: for aBoard in self.currentBoards
+        if let indexOfBoard = indexOf(board, inArray: self.currentBoards)
         {
-            if let anId = aBoard.recordId where anId.recordName == boardId.recordName
-            {
-                //do{
-                     if let lvIndex = self.currentBoards.indexOf({ (testBoard) -> Bool in
-                        return testBoard.title == aBoard.title
-                     })
-                    {
-                        index = lvIndex
-                    }
-                //}
-                //catch{
-                    
-                //}
-                
-                foundBoard = aBoard
-                break InternalLoop
-            }
+            index = indexOfBoard
+            foundBoard = self.currentBoards[indexOfBoard]
         }
+        
         
         foundBoard?.title = board.title
         foundBoard?.details = board.details
@@ -128,9 +114,7 @@ class BoardsHolder:BoardsHolding {
             self.currentBoards.append(board)
         }
         
-        
         delegate?.boardsHolderDidUpdateBoards(self)
-        
     }
     
  
