@@ -7,10 +7,46 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="BoardDetailsHeader" customModule="TaskManager" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zG-uj-AQV">
+                    <rect key="frame" x="8" y="96" width="27" height="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rxE-Ot-QAg">
+                    <rect key="frame" x="101" y="8" width="211" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jTE-0W-dLd">
+                    <rect key="frame" x="8" y="8" width="80" height="80"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="JQn-ET-h8n"/>
+                        <constraint firstAttribute="height" constant="80" id="xhM-Df-daO"/>
+                    </constraints>
+                </imageView>
+            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="8zG-uj-AQV" secondAttribute="bottom" constant="8" id="3ff-CU-XkJ"/>
+                <constraint firstItem="jTE-0W-dLd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="TpJ-PA-8x6"/>
+                <constraint firstAttribute="trailing" secondItem="rxE-Ot-QAg" secondAttribute="trailing" constant="8" id="a5X-ux-6fe"/>
+                <constraint firstItem="8zG-uj-AQV" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="hQf-1D-xq7"/>
+                <constraint firstItem="jTE-0W-dLd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="hjV-fh-u3w"/>
+                <constraint firstItem="rxE-Ot-QAg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="ow3-4u-ceM"/>
+                <constraint firstItem="rxE-Ot-QAg" firstAttribute="leading" secondItem="jTE-0W-dLd" secondAttribute="trailing" constant="13" id="tVE-sZ-PG5"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="avatarView" destination="jTE-0W-dLd" id="QFZ-Ih-ltJ"/>
+                <outlet property="dateLabel" destination="8zG-uj-AQV" id="wLm-V8-gzX"/>
+                <outlet property="nameLabel" destination="rxE-Ot-QAg" id="17T-H7-E32"/>
+            </connections>
         </view>
     </objects>
 </document>
