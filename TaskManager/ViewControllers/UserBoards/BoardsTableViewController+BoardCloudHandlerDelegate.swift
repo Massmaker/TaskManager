@@ -20,7 +20,7 @@ extension BoardsTableViewController : BoardCloudHandlerDelegate{
         self.setLoadingIndicatorVisible(false)
         if let _ = queryError
         {
-            NSLog(" - Board TableViewController. Erroк querying user boards.  -----")
+            NSLog(" - Board TableViewController. Error querying user boards.  -----")
         }
         else
         {

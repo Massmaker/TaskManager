@@ -32,6 +32,7 @@ struct TaskBoardInfo {
     var title:String
     var details:String = ""
     var creatorId:String?
+    var dateCreated:NSDate?
     
     init(title:String)
     {
@@ -63,6 +64,7 @@ struct TaskBoardInfo {
         self.title = record[BoardTitleKey] as! String
         self.details = record[BoardDetailsKey] as! String
         self.recordId = record.recordID
+        self.dateCreated = record.creationDate
         
         if let index = record[SortOrderIndexIntKey] as? NSNumber
         {
@@ -84,4 +86,15 @@ struct TaskBoardInfo {
 //MARK: - Extension
 extension TaskBoardInfo:SortableByIndex{
     
+}
+
+extension TaskBoardInfo {
+    
+    var shortDateString:String?{
+        if let aDate = self.dateCreated
+        {
+            return aDate.dateTimeCustomString()
+        }
+        return nil
+    }
 }

@@ -102,6 +102,9 @@ class BoardsTableViewController: UITableViewController {
             let board = boardsHolder.boardForRow(indexPath.row)
             cell.boartTitlelabel?.text = board?.title
             cell.boardDetailsLabel?.text = board?.details
+            
+            cell.dateLabel.text = board?.shortDateString
+            
             cell.accessoryType = .DetailButton
             
             if let creator = board?.creatorId

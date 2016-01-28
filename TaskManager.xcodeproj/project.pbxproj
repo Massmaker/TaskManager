@@ -99,6 +99,7 @@
 		F88669951C577A5200F56C0A /* BoardsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669941C577A5200F56C0A /* BoardsTableViewCell.swift */; };
 		F88669971C5786D100F56C0A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669961C5786D100F56C0A /* CoreDataManager.swift */; };
 		F88669991C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */; };
+		F8DD67581C5A0EB300258E44 /* Extensions+NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -199,6 +200,7 @@
 		F88669941C577A5200F56C0A /* BoardsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsTableViewCell.swift; sourceTree = "<group>"; };
 		F88669961C5786D100F56C0A /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactsCollectionViewController+ContactsHandlerDelegate.swift"; sourceTree = "<group>"; };
+		F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+NSDate.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -325,6 +327,7 @@
 			children = (
 				F84D68811C4CEB6900EF8A16 /* Extensions-UIViewController.swift */,
 				F82755CE1C58F804005A1964 /* Extensions+String.swift */,
+				F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -649,6 +652,7 @@
 				F84D68F31C4CF5D800EF8A16 /* LoginViewController+UserDelegateExtensions.swift in Sources */,
 				F84D68B71C4CEB6900EF8A16 /* CloudRecordTypes.swift in Sources */,
 				F84D68C71C4CEB6900EF8A16 /* User+CoreDataProperties.swift in Sources */,
+				F8DD67581C5A0EB300258E44 /* Extensions+NSDate.swift in Sources */,
 				F84CAD1A1C5635E000BC2ECC /* UserProfileViewController+UserProfileHeaderDelegate.swift in Sources */,
 				F84D69051C4D3A7B00EF8A16 /* BoardCloudHandlerDelegate.swift in Sources */,
 				F8832BC61C4FCDEC00D75FAE /* AddTaskTableViewCell.swift in Sources */,
