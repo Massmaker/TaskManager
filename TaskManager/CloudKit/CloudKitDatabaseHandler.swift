@@ -189,7 +189,7 @@ class CloudKitDatabaseHandler{
             let errorResult = CloudKitErrorParser.handleCloudKitErrorAs(error)
             switch errorResult
             {
-                case .Success, .RecoverableError:
+                case .Success, .RecoverableError: //RecoverableError happens, when some PublicUser records found but not all
                     var numbersToReturn:[String]?
                     if let recInfo = recordInfo
                     {

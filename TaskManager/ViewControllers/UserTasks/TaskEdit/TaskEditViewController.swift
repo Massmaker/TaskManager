@@ -54,7 +54,13 @@ class TaskEditViewController: FormViewController {
         // Do any additional setup after loading the view.
         
         self.setupTableViewWithCurrentTask()
-        self.setupTakeOrFinishButtonCell()
+        switch taskEditingType
+        {
+            case .EditCurrent(_):
+                self.setupTakeOrFinishButtonCell()
+            default:
+                break
+        }
     }
 
     override func didReceiveMemoryWarning() {
