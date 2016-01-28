@@ -16,8 +16,10 @@ class BoardEditViewController: FormViewController {
             switch editingType
             {
                 case .CreateNew:
+                    self.title = NSLocalizedString("New Board", comment:"")
                     populateTableViewWithBoard(nil)
                 case .EditCurrent(let board):
+                    self.title = NSLocalizedString("Edit Board", comment: "")
                     populateTableViewWithBoard(board)
             }
         }
@@ -56,23 +58,8 @@ class BoardEditViewController: FormViewController {
         let detailsSectionTitle = "board details"
         guard let editableBoard = board else
         {
-        
             form +++
-                Section(titleSectionTitle){ section in
-                    var header = HeaderFooterView<BoardDetailsHeader>(.NibFile(name:"BoardDetailsHeader", bundle:nil))
-                    header.onSetupView = {view, section, formController in
-                        view.dateLabel.text = "creation date"//editableBoard.shortDateString
-                        view.avatarView.image = testAvatarImage
-                        view.nameLabel.text = "creator name"
-                        
-                    }
-                    
-                    header.height = { 120.0 }
-                    section.header = header
-                    section.tag = "BoardUserInfo"
-                }
-
-                
+                Section(titleSectionTitle)                
                 <<< TextAreaRow(){ $0.placeholder = "Enter board title"}.onChange(){ [unowned self](row) -> () in
                         if let title = row.value
                         {
@@ -167,6 +154,7 @@ class BoardEditViewController: FormViewController {
                     self.checkSaveButtonEnabled()
                 }
         
+        addContactsSection()
     }
 
     private func setupInitialValuesWithBoard(board:TaskBoardInfo)
@@ -200,6 +188,36 @@ class BoardEditViewController: FormViewController {
             }
         }
     }
+    
+    private func addContactsSection()
+    {
+        guard let registered = anAppDelegate()?.coreDatahandler?.registeredContacts() else
+        {
+            return
+        }
+        
+        let contactsSectionTitle = NSLocalizedString("Contacts", comment:"")
+        let aSection =  Section(contactsSectionTitle)
+        
+        form +++ aSection
+        
+        addRegisteredContacts(registered, toSection: aSection)
+    }
+    
+    private func addRegisteredContacts(contacts:[User], toSection section:Section)
+    {
+        for aUser in contacts
+        {
+            let contactCheckRow = CheckRow().cellSetup(){ (cell, row) -> () in
+                row.title = aUser.displayName
+            }.onChange(){ (chRow) -> () in
+                
+            }
+            
+            section <<< contactCheckRow
+        }
+    }
+    
     
     @IBAction func cancelBarButtonAction(sender:AnyObject?)
     {

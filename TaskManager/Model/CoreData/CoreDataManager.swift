@@ -177,10 +177,25 @@ class CoreDataManager
     @warn_unused_result
     func allContacts() -> [User]
     {
+        return self.allContacts(false)
+    }
+    
+    @warn_unused_result
+    func registeredContacts() -> [User]
+    {
+        return self.allContacts(true)
+    }
+    
+    private func allContacts(registeredOnly:Bool) -> [User]
+    {
         var usersToReturn = [User]()
         
         let allFetchRequest = NSFetchRequest(entityName: "User")
         let sortByFirstName = NSSortDescriptor(key: "firstName", ascending: true)
+        if registeredOnly
+        {
+            allFetchRequest.predicate = NSPredicate(format: "registered = YES")
+        }
         allFetchRequest.sortDescriptors = [sortByFirstName]
         
         do{
@@ -197,6 +212,7 @@ class CoreDataManager
         
         return usersToReturn
     }
+    
     
     
     //MARK: - Boards
