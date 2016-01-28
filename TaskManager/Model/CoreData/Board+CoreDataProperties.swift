@@ -20,6 +20,6 @@ extension Board {
     @NSManaged var sortOrder: NSNumber?
     @NSManaged var title: String?
     @NSManaged var dateCreated: NSDate?
-    @NSManaged var creator: User?
+    @NSManaged var creatorId:String?
     @NSManaged var tasks: NSSet?
 }
