@@ -308,6 +308,15 @@ class TaskEditViewController: FormViewController {
     
     func cancelTaskPressed()
     {
+        guard var task = self.currentTask, let _ = anAppDelegate()?.cloudKitHandler.publicCurrentUser else
+        {
+            return
+        }
+
+        task.currentOwner = nil
+        task.dateFinished = nil
+        task.dateTaken = nil
         
+        self.weakCloudHandler?.editTask(task)
     }
 }
