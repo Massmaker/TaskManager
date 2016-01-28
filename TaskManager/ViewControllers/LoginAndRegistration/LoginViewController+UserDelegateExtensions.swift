@@ -28,8 +28,8 @@ extension LoginViewController : UserAuthenticatorDelegate {
            
             //clean if any old user info found
             dispatchBackground(){
-                let defaultsManager = UserDefaultsManager()
-                defaultsManager.clearUserDefaults()
+                
+                UserDefaultsManager.clearUserDefaults()
                 
                 let documentsManager = DocumentsFolderFileHandler()
                 if let userId = anAppDelegate()?.cloudKitHandler.currentUserPhoneNumber

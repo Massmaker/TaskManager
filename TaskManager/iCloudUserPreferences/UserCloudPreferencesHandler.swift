@@ -121,22 +121,21 @@ class UserCloudPreferencesHandler: NSObject {
     
     private func saveToUserDefaults(info:[String:String]? = nil)
     {
-        let tempDefaultsManager = UserDefaultsManager()
+        
         if let info = info
         {
-         
-            tempDefaultsManager.setEmailToDefaults(info[UserDefaultKeys.EmailKey.rawValue])
-            tempDefaultsManager.setUserNameToDefaults(info[UserDefaultKeys.FirstNameKey.rawValue])
-            tempDefaultsManager.setUserLastNameToDefaults(info[UserDefaultKeys.LastNameKey.rawValue])
+            UserDefaultsManager.setEmailToDefaults(info[UserDefaultKeys.EmailKey.rawValue])
+            UserDefaultsManager.setUserNameToDefaults(info[UserDefaultKeys.FirstNameKey.rawValue])
+            UserDefaultsManager.setUserLastNameToDefaults(info[UserDefaultKeys.LastNameKey.rawValue])
         }
         else
         {
             let fName = keyValueCloudStore.objectForKey(UserDefaultKeys.FirstNameKey.rawValue) as? String
             let lName = keyValueCloudStore.objectForKey(UserDefaultKeys.LastNameKey.rawValue) as? String
             let email = keyValueCloudStore.objectForKey(UserDefaultKeys.EmailKey.rawValue) as? String
-            tempDefaultsManager.setEmailToDefaults(email)
-            tempDefaultsManager.setUserLastNameToDefaults(lName)
-            tempDefaultsManager.setUserNameToDefaults(fName)
+            UserDefaultsManager.setEmailToDefaults(email)
+            UserDefaultsManager.setUserLastNameToDefaults(lName)
+            UserDefaultsManager.setUserNameToDefaults(fName)
         }
         NSUserDefaults.standardUserDefaults().synchronize() //call this for not calling tempDefaultsManager.synchronizeDefaults(), beacuse it will create a cycle
         NSNotificationCenter.defaultCenter().postNotificationName(UserDefaultsWereUpdatedAfteriCloudSyncNotification, object: nil)

@@ -20,7 +20,6 @@ class CloudKitDatabaseHandler{
     private let privateDB: CKDatabase
     
     private var currentUserRecord:CKRecord?
-    private var currentUserRecordInfo:CKDiscoveredUserInfo?
     
     var currentUserPhoneNumber:String?{
         didSet{
@@ -28,7 +27,28 @@ class CloudKitDatabaseHandler{
         }
     }
     
-    private let contactsFetchingQueue = NSOperationQueue()
+    private lazy var pCurrentUserAvatar = UIImage()
+    
+    var currentUserAvatar:UIImage?{
+        
+        if let recordID = anAppDelegate()?.cloudKitHandler.currentUserPhoneNumber
+        {
+            if self.pCurrentUserAvatar.size == CGSizeZero
+            {
+                if let image = DocumentsFolderFileHandler().getAvatarImageFromDocumentsForUserId(recordID)
+                {
+                    self.pCurrentUserAvatar = image
+                    return self.pCurrentUserAvatar
+                }
+                return nil
+            }
+            else
+            {
+                return self.pCurrentUserAvatar
+            }
+        }
+        return nil
+    }
     
     init() {
         self.container = CKContainer.defaultContainer()
@@ -150,62 +170,6 @@ class CloudKitDatabaseHandler{
             }
         }
     }
-    
-//    func startFetchingForRegistetedUsers(users:[User])
-//    {
-//        self.contactsFetchingDelegate?.fetchingRegisteredContactsFromICloudDidStart()
-//        
-//        var recordIDs = [CKRecordID]()
-//        for aUser in users
-//        {
-//            guard let phone = aUser.phone else
-//            {
-//                continue
-//            }
-//            recordIDs.append(CKRecordID(recordName: phone))
-//        }
-//        
-//        if recordIDs.isEmpty
-//        {
-//            self.contactsFetchingDelegate?.fetchingRegisteredContactsFromICloudDidFinish(nil, error: unknownError as NSError)
-//            return
-//        }
-//        
-//        
-//        let completionBlock = {[weak self] (recordInfo:[CKRecordID : CKRecord]?, error:NSError?) in
-//            print("\n - startFetchingForRegistetedUsers   COMPLETION: ")
-//            print("found registered users: \(recordInfo) \n")
-//            print(" error: \(error) \n")
-//
-//            var numbersToReturn:[String]?
-//            
-//            if let response = recordInfo where !response.isEmpty
-//            {
-//                var foundRecordIDs = [String]()
-//                for (key , value) in response
-//                {
-//                    print(key)
-//                    print(":")
-//                    print(value.recordID.recordName)
-//                    foundRecordIDs.append(value.recordID.recordName)
-//                }
-//                
-//                numbersToReturn = foundRecordIDs
-//            }
-//            
-//            dispatchMain(){
-//                self?.contactsFetchingDelegate?.fetchingRegisteredContactsFromICloudDidFinish(numbersToReturn, error: error)
-//            }
-//        }
-//        
-//        let findOperation = CKFetchRecordsOperation(recordIDs: recordIDs)
-//        
-//        findOperation.qualityOfService = .Utility
-//        
-//        findOperation.fetchRecordsCompletionBlock = completionBlock
-//        
-//        self.contactsFetchingQueue.addOperation(findOperation)
-//    }
     
     /**
      - Parameter phones: anarray of phone number strings to check for registered users

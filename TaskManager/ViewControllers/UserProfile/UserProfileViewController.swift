@@ -17,7 +17,7 @@ class UserProfileViewController: FormViewController {
     var currentProfileInfo:DeviceContact?
     lazy var imagePickerController = UIImagePickerController()
     lazy var documentsFileHandler = DocumentsFolderFileHandler()
-    lazy var defaultsManager = UserDefaultsManager()
+
     let optionalPlaceholder = "optional"
     //MARK: -
     override func viewDidLoad() {
@@ -56,7 +56,7 @@ class UserProfileViewController: FormViewController {
     
     func logoutBarButtonAction(sender:AnyObject?)
     {
-        defaultsManager.clearUserDefaults()
+        UserDefaultsManager.clearUserDefaults()
         
         if let userId = currentProfileInfo?.phoneNumber
         {
@@ -104,9 +104,9 @@ class UserProfileViewController: FormViewController {
         self.currentProfileInfo?.phoneNumber = contactPhone
         self.currentProfileInfo?.avatarImage = image
         
-        self.currentProfileInfo?.firstName = defaultsManager.getUserNameFromDefaults()
-        self.currentProfileInfo?.lastName = defaultsManager.getUserLastNameFromDefaults()
-        self.currentProfileInfo?.email = defaultsManager.getEmailFromDefaults()
+        self.currentProfileInfo?.firstName = UserDefaultsManager.getUserNameFromDefaults()
+        self.currentProfileInfo?.lastName = UserDefaultsManager.getUserLastNameFromDefaults()
+        self.currentProfileInfo?.email = UserDefaultsManager.getEmailFromDefaults()
     }
     
     private func setupProfileTableView()
@@ -140,7 +140,7 @@ class UserProfileViewController: FormViewController {
                 //if onHighLight is not implemented - "onUnHighLight" is not called
             }.onCellUnHighlight(){[weak self] ( _ , row) -> () in
                 self?.currentProfileInfo?.email = row.value
-                self?.defaultsManager.setEmailToDefaults(self?.currentProfileInfo?.email)
+                UserDefaultsManager.setEmailToDefaults(self?.currentProfileInfo?.email)
         }
         
         return emailRow
@@ -156,7 +156,7 @@ class UserProfileViewController: FormViewController {
                 //if onHighLight is not implemented - "onUnHighLight" is not called
             }.onCellUnHighlight(){[weak  self] (_ , lastNameRow) -> () in
                 self?.currentProfileInfo?.lastName = lastNameRow.value
-                self?.defaultsManager.setUserLastNameToDefaults(self?.currentProfileInfo?.lastName)
+                UserDefaultsManager.setUserLastNameToDefaults(self?.currentProfileInfo?.lastName)
         }
         
         return lastNameRow
@@ -172,7 +172,7 @@ class UserProfileViewController: FormViewController {
                 //if onHighLight is not implemented - "onUnHighLight" is not called
             }.onCellUnHighlight(){[weak self] (_ , nameRow) -> () in
                 self?.currentProfileInfo?.firstName = nameRow.value
-                self?.defaultsManager.setUserNameToDefaults(self?.currentProfileInfo?.firstName)
+                UserDefaultsManager.setUserNameToDefaults(self?.currentProfileInfo?.firstName)
         }
         
         return nameRow

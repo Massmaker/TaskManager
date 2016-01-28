@@ -22,10 +22,12 @@ class BoardEditViewController: FormViewController {
             }
         }
     }
+    
     private weak var boardCloudHandler:BoardCloudHandler?
     private var currentBoard:TaskBoardInfo?
     private var initialTitle = ""
     private var initialDetails = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -54,8 +56,23 @@ class BoardEditViewController: FormViewController {
         let detailsSectionTitle = "board details"
         guard let editableBoard = board else
         {
+        
             form +++
-                Section(titleSectionTitle)
+                Section(titleSectionTitle){ section in
+                    var header = HeaderFooterView<BoardDetailsHeader>(.NibFile(name:"BoardDetailsHeader", bundle:nil))
+                    header.onSetupView = {view, section, formController in
+                        view.dateLabel.text = "creation date"//editableBoard.shortDateString
+                        view.avatarView.image = testAvatarImage
+                        view.nameLabel.text = "creator name"
+                        
+                    }
+                    
+                    header.height = { 120.0 }
+                    section.header = header
+                    section.tag = "BoardUserInfo"
+                }
+
+                
                 <<< TextAreaRow(){ $0.placeholder = "Enter board title"}.onChange(){ [unowned self](row) -> () in
                         if let title = row.value
                         {
@@ -97,6 +114,37 @@ class BoardEditViewController: FormViewController {
         self.currentBoard = editableBoard
         
         form +++
+            Section(){ section in
+                var header = HeaderFooterView<BoardDetailsHeader>(.NibFile(name:"BoardDetailsHeader", bundle:nil))
+                header.onSetupView = {view, section, formController in
+                    view.nameLabel.text = "name"
+                    view.dateLabel.text = editableBoard.shortDateString
+                    view.avatarView.image = testAvatarImage
+                    if let creatorId = board?.creatorId
+                    {
+                        if creatorId == anAppDelegate()!.cloudKitHandler.publicCurrentUser!.recordID.recordName
+                        {
+                            view.avatarView.image = anAppDelegate()!.cloudKitHandler.currentUserAvatar
+                            let lvContact = DeviceContact(phoneNumber: creatorId)!
+                            lvContact.firstName = UserDefaultsManager.getUserNameFromDefaults()
+                            lvContact.lastName = UserDefaultsManager.getUserLastNameFromDefaults()
+                            
+                            view.nameLabel.text = lvContact.displayName
+                        }
+                        else if let foundUser = ContactsHandler.sharedInstance.contactByPhone(creatorId)
+                        {
+                            view.nameLabel.text = foundUser.displayName
+                            view.avatarView.image = foundUser.avatarImage
+                        }
+                    }
+                }
+                
+                header.height = { 120.0 }
+                section.header = header
+                section.tag = "BoardUserInfo"
+            }
+        
+            +++
             Section(titleSectionTitle)
             <<< TextAreaRow(){$0.value = editableBoard.title}.onChange(){[unowned self] (textAreaRow) -> () in
                     if let titleText = textAreaRow.value

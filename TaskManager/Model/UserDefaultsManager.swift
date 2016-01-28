@@ -9,9 +9,10 @@
 import Foundation
 class UserDefaultsManager{
     
-    private let defaults = NSUserDefaults.standardUserDefaults()
+    private static let defaults = NSUserDefaults.standardUserDefaults()
     
-    func syncronyzeDefaults() {
+    class func syncronyzeDefaults() {
+        
         let tempUbiquitmanager = UserCloudPreferencesHandler()
         defaults.synchronize()
         
@@ -30,31 +31,31 @@ class UserDefaultsManager{
         
     }
     
-    func getEmailFromDefaults() -> String? {
+    class func getEmailFromDefaults() -> String? {
         return defaults.objectForKey(UserDefaultKeys.EmailKey.rawValue) as? String
     }
     
-    func setEmailToDefaults(email: String?) {
+    class func setEmailToDefaults(email: String?) {
         defaults.setObject(email, forKey: UserDefaultKeys.EmailKey.rawValue)
     }
     
     
-    func setUserNameToDefaults(name:String?)
+    class func setUserNameToDefaults(name:String?)
     {
         defaults.setObject(name, forKey: UserDefaultKeys.FirstNameKey.rawValue)
     }
     
-    func getUserNameFromDefaults() -> String?
+    class func getUserNameFromDefaults() -> String?
     {
         return defaults.objectForKey(UserDefaultKeys.FirstNameKey.rawValue) as? String
     }
     
-    func setUserLastNameToDefaults(lastName:String?)
+    class func setUserLastNameToDefaults(lastName:String?)
     {
         defaults.setObject(lastName, forKey: UserDefaultKeys.LastNameKey.rawValue)
     }
     
-    func getUserLastNameFromDefaults() -> String?
+    class func getUserLastNameFromDefaults() -> String?
     {
         return defaults.objectForKey(UserDefaultKeys.LastNameKey.rawValue) as? String
     }
@@ -63,7 +64,7 @@ class UserDefaultsManager{
      Removes email, firstname, last name values from user defaults. Calls *synchronize* after execution
      - Note: use this when user initiates "Logout" procedure
      */
-    func clearUserDefaults()
+    class func clearUserDefaults()
     {
         defaults.removeObjectForKey(UserDefaultKeys.LastNameKey.rawValue)
         defaults.removeObjectForKey(UserDefaultKeys.FirstNameKey.rawValue)
@@ -71,7 +72,7 @@ class UserDefaultsManager{
         syncronyzeDefaults()
     }
     
-    func updateUserDefaultsWith(info:[String:String])
+    class func updateUserDefaultsWith(info:[String:String])
     {
         if info.isEmpty
         {

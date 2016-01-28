@@ -15,29 +15,6 @@ class BoardsTableViewController: UITableViewController {
     lazy var boardsHolder:BoardsHolder = BoardsHolder()
     var cloudBoardsHandler:BoardCloudHandler?
     
-    lazy var testAvatarImage = UIImage(named: "Test_Icon")
-    private lazy var pCurrentUserAvatar = UIImage()
-    var currentUserAvatar:UIImage?{
-        
-        if let recordID = anAppDelegate()?.cloudKitHandler.currentUserPhoneNumber
-        {
-            if self.pCurrentUserAvatar.size == CGSizeZero
-            {
-                if let image = DocumentsFolderFileHandler().getAvatarImageFromDocumentsForUserId(recordID)
-                {
-                    self.pCurrentUserAvatar = image
-                    return self.pCurrentUserAvatar
-                }
-                return nil
-            }
-            else
-            {
-                return self.pCurrentUserAvatar
-            }
-        }
-        return nil
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -110,7 +87,7 @@ class BoardsTableViewController: UITableViewController {
             {
                 if creator == anAppDelegate()!.cloudKitHandler.publicCurrentUser!.recordID.recordName
                 {
-                    cell.avatarView.image = currentUserAvatar ?? testAvatarImage
+                    cell.avatarView.image = anAppDelegate()?.cloudKitHandler.currentUserAvatar ?? testAvatarImage
                 }
                 else if let foundUser = ContactsHandler.sharedInstance.contactByPhone(creator), userAvatar = foundUser.avatarImage
                 {

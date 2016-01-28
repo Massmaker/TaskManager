@@ -23,6 +23,7 @@
 		F84B4D6F1C4E709C0013D7F1 /* TasksViewController+TasksHoldingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D6E1C4E709C0013D7F1 /* TasksViewController+TasksHoldingDelegate.swift */; };
 		F84B4D721C4E71C60013D7F1 /* TaskEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D711C4E71C60013D7F1 /* TaskEditViewController.swift */; };
 		F84B4D741C4E720E0013D7F1 /* TaskEditNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D731C4E720E0013D7F1 /* TaskEditNavigationController.swift */; };
+		F84B51741C5A1A010041A248 /* Extensions+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B51731C5A1A010041A248 /* Extensions+UIImage.swift */; };
 		F84CAD0F1C5624F000BC2ECC /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84CAD0E1C5624F000BC2ECC /* UserProfileViewController.swift */; };
 		F84CAD121C5628D400BC2ECC /* UserProfileHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84CAD111C5628D400BC2ECC /* UserProfileHeader.xib */; };
 		F84CAD141C562AF700BC2ECC /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84CAD131C562AF700BC2ECC /* UserProfileHeader.swift */; };
@@ -123,6 +124,7 @@
 		F84B4D6E1C4E709C0013D7F1 /* TasksViewController+TasksHoldingDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksViewController+TasksHoldingDelegate.swift"; sourceTree = "<group>"; };
 		F84B4D711C4E71C60013D7F1 /* TaskEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskEditViewController.swift; sourceTree = "<group>"; };
 		F84B4D731C4E720E0013D7F1 /* TaskEditNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskEditNavigationController.swift; sourceTree = "<group>"; };
+		F84B51731C5A1A010041A248 /* Extensions+UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+UIImage.swift"; sourceTree = "<group>"; };
 		F84CAD0E1C5624F000BC2ECC /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		F84CAD111C5628D400BC2ECC /* UserProfileHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileHeader.xib; sourceTree = "<group>"; };
 		F84CAD131C562AF700BC2ECC /* UserProfileHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				F84D68811C4CEB6900EF8A16 /* Extensions-UIViewController.swift */,
 				F82755CE1C58F804005A1964 /* Extensions+String.swift */,
 				F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */,
+				F84B51731C5A1A010041A248 /* Extensions+UIImage.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -736,6 +739,7 @@
 				F8832BC41C4FB64500D75FAE /* TaskErrors.swift in Sources */,
 				F84B4D6F1C4E709C0013D7F1 /* TasksViewController+TasksHoldingDelegate.swift in Sources */,
 				F84D68BC1C4CEB6900EF8A16 /* ErrorTaskBoard.swift in Sources */,
+				F84B51741C5A1A010041A248 /* Extensions+UIImage.swift in Sources */,
 				F84D68C61C4CEB6900EF8A16 /* TasksHandlerDataModel.xcdatamodeld in Sources */,
 				F80ABB6F1C4E89F900C98540 /* TaskCloudHandling.swift in Sources */,
 			);
