@@ -20,6 +20,8 @@ class BoardEditViewController: FormViewController {
                     populateTableViewWithBoard(nil)
                 case .EditCurrent(let board):
                     self.title = NSLocalizedString("Edit Board", comment: "")
+                    self.tempParticimantIDs = Set(board.participants)
+                    self.initialParticipantIDs = Set(board.participants)
                     populateTableViewWithBoard(board)
             }
         }
@@ -27,8 +29,13 @@ class BoardEditViewController: FormViewController {
     
     private weak var boardCloudHandler:BoardCloudHandler?
     private var currentBoard:TaskBoardInfo?
-    private var initialTitle = ""
-    private var initialDetails = ""
+    private lazy var initialTitle = ""
+    private lazy var initialDetails = ""
+    
+    private var tempParticimantIDs = Set<String>()
+    
+    private var initialParticipantIDs = Set<String>()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -171,7 +178,7 @@ class BoardEditViewController: FormViewController {
             return
         }
         
-        if initialTitle == currentBoard.title && initialDetails == currentBoard.details
+        if initialTitle == currentBoard.title && initialDetails == currentBoard.details && initialParticipantIDs == tempParticimantIDs
         {
             self.navigationItem.rightBarButtonItem = nil
         }
@@ -196,7 +203,7 @@ class BoardEditViewController: FormViewController {
             return
         }
         
-        let contactsSectionTitle = NSLocalizedString("Contacts", comment:"")
+        let contactsSectionTitle = NSLocalizedString("Participants", comment:"")
         let aSection =  Section(contactsSectionTitle)
         
         form +++ aSection
@@ -210,8 +217,18 @@ class BoardEditViewController: FormViewController {
         {
             let contactCheckRow = CheckRow().cellSetup(){ (cell, row) -> () in
                 row.title = aUser.displayName
+                row.value = (self.tempParticimantIDs.contains(aUser.phone!))
             }.onChange(){ (chRow) -> () in
+                if chRow.value == true
+                {
+                    self.tempParticimantIDs.insert(aUser.phone!)
+                }
+                else
+                {
+                    self.tempParticimantIDs.remove(aUser.phone!)
+                }
                 
+                self.checkSaveButtonEnabled()
             }
             
             section <<< contactCheckRow
@@ -232,10 +249,12 @@ class BoardEditViewController: FormViewController {
     
     func saveEdits(sender:UIBarButtonItem)
     {
-        if let board = self.currentBoard{
+        
+        if var board = self.currentBoard{
             switch self.editingType
             {
                 case .EditCurrent(  _  ):
+                    board.participants = Array(self.tempParticimantIDs)
                     self.boardCloudHandler?.editBoard(board)
                 case .CreateNew:
                     self.boardCloudHandler?.submitBoard(board)

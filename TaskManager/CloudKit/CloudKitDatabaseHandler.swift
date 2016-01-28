@@ -327,7 +327,7 @@ class CloudKitDatabaseHandler{
             completion(editedRecord: nil, editError: noBoardIdError)
             return
         }
-        
+    
         //fetch if there is existing board
         publicDB.fetchRecordWithID(recordId) {[unowned self] (foundRecord, error) -> Void in
             if let foundBoard = foundRecord

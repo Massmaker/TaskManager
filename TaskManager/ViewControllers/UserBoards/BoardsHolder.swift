@@ -117,6 +117,7 @@ class BoardsHolder:BoardsHolding {
         foundBoard?.title = board.title
         foundBoard?.details = board.details
         foundBoard?.sortOrderIndex = board.sortOrderIndex
+        foundBoard?.participants = board.participants
         if let toInsert = foundBoard
         {
             self.currentBoards.removeAtIndex(index)
