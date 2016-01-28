@@ -11,6 +11,7 @@ import Foundation
 let BoardCreatorIDKey = "boardCreator"
 let BoardTitleKey = "boardTitle"
 let BoardDetailsKey = "boardDetails"
+let BoardParticipantsKey = "participants"
 
 
 struct TaskBoardInfo {
@@ -33,6 +34,7 @@ struct TaskBoardInfo {
     var details:String = ""
     var creatorId:String?
     var dateCreated:NSDate?
+    var participants = [String]()
     
     init(title:String)
     {
@@ -74,6 +76,11 @@ struct TaskBoardInfo {
         if let creatorId = record[BoardCreatorIDKey] as? String
         {
             self.creatorId = creatorId
+        }
+        
+        if let participants = record[BoardParticipantsKey] as? [String]
+        {
+            self.participants = participants
         }
     }
     

@@ -14,11 +14,13 @@ class TaskBoardsHandler:BoardCloudHandler {
     //MARK: - BoardCloudHandler protocol conformance
     weak var delegate:BoardCloudHandlerDelegate?
     
-    required init(delegate: BoardCloudHandlerDelegate) {
+    required init(delegate: BoardCloudHandlerDelegate)
+    {
         self.delegate = delegate
     }
     
-    func requestUserBoards() {
+    func requestUserBoards()
+    {
         self.delegate?.boardCloudHandlerDidStartQueryingForBoards()
         guard let _ = anAppDelegate() else
         {
@@ -26,14 +28,31 @@ class TaskBoardsHandler:BoardCloudHandler {
             return
         }
         
+        var tempBoards = [CKRecord]()
+        
         anAppDelegate()?.cloudKitHandler.queryForBoardsByCurrentUser(){[weak self] (boards, error) in
-            dispatch_async(dispatch_get_main_queue()){
-                self?.delegate?.boardsCloudHandlerDidFinishQueryingForBoards(boards ?? [CKRecord](), queryError: error)
+            if let boards = boards
+            {
+                tempBoards += boards
             }
+            
+            anAppDelegate()?.cloudKitHandler.queryForBoardsSharedWithMe(){ (boards, fetchError) -> () in
+                if let sharedBoards = boards
+                {
+                    tempBoards += sharedBoards
+                }
+                
+                dispatch_async(dispatch_get_main_queue()){
+                    self?.delegate?.boardsCloudHandlerDidFinishQueryingForBoards(tempBoards, queryError: error)
+                }
+            }
+            
+            
         }
     }
     
-    func submitBoard(board: TaskBoardInfo?) {
+    func submitBoard(board: TaskBoardInfo?)
+    {
         if let aBoard = board
         {
             anAppDelegate()?.cloudKitHandler.submitNewBoardWithInfo(aBoard){[unowned self] (createdBoard, error) -> () in
@@ -46,7 +65,8 @@ class TaskBoardsHandler:BoardCloudHandler {
         }
     }
     
-    func editBoard(board: TaskBoardInfo) {
+    func editBoard(board: TaskBoardInfo)
+    {
         self.delegate?.boardCloudHandlerDidStartDeletingBoard()
         guard let aDelegate = anAppDelegate() else
         {
@@ -70,8 +90,8 @@ class TaskBoardsHandler:BoardCloudHandler {
         }
     }
     
-    func deleteBoard(boardInfo:TaskBoardInfo) {
-        
+    func deleteBoard(boardInfo:TaskBoardInfo)
+    {
         self.delegate?.boardCloudHandlerDidStartDeletingBoard()
         guard let aDelegate = anAppDelegate() else
         {
@@ -102,7 +122,8 @@ class TaskBoardsHandler:BoardCloudHandler {
         }
     }
     
-    func cancelEditingBoard(){
+    func cancelEditingBoard()
+    {
         self.delegate?.boardCloudHandlerDidCancel()
     }
     

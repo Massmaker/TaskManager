@@ -228,38 +228,10 @@ class CloudKitDatabaseHandler{
         let findOperation = CKFetchRecordsOperation(recordIDs: recordIDs)
         
         findOperation.qualityOfService = .Utility
-//        findOperation.perRecordCompletionBlock = { (publicUser:CKRecord?, recordId:CKRecordID?, recordError:NSError?) in
-//            print("publicUser: \(publicUser)")
-//            print("recordID: \(recordId?.recordName)")
-//            print("recordError: \(recordError?.code)\n----")
-//        }
+
         findOperation.fetchRecordsCompletionBlock = completionBlock
         
         self.publicDB.addOperation(findOperation)
-        
-        
-//        //-------//
-//        let predicate = NSPredicate(format: "%@ CONTAINS phoneID ", phones)
-//        
-//        let query = CKQuery(recordType: CloudRecordTypes.PublicUser.rawValue, predicate: predicate)
-//        
-//        
-//        
-//        let queryOp = CKQueryOperation(query: query)
-//        queryOp.resultsLimit = phones.count
-//        
-//        queryOp.qualityOfService = .Utility
-//        
-//        queryOp.queryCompletionBlock = {(cursor, error) in
-//            
-//            print(error)
-//        }
-//        
-//        queryOp.recordFetchedBlock = {(record) in
-//            print("record: \(record.recordID.recordName)")
-//        }
-//        
-//        publicDB.addOperation(queryOp)
     }
     
     //MARK: - Boards
@@ -284,6 +256,36 @@ class CloudKitDatabaseHandler{
             }
             NSLog(" - Error while querying user boards: \n%@", error.userInfo)
             completion(boards: nil, error: error)
+        }
+    }
+    
+    func queryForBoardsSharedWithMe(completion:((boards:[CKRecord]?, fetchError:NSError?)->()))
+    {
+        guard let user = self.publicCurrentUser else
+        {
+            completion(boards: nil, fetchError: noUserError)
+            return
+        }
+        
+        let predicate = NSPredicate(format: "SELF.participants CONTAINS %@", user.recordID.recordName)
+        let publicQuery = CKQuery(recordType: CloudRecordTypes.TaskBoard.rawValue, predicate: predicate)
+        publicQuery.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: true)]
+        
+        publicDB.performQuery(publicQuery, inZoneWithID: nil) { (sharedBoardRecords, fetchError) in
+            let result = CloudKitErrorParser.handleCloudKitErrorAs(fetchError)
+            switch result
+            {
+                case .Success, .RecoverableError:
+                    completion(boards: sharedBoardRecords, fetchError: nil)
+                case .Retry(let afterSeconds):
+                    let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * afterSeconds))
+                    dispatch_after(timeout, dispatch_get_main_queue()) { _ in
+                        self.queryForBoardsSharedWithMe(completion)
+                    }
+                case .Fail(let message):
+                    completion(boards: nil, fetchError: NSError(domain: fetchError!.domain, code: fetchError!.code, userInfo: [NSLocalizedFailureReasonErrorKey:message ?? "no error reason"]))
+                
+            }
         }
     }
     
@@ -326,22 +328,17 @@ class CloudKitDatabaseHandler{
             return
         }
         
-        func saveBoard(board:CKRecord, completionHandler:((savedBoard:CKRecord?, saveError:NSError?)->()))
-        {
-            self.publicDB.saveRecord(board) { (recordSaved, errorSaving) -> Void in
-                completionHandler(savedBoard: recordSaved, saveError: errorSaving)
-            }
-        }
-        
         //fetch if there is existing board
         publicDB.fetchRecordWithID(recordId) {[unowned self] (foundRecord, error) -> Void in
             if let foundBoard = foundRecord
             {
                 //let boardToUpdate = foundBoard
-                foundBoard["sortOrderIndex"] = NSNumber(integer: boardInfo.sortOrderIndex)
-                foundBoard["boardTitle"] = boardInfo.title
-                foundBoard["boardDetails"] = boardInfo.details
-                saveBoard(foundBoard) { (savedBoard, saveError) -> () in
+                foundBoard[SortOrderIndexIntKey] = NSNumber(integer: boardInfo.sortOrderIndex)
+                foundBoard[BoardTitleKey] = boardInfo.title
+                foundBoard[BoardDetailsKey] = boardInfo.details
+                foundBoard[BoardParticipantsKey] = boardInfo.participants
+                
+                self.saveBoard(foundBoard) { (savedBoard, saveError) -> () in
                     completion(editedRecord: savedBoard, editError: saveError)
                 }
             }
@@ -369,6 +366,18 @@ class CloudKitDatabaseHandler{
             
             NSLog(" - Error while deleting user TaskBoard: \n%@", dbError.userInfo.description)
             completion(deletedRecordId: nil, error: dbError)
+        }
+    }
+    
+    func findBoardWithID(recordIDString:String, completion:((boardRecord:CKRecord?)->()))
+    {
+        
+    }
+    
+    private func saveBoard(board:CKRecord, completionHandler:((savedBoard:CKRecord?, saveError:NSError?)->()))
+    {
+        self.publicDB.saveRecord(board) { (recordSaved, errorSaving) -> Void in
+            completionHandler(savedBoard: recordSaved, saveError: errorSaving)
         }
     }
     
@@ -530,10 +539,11 @@ func createNewTaskRecordFromInfo(taskInfo:TaskInfo) -> CKRecord
 func createNewBoardRecordFromInfo(boardInfo:TaskBoardInfo, creatorId:CKRecordID) -> CKRecord
 {
     let newBoardRecord = CKRecord(recordType: CloudRecordTypes.TaskBoard.rawValue)
-    newBoardRecord["boardCreator"] = creatorId.recordName
-    newBoardRecord["boardTitle"] = boardInfo.title
-    newBoardRecord["boardDetails"] = boardInfo.details
-    newBoardRecord["sordOrderIndex"] = NSNumber(integer: boardInfo.sortOrderIndex)
+    newBoardRecord[BoardCreatorIDKey] = creatorId.recordName
+    newBoardRecord[BoardTitleKey] = boardInfo.title
+    newBoardRecord[BoardDetailsKey] = boardInfo.details
+    newBoardRecord[SortOrderIndexIntKey] = NSNumber(integer: boardInfo.sortOrderIndex)
+    newBoardRecord[BoardParticipantsKey] = boardInfo.participants
     
     return newBoardRecord
 }
