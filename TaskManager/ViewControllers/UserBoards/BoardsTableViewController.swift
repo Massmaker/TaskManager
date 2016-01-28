@@ -41,12 +41,11 @@ class BoardsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.tableView.estimatedRowHeight = 69
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        self.tableView.estimatedRowHeight = 50.0
-        
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
         boardsHolder.delegate = self
     }

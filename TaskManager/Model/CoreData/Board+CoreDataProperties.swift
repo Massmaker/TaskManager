@@ -22,5 +22,4 @@ extension Board {
     @NSManaged var dateCreated: NSDate?
     @NSManaged var creator: User?
     @NSManaged var tasks: NSSet?
-
 }
