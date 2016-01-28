@@ -10,12 +10,16 @@ import UIKit
 
 class BoardDetailsHeader: UIView {
 
-    /*
+    @IBOutlet weak var avatarView:UIImageView!
+    @IBOutlet weak var dateLabel:UILabel!
+    @IBOutlet weak var nameLabel:UILabel!
+    
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func drawRect(rect: CGRect) {
-        // Drawing code
+        self.avatarView.layer.cornerRadius = self.avatarView.layer.bounds.size.height / 2.0
+        self.avatarView.layer.masksToBounds = true
     }
-    */
+
 
 }
