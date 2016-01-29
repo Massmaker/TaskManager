@@ -177,26 +177,28 @@ class CoreDataManager
     @warn_unused_result
     func allContacts() -> [User]
     {
-        return self.allContacts(false)
+        return self.fetchContacts(false)
     }
     
     @warn_unused_result
     func registeredContacts() -> [User]
     {
-        return self.allContacts(true)
+        return self.fetchContacts(true)
     }
     
-    private func allContacts(registeredOnly:Bool) -> [User]
+    private func fetchContacts(registeredOnly:Bool) -> [User]
     {
         var usersToReturn = [User]()
         
         let allFetchRequest = NSFetchRequest(entityName: "User")
-        let sortByFirstName = NSSortDescriptor(key: "firstName", ascending: true)
+        allFetchRequest.returnsObjectsAsFaults = false
+        let sortRegistered = NSSortDescriptor(key: "registered", ascending: false)
+        let sortByFirstName = NSSortDescriptor(key: "firstName", ascending: false)
         if registeredOnly
         {
             allFetchRequest.predicate = NSPredicate(format: "registered = YES")
         }
-        allFetchRequest.sortDescriptors = [sortByFirstName]
+        allFetchRequest.sortDescriptors = [sortRegistered, sortByFirstName]
         
         do{
             guard let usersFound = try self.mainQueueManagedObjectContext.executeFetchRequest(allFetchRequest) as? [User] else

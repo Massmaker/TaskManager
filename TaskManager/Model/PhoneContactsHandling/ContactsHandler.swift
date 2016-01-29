@@ -250,6 +250,7 @@ class ContactsHandler {
             dispatchMainSync(){
                 do{
                     let _ = try anAppDelegate()?.coreDatahandler?.insert(contacts)
+                    self.dbContacts = anAppDelegate()?.coreDatahandler?.allContacts() //refetch after updating
                 }
                 catch{
                     

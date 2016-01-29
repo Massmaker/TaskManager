@@ -20,10 +20,10 @@ struct TaskBoardInfo {
     var recordId:CKRecordID?{
         set(newValue){
             self._boardId = newValue
-            print("board Id: \(self._boardId?.recordName)")
+            //print("board Id: \(self._boardId?.recordName)")
         }
         get{
-            print("reading board id: \(self._boardId?.recordName)")
+            //print("reading board id: \(self._boardId?.recordName)")
             return self._boardId
         }
     }
