@@ -12,23 +12,12 @@ import Eureka
 
 class TaskEditViewController: FormViewController {
 
-    var boardRecordId:CKRecordID?{
-        didSet{
-            print("\n - TaskEditViewController did set new boardRecordId: \(boardRecordId!.recordName)")
-        }
-    }
-    var creatorId:CKRecordID?{
-        didSet{
-            print("\n -TaskEditViewController CREATOR_ID  was set: \(creatorId?.recordName) - \n")
-        }
-    }
+    var boardRecordId:CKRecordID?
+    var creatorId:CKRecordID?
+    
     private var currentTask:TaskInfo?
     
-    weak var weakCloudHandler:TaskCloudHandling?{
-        didSet{
-            print("\n -TaskEditViewController CREATOR_ID  was set: \(weakCloudHandler) - \n")
-        }
-    }
+    weak var weakCloudHandler:TaskCloudHandling?
     
     var taskEditingType:TaskEditType = .CreateNew{
         didSet{
@@ -170,7 +159,8 @@ class TaskEditViewController: FormViewController {
     private func setupTakeSection(section:Section)
     {
         let takeButtonRow = ButtonRow("Take task").cellSetup(){ (cell, row) -> () in
-                    cell.tintColor = UIColor.blueColor()
+                    cell.textLabel?.font = UIFont.boldSystemFontOfSize(17)
+                    cell.tintColor = UIColor.greenColor()
                     row.title = "Take"
                 }.onCellSelection(){[weak self] (cell, row) -> () in
                     cell.setSelected(false, animated: false)
@@ -296,6 +286,8 @@ class TaskEditViewController: FormViewController {
         }
         
         task.currentOwner = currentUser.recordID.recordName // phoneNumber is stored both in Record name and currentUser["phoneNumberID"]  String value
+        task.dateTaken = NSDate()
+        task.dateFinished = nil
         self.weakCloudHandler?.editTask(task)
     }
     
@@ -307,6 +299,7 @@ class TaskEditViewController: FormViewController {
         }
         
         task.currentOwner = nil // phoneNumber is stored both in Record name and currentUser["phoneNumberID"]  String value
+        task.dateFinished = NSDate()
         self.weakCloudHandler?.editTask(task)
     }
     

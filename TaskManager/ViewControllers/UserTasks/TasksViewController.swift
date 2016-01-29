@@ -21,7 +21,7 @@ class TasksViewController:UITableViewController {
         super.viewDidLoad()
         
         self.navigationItem.rightBarButtonItem = self.editButtonItem() //enable deleting of Take/Finish tasks, rearranging tasks
-         self.tasksCloudHandler = TasksCloudHandler(delegate: self)
+        self.tasksCloudHandler = TasksCloudHandler(delegate: self)
         
     }
     
@@ -91,13 +91,20 @@ class TasksViewController:UITableViewController {
             defaultCell.detailTextLabel?.text = "Add Task"
             return defaultCell
         case 1:
-            let taskCell = tableView.dequeueReusableCellWithIdentifier("TaskCell", forIndexPath: indexPath)
+            
             let targetTask = self.tasksSource?.taskForRow(indexPath.row)
             
-            taskCell.textLabel?.text = targetTask?.title
-            taskCell.detailTextLabel?.text = targetTask?.details
+            if let taskCell = tableView.dequeueReusableCellWithIdentifier("TaskTableCell", forIndexPath: indexPath) as? TaskTableViewCell
+            {                
+                taskCell.setCurrentTask(targetTask!)
+                return taskCell
+            }
+            let defaultTaskCell = tableView.dequeueReusableCellWithIdentifier("TaskCell", forIndexPath: indexPath)
             
-            return taskCell
+            defaultTaskCell.textLabel?.text = targetTask?.title
+            defaultTaskCell.detailTextLabel?.text = targetTask?.details
+            
+            return defaultTaskCell
         default:
             let taskCell = tableView.dequeueReusableCellWithIdentifier("TaskCell", forIndexPath: indexPath)
             return taskCell
@@ -105,7 +112,27 @@ class TasksViewController:UITableViewController {
      
     }
     
+    
+    
+    
     //MARK: - UITableViewDelegate
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        switch indexPath.section{
+        case 1:
+            return 96.0
+        default:
+            return 44.0
+        }
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        switch indexPath.section{
+        case 1:
+            return 96.0
+        default:
+            return 44.0
+        }
+    }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)

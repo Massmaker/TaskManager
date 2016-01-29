@@ -91,8 +91,6 @@ class ContactsHandler {
         }
         
         return foundContacts.first
-        
-        //return anAppDelegate()?.coreDatahandler?.findContactByPhone(phone)
     }
     
     //MARK: - private configuring methods
@@ -153,12 +151,10 @@ class ContactsHandler {
                 {
                     do
                     {
+                        anAppDelegate()?.coreDatahandler?.deleteAllContacts()
                         let failedContacts = try coreDataHandler.insert(self.pContacts!)
                         
                         print(" - Inserted \(contacts!.count - failedContacts.count )")
-//                        dispatchMainSync(){[unowned self] in
-//                            self.dbContacts = coreDataHandler.allContacts()
-//                        }
                     }
                     catch let savingError {
                         self.delegate?.contactsHandlerDidFinishFetchingContacts(savingError)
@@ -249,6 +245,7 @@ class ContactsHandler {
             }
             dispatchMainSync(){
                 do{
+                    
                     let _ = try anAppDelegate()?.coreDatahandler?.insert(contacts)
                     self.dbContacts = anAppDelegate()?.coreDatahandler?.allContacts() //refetch after updating
                 }

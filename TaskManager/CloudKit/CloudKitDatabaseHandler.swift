@@ -469,7 +469,7 @@ class CloudKitDatabaseHandler{
             record[TitleStringKey] = taskInfo.title
             record[DetailsStringKey] = taskInfo.details
             record[SortOrderIndexIntKey] = taskInfo.sortOrderIndex
-            updateOwnerForTaskRecord(&record, ownerId: taskInfo.currentOwner)
+            updateOwnerForTaskRecord(&record, ownerId: taskInfo.currentOwner, dates:(taskInfo.dateTaken , taskInfo.dateFinished))
             
             self?.publicDB.saveRecord(record) { (savedRecord, saveError)  in
                 completion(editedRecord: savedRecord, editError: saveError)
@@ -573,34 +573,10 @@ func taskInfoFromTaskRecord(record:CKRecord) -> TaskInfo?
     return newTask
 }
 
-func updateOwnerForTaskRecord(inout record:CKRecord, ownerId:String?)
+func updateOwnerForTaskRecord(inout record:CKRecord, ownerId:String?, dates:(taken:NSDate?, finished:NSDate?))
 {
-    if let _ = record[CurrentOwnerStringKey] as? String //currently owned task by a  person
-    {
-        if let _ = ownerId
-        {
-            // first previous owner should finish task
-            return
-        }
-        else
-        {
-            //owner wants to finish task
-            record[CurrentOwnerStringKey] = nil
-            record[DateFinishedDateKey] = NSDate()
-            
-            print(" - user did FINISH task.")
-        }
-    }
-    else
-    {
-        if let ownerPassed = ownerId
-        {
-            //new person wants to take task
-            record[CurrentOwnerStringKey] = ownerPassed
-            record[DateTakenDateKey] = NSDate()
-            record[DateFinishedDateKey] = nil
-            print(" - User did TAKE task")
-        }
-    }
+    record[CurrentOwnerStringKey] = ownerId
+    record[DateTakenDateKey] = dates.0
+    record[DateFinishedDateKey] = dates.1
 }
 

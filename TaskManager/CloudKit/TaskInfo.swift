@@ -59,7 +59,7 @@ struct TaskInfo {
     mutating func setRecordId(recordId:CKRecordID)
     {
         self._recordId = recordId
-        print("task recordID: \(self.recordId)")
+        print("task recordID: \(self.recordId?.recordName)")
     }
     
     mutating func fillOptionalInfoFromTaskRecord(record:CKRecord)

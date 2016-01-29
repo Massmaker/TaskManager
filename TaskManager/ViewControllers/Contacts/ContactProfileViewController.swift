@@ -79,11 +79,11 @@ class ContactProfileViewController: FormViewController {
                 $0.value = contact.phone
                 $0.disabled = true
             }
-            <<< EmailRow(){
-                $0.title = "email"
-                $0.value = contact.email
-                $0.disabled = true
-            }
+//            <<< EmailRow(){
+//                $0.title = "email"
+//                $0.value = contact.email
+//                $0.disabled = true
+//            }
         
             if contact.isRegistered == false
             {

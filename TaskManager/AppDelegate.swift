@@ -41,7 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         if let dataModel = CoreDataManager.getManagedObjectModel()
-        {   do
+        {
+            do
             {
                 if let store = try CoreDataManager.getPersistentStoreCoordinatorForModel(dataModel)
                 {
@@ -50,7 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     })
                 }
             }
-            catch let error{
+            catch let error
+            {
                 completionBlock(false, error)
             }
         }
