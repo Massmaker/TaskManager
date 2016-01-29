@@ -50,6 +50,10 @@ class CloudKitDatabaseHandler{
         return nil
     }
     
+    lazy var subscriptionsTasks = [CKSubscription]()
+    
+    lazy var subscriptionsBoards = [CKSubscription]()
+    
     init() {
         self.container = CKContainer.defaultContainer()
         self.publicDB = container.publicCloudDatabase

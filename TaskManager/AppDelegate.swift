@@ -9,6 +9,7 @@
 import UIKit
 import Fabric
 import DigitsKit
+import CloudKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -87,6 +88,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    //MARK: - PUSH
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        if let userInfo = userInfo as? [String:NSObject]
+        {
+            let ckNote = CKNotification(fromRemoteNotificationDictionary: userInfo)
+            let badge = ckNote.badge?.integerValue ?? 0
+            let alertText = ckNote.alertBody ?? "No Alert Text"
+            application.applicationIconBadgeNumber += badge
+            print(" - recieved cloud kit notification:  \" \(alertText) \"")
+            print(ckNote)
+        }
+    }
+    
 }
 
