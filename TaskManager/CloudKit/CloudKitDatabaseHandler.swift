@@ -194,11 +194,11 @@ class CloudKitDatabaseHandler{
                     if let recInfo = recordInfo
                     {
                         var foundRecordIDs = [String]()
-                        for (key , value) in recInfo
+                        for ( _ , value) in recInfo
                         {
-                            print(key)
-                            print(":")
-                            print(value.recordID.recordName)
+                            //print(key)
+                            //print(":")
+                            //print(value.recordID.recordName)
                             foundRecordIDs.append(value.recordID.recordName)
                         }
                         
