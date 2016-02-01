@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaskManager/Model/PhoneContactsHandling/ContactsHandler.swift"
-            timestampString = "475605766.873322"
+            filePath = "TaskManager/Model/TasksCloudHandler.swift"
+            timestampString = "475684438.308294"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
-            landmarkName = "contactByPhone(_:)"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "deleteTask(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaskManager/Model/PhoneContactsHandling/ContactsHandler.swift"
-            timestampString = "475605772.631845"
+            filePath = "TaskManager/Model/TasksCloudHandler.swift"
+            timestampString = "475684439.878113"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "contactByPhone(_:)"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
+            landmarkName = "deleteTask(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TaskManager/Model/PhoneContactsHandling/ContactsHandler.swift"
-            timestampString = "475605773.899551"
+            filePath = "TaskManager/CloudKit/CloudKitErrorParser.swift"
+            timestampString = "475690798.799083"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
-            landmarkName = "contactByPhone(_:)"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "handleCloudKitErrorAs(_:retryAttempt:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
