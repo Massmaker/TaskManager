@@ -38,7 +38,7 @@ class TasksCloudHandler:TaskCloudHandling
             
             editableTask.setRecordId(record.recordID)
             
-            self.delegate?.taskCloudHandlerDidSubmitNewTask(task)
+            self.delegate?.taskCloudHandlerDidSubmitNewTask(editableTask)
         }
         
     }

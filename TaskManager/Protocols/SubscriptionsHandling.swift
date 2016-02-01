@@ -9,7 +9,7 @@
 
 import CloudKit
 
-protocol SubscriptionsHandling{
+protocol SubscriptionsHandling {
 
     var isSyncing:Bool { get }
     
@@ -25,4 +25,5 @@ protocol SubscriptionsHandling{
     func addSingle(subscription:CKSubscription)
     func addMany(subscriptions:[CKSubscription])
     
+    func addSubscriptionFor(recordID:String, objectType:CloudRecordTypes, changeType:CKSubscriptionOptions)
 }

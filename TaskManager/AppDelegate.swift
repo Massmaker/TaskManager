@@ -62,6 +62,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             completionBlock(false, unknownError)
         }
        
+        let queue = dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)
+        dispatch_async(queue) {
+            let settings = UIUserNotificationSettings(forTypes: [.Alert, .Sound, .Badge], categories: nil)
+            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+            UIApplication.sharedApplication().registerForRemoteNotifications()
+        }
+        
         return true
     }
 
@@ -90,22 +97,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     //MARK: - PUSH
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-        
+        print("\n didFailToRegisterForRemoteNotificationsWithError: \n \(error.localizedFailureReason)")
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        
+        print("\n didRegisterForRemoteNotificationsWithDeviceToken")
+        let string = deviceToken.description
+        print(string)
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         if let userInfo = userInfo as? [String:NSObject]
         {
-            let ckNote = CKNotification(fromRemoteNotificationDictionary: userInfo)
-            let badge = ckNote.badge?.integerValue ?? 0
-            let alertText = ckNote.alertBody ?? "No Alert Text"
-            application.applicationIconBadgeNumber += badge
-            print(" - recieved cloud kit notification:  \" \(alertText) \"")
-            print(ckNote)
+            let ckNote = CKQueryNotification(fromRemoteNotificationDictionary: userInfo)
+            NotificationsHandler.sharedInstance.handleNote(ckNote)
         }
     }
     

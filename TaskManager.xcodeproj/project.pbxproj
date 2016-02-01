@@ -103,6 +103,8 @@
 		F88669991C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */; };
 		F895CD4D1C5F615D00D08EE9 /* SubscriptionsHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD4C1C5F615D00D08EE9 /* SubscriptionsHandling.swift */; };
 		F895CD501C5F63B100D08EE9 /* SubscriptionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */; };
+		F895CD521C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD511C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift */; };
+		F895CD541C5F8B7F00D08EE9 /* NotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD531C5F8B7F00D08EE9 /* NotificationsHandler.swift */; };
 		F8DD67581C5A0EB300258E44 /* Extensions+NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */; };
 		F8DD675E1C5A15C500258E44 /* BoardDetailsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */; };
 		F8DD67601C5A15ED00258E44 /* BoardDetailsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */; };
@@ -210,6 +212,8 @@
 		F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactsCollectionViewController+ContactsHandlerDelegate.swift"; sourceTree = "<group>"; };
 		F895CD4C1C5F615D00D08EE9 /* SubscriptionsHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsHandling.swift; sourceTree = "<group>"; };
 		F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsHandler.swift; sourceTree = "<group>"; };
+		F895CD511C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+CKSubscriptionOptions.swift"; sourceTree = "<group>"; };
+		F895CD531C5F8B7F00D08EE9 /* NotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHandler.swift; sourceTree = "<group>"; };
 		F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+NSDate.swift"; sourceTree = "<group>"; };
 		F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardDetailsHeader.swift; sourceTree = "<group>"; };
 		F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BoardDetailsHeader.xib; sourceTree = "<group>"; };
@@ -343,6 +347,7 @@
 				F82755CE1C58F804005A1964 /* Extensions+String.swift */,
 				F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */,
 				F84B51731C5A1A010041A248 /* Extensions+UIImage.swift */,
+				F895CD511C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -522,6 +527,7 @@
 			isa = PBXGroup;
 			children = (
 				F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */,
+				F895CD531C5F8B7F00D08EE9 /* NotificationsHandler.swift */,
 			);
 			path = SubscriptionsHandling;
 			sourceTree = "<group>";
@@ -714,6 +720,8 @@
 				F83D16031C4F825100E46E43 /* UserErrors.swift in Sources */,
 				F84D68B91C4CEB6900EF8A16 /* TaskBoardInfo.swift in Sources */,
 				F84D68D71C4CEB6900EF8A16 /* UserAuthenticatorDelegates.swift in Sources */,
+				F895CD521C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift in Sources */,
+				F895CD541C5F8B7F00D08EE9 /* NotificationsHandler.swift in Sources */,
 				F84D68CB1C4CEB6900EF8A16 /* ContactsHandler.swift in Sources */,
 				F84D68C21C4CEB6900EF8A16 /* Board+CoreDataProperties.swift in Sources */,
 				F8832BBE1C4F97C400D75FAE /* TaskInfoObjectHolder.swift in Sources */,

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CloudKit
 
 extension TasksViewController:TaskCloudHandlerDelegate {
     
@@ -40,6 +41,9 @@ extension TasksViewController:TaskCloudHandlerDelegate {
         networkingIndicator(false)
         dispatchMain { [weak self] in
             self?.tasksSource?.addTask(task)
+            
+            SubscriptionsHandler.sharedInstance.addSubscriptionFor(task.recordId!.recordName, objectType:CloudRecordTypes.Task , changeType:[.FiresOnRecordUpdate, .FiresOnRecordDeletion])
+            
         }
     }
     
