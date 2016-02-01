@@ -71,10 +71,6 @@ public class ButtonCellOf<T: Equatable>: Cell<T>, CellType {
     
     public override func didSelect() {
         super.didSelect()
-        guard let _ = row.indexPath() else
-        {
-            return
-        }
         formViewController()?.tableView?.deselectRowAtIndexPath(row.indexPath()!, animated: true)
     }
 }
