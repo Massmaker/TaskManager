@@ -56,6 +56,9 @@ extension BoardsTableViewController : BoardCloudHandlerDelegate{
                 currentBoards.append(boardInfo)
                 self.boardsHolder.setBoards(currentBoards)
             }
+            
+            //add subscription board deleted
+            
         }
         else if let anError = submitError
         {

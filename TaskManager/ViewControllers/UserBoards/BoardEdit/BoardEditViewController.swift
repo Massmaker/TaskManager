@@ -27,7 +27,7 @@ class BoardEditViewController: FormViewController {
         }
     }
     
-    private weak var boardCloudHandler:BoardCloudHandler?
+    private weak var boardCloudHandler:BoardCloudHandling?
     private var currentBoard:TaskBoardInfo?
     private lazy var initialTitle = ""
     private lazy var initialDetails = ""
@@ -55,7 +55,7 @@ class BoardEditViewController: FormViewController {
         self.editingType = type
     }
     
-    func setEditingHandler(handler:BoardCloudHandler?)
+    func setEditingHandler(handler:BoardCloudHandling?)
     {
         self.boardCloudHandler = handler
     }

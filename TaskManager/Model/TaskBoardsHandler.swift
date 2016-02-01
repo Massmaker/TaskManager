@@ -9,7 +9,7 @@
 import Foundation
 import CloudKit
 
-class TaskBoardsHandler:BoardCloudHandler {
+class TaskBoardsHandler:BoardCloudHandling {
     
     //MARK: - BoardCloudHandler protocol conformance
     weak var delegate:BoardCloudHandlerDelegate?

@@ -17,7 +17,7 @@ class BoardEditNavigationController: UINavigationController {
         }
     }
     
-    var boardEditingHandler:BoardCloudHandler?{
+    var boardEditingHandler:BoardCloudHandling?{
         didSet{
             //yes, I know this is bad
             (self.viewControllers.first! as! BoardEditViewController).setEditingHandler(boardEditingHandler)

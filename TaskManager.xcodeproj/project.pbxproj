@@ -84,7 +84,7 @@
 		F84D68FD1C4CFE8E00EF8A16 /* BoardsTableViewController+BoardsHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68FC1C4CFE8E00EF8A16 /* BoardsTableViewController+BoardsHolderDelegate.swift */; };
 		F84D68FF1C4D230600EF8A16 /* PublicUserRecordHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68FE1C4D230600EF8A16 /* PublicUserRecordHandling.swift */; };
 		F84D69011C4D2D0500EF8A16 /* AppDelegateError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69001C4D2D0500EF8A16 /* AppDelegateError.swift */; };
-		F84D69031C4D3A5500EF8A16 /* BoardCloudHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69021C4D3A5500EF8A16 /* BoardCloudHandler.swift */; };
+		F84D69031C4D3A5500EF8A16 /* BoardCloudHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69021C4D3A5500EF8A16 /* BoardCloudHandling.swift */; };
 		F84D69051C4D3A7B00EF8A16 /* BoardCloudHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69041C4D3A7B00EF8A16 /* BoardCloudHandlerDelegate.swift */; };
 		F84D69081C4D3DF400EF8A16 /* BoardEditingHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69061C4D3DF400EF8A16 /* BoardEditingHolder.swift */; };
 		F84D69091C4D3DF400EF8A16 /* BoardEditingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69071C4D3DF400EF8A16 /* BoardEditingType.swift */; };
@@ -101,6 +101,8 @@
 		F88669951C577A5200F56C0A /* BoardsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669941C577A5200F56C0A /* BoardsTableViewCell.swift */; };
 		F88669971C5786D100F56C0A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669961C5786D100F56C0A /* CoreDataManager.swift */; };
 		F88669991C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */; };
+		F895CD4D1C5F615D00D08EE9 /* SubscriptionsHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD4C1C5F615D00D08EE9 /* SubscriptionsHandling.swift */; };
+		F895CD501C5F63B100D08EE9 /* SubscriptionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */; };
 		F8DD67581C5A0EB300258E44 /* Extensions+NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */; };
 		F8DD675E1C5A15C500258E44 /* BoardDetailsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */; };
 		F8DD67601C5A15ED00258E44 /* BoardDetailsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */; };
@@ -189,7 +191,7 @@
 		F84D68FC1C4CFE8E00EF8A16 /* BoardsTableViewController+BoardsHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BoardsTableViewController+BoardsHolderDelegate.swift"; sourceTree = "<group>"; };
 		F84D68FE1C4D230600EF8A16 /* PublicUserRecordHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicUserRecordHandling.swift; sourceTree = "<group>"; };
 		F84D69001C4D2D0500EF8A16 /* AppDelegateError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateError.swift; sourceTree = "<group>"; };
-		F84D69021C4D3A5500EF8A16 /* BoardCloudHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardCloudHandler.swift; sourceTree = "<group>"; };
+		F84D69021C4D3A5500EF8A16 /* BoardCloudHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardCloudHandling.swift; sourceTree = "<group>"; };
 		F84D69041C4D3A7B00EF8A16 /* BoardCloudHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardCloudHandlerDelegate.swift; sourceTree = "<group>"; };
 		F84D69061C4D3DF400EF8A16 /* BoardEditingHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardEditingHolder.swift; path = TaskBoardWork/BoardEditingHolder.swift; sourceTree = "<group>"; };
 		F84D69071C4D3DF400EF8A16 /* BoardEditingType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardEditingType.swift; path = TaskBoardWork/BoardEditingType.swift; sourceTree = "<group>"; };
@@ -206,6 +208,8 @@
 		F88669941C577A5200F56C0A /* BoardsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsTableViewCell.swift; sourceTree = "<group>"; };
 		F88669961C5786D100F56C0A /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactsCollectionViewController+ContactsHandlerDelegate.swift"; sourceTree = "<group>"; };
+		F895CD4C1C5F615D00D08EE9 /* SubscriptionsHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsHandling.swift; sourceTree = "<group>"; };
+		F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsHandler.swift; sourceTree = "<group>"; };
 		F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+NSDate.swift"; sourceTree = "<group>"; };
 		F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardDetailsHeader.swift; sourceTree = "<group>"; };
 		F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BoardDetailsHeader.xib; sourceTree = "<group>"; };
@@ -374,6 +378,7 @@
 				F84CAD151C562E0600BC2ECC /* DocumentsFolderFileHandler.swift */,
 				F84CAD1D1C563F9300BC2ECC /* UserDefaultsManager.swift */,
 				F84CAD1F1C563FEB00BC2ECC /* UserDefalutKeys.swift */,
+				F895CD4E1C5F63A100D08EE9 /* SubscriptionsHandling */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -424,7 +429,7 @@
 				F80191BD1C50F3E30007D2AF /* SortableByIndex.swift */,
 				F80191BF1C50F94D0007D2AF /* RecordIdIndexable.swift */,
 				F84D689F1C4CEB6900EF8A16 /* BoardsHolding.swift */,
-				F84D69021C4D3A5500EF8A16 /* BoardCloudHandler.swift */,
+				F84D69021C4D3A5500EF8A16 /* BoardCloudHandling.swift */,
 				F84D69041C4D3A7B00EF8A16 /* BoardCloudHandlerDelegate.swift */,
 				F84B4D661C4E67260013D7F1 /* TasksHolding.swift */,
 				F84B4D6A1C4E6BDC0013D7F1 /* TasksHoldingDelegate.swift */,
@@ -433,6 +438,7 @@
 				F84D68A11C4CEB6900EF8A16 /* UserAuthenticating.swift */,
 				F84D68FE1C4D230600EF8A16 /* PublicUserRecordHandling.swift */,
 				F84D68A21C4CEB6900EF8A16 /* UserAuthenticatorDelegates.swift */,
+				F895CD4C1C5F615D00D08EE9 /* SubscriptionsHandling.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -510,6 +516,14 @@
 				F858B73E1C57CAC4003BF286 /* CloudRegisteredUsersOperation.swift */,
 			);
 			path = NSOperationSubclasses;
+			sourceTree = "<group>";
+		};
+		F895CD4E1C5F63A100D08EE9 /* SubscriptionsHandling */ = {
+			isa = PBXGroup;
+			children = (
+				F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */,
+			);
+			path = SubscriptionsHandling;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -687,6 +701,7 @@
 				F84D68E21C4CEB6900EF8A16 /* BoardEditNavigationController.swift in Sources */,
 				F84D69091C4D3DF400EF8A16 /* BoardEditingType.swift in Sources */,
 				F88669971C5786D100F56C0A /* CoreDataManager.swift in Sources */,
+				F895CD501C5F63B100D08EE9 /* SubscriptionsHandler.swift in Sources */,
 				F8DD675E1C5A15C500258E44 /* BoardDetailsHeader.swift in Sources */,
 				F84CAD161C562E0600BC2ECC /* DocumentsFolderFileHandler.swift in Sources */,
 				F84D68BA1C4CEB6900EF8A16 /* TaskInfo.swift in Sources */,
@@ -733,7 +748,7 @@
 				F84D68C51C4CEB6900EF8A16 /* Task.swift in Sources */,
 				F84D68CC1C4CEB6900EF8A16 /* ContactsHandlerDelegate.swift in Sources */,
 				F84D68E41C4CEB6900EF8A16 /* BoardsHolder.swift in Sources */,
-				F84D69031C4D3A5500EF8A16 /* BoardCloudHandler.swift in Sources */,
+				F84D69031C4D3A5500EF8A16 /* BoardCloudHandling.swift in Sources */,
 				F84D68F71C4CF8E700EF8A16 /* ContactProfileViewController.swift in Sources */,
 				F88669991C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift in Sources */,
 				F84B4D741C4E720E0013D7F1 /* TaskEditNavigationController.swift in Sources */,
@@ -743,6 +758,7 @@
 				F8832BC41C4FB64500D75FAE /* TaskErrors.swift in Sources */,
 				F84B4D6F1C4E709C0013D7F1 /* TasksViewController+TasksHoldingDelegate.swift in Sources */,
 				F84D68BC1C4CEB6900EF8A16 /* ErrorTaskBoard.swift in Sources */,
+				F895CD4D1C5F615D00D08EE9 /* SubscriptionsHandling.swift in Sources */,
 				F84B51741C5A1A010041A248 /* Extensions+UIImage.swift in Sources */,
 				F84D68C61C4CEB6900EF8A16 /* TasksHandlerDataModel.xcdatamodeld in Sources */,
 				F80ABB6F1C4E89F900C98540 /* TaskCloudHandling.swift in Sources */,

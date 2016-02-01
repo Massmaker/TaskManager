@@ -13,7 +13,7 @@ class BoardsTableViewController: UITableViewController {
     lazy var contactsHandler:ContactsHandler = ContactsHandler()
     
     lazy var boardsHolder:BoardsHolder = BoardsHolder()
-    var cloudBoardsHandler:BoardCloudHandler?
+    var cloudBoardsHandler:BoardCloudHandling?
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -9,7 +9,7 @@
 import Foundation
 import CloudKit
 
-protocol BoardCloudHandler : class {
+protocol BoardCloudHandling : class {
     var delegate:BoardCloudHandlerDelegate?{get}
     init(delegate:BoardCloudHandlerDelegate)
     func submitBoard(board:TaskBoardInfo?)
