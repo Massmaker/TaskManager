@@ -51,6 +51,17 @@ extension BoardsTableViewController : BoardCloudHandlerDelegate{
         self.setLoadingIndicatorVisible(false)
         if let taskBoardRecord = board, let boardInfo = TaskBoardInfo(boardRecord: taskBoardRecord)
         {
+            do
+            {
+                if let failed = try anAppDelegate()?.coreDatahandler?.insert([boardInfo]) where !failed.isEmpty
+                {
+                    print("\n- Could mot save new board to CoreData ....... \n")
+                }
+            }
+            catch
+            {
+                
+            }
             dispatch_async(dispatch_get_main_queue()){[unowned self] in
                 var currentBoards = self.boardsHolder.getBoards()
                 currentBoards.append(boardInfo)

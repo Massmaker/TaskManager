@@ -23,12 +23,6 @@ class NotificationsHandler{
                 if let recordID = notification.recordID
                 {
                     print(" - Should delete record: \(recordID.recordName)")
-                    let localNote = UILocalNotification()
-                    localNote.alertTitle = "Task Deleted"
-                    localNote.alertBody = "\(recordID.recordName)"
-                    localNote.fireDate = NSDate().dateByAddingTimeInterval(1.0)
-                    localNote.soundName = "default"
-                    UIApplication.sharedApplication().scheduleLocalNotification(localNote)
                 }
             case .RecordCreated:
                 print(" Record Created")
@@ -39,54 +33,63 @@ class NotificationsHandler{
             case .RecordUpdated:
                 if !notification.isPruned
                 {
-                    var alertDetails = " "
-                    if let recordInfo = notification.recordFields
+                    if let recId = notification.recordID
                     {
-                        if let title = recordInfo[TitleStringKey] as? String
-                        {
-                            alertDetails += title
-                            alertDetails += " / "
-                        }
-                        
-                        var toDisplay = [String:String]()
-                        if let dateTaken = recordInfo[DateTakenDateKey] as? NSDate
-                        {
-                            toDisplay["started"] = dateTaken.dateTimeCustomString()
-                        }
-                        if let owner = recordInfo[CurrentOwnerStringKey] as? String
-                        {
-                            toDisplay["owner"] = owner
-                        }
-                        if let dateFinished = recordInfo[DateFinishedDateKey] as? NSDate
-                        {
-                            toDisplay["finished"] = dateFinished.dateTimeCustomString()
-                        }
-                        
-                        for (key, value) in toDisplay
-                        {
-                            alertDetails += "\(key):\(value)"
-                        }
-                        
-                        let localNote = UILocalNotification()
-                        localNote.alertTitle = "Task changed"
-                        localNote.alertBody = alertDetails
-                        localNote.fireDate = NSDate().dateByAddingTimeInterval(1.0)
-                        localNote.soundName = "default"
-                        UIApplication.sharedApplication().scheduleLocalNotification(localNote)
+                        print("record changed: \(recId.recordName)")
                     }
                 }
                 else //pruned
                 {
-                    let localNote = UILocalNotification()
-                    localNote.alertTitle = "Task changed"
-                    localNote.alertBody = notification.recordID?.recordName ?? "unknown task"
-                    localNote.fireDate = NSDate().dateByAddingTimeInterval(1.0)
-                    localNote.soundName = "default"
-                    UIApplication.sharedApplication().scheduleLocalNotification(localNote)
+                    if let recId = notification.recordID
+                    {
+                        print("record changed (pruned): \(recId.recordName)")
+                    }
                 }
         }
-        
     }
+    
+    func handleNotes(notifications:[CKQueryNotification])
+    {
+        var deletionNotes = [CKRecordID]()
+        var updateNotes = [CKRecordID]()
+        var insertNotes = [CKRecordID]()
+        
+        for aNote in notifications
+        {
+            let reason = aNote.queryNotificationReason
+           
+            switch reason
+            {
+                case .RecordDeleted:
+                    if let recordID = aNote.recordID
+                    {
+                        print(" - Should delete record: \(recordID.recordName)")
+                        deletionNotes.append(recordID)
+                    }
+                
+                case .RecordCreated:
+                    print(" Record Created")
+                    if let recID = aNote.recordID
+                    {
+                        print(" - Should fetch new record by ID:  \(recID.recordName)")
+                        insertNotes.append(recID)
+                    }
+                
+                case .RecordUpdated:
+                    if let recId = aNote.recordID
+                    {
+                        print("record changed (pruned): \(recId.recordName)")
+                        updateNotes.append(recId)
+                    }
+            }//switch end
+        }//for loop end
+        
+    
+        print(" \(deletionNotes.count) - toDelete")
+        print(" \(updateNotes.count) - toUpdate")
+        print(" \(insertNotes.count) - toInsert")
+    }
+    
     
     
 }

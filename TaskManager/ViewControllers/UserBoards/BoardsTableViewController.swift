@@ -34,6 +34,7 @@ class BoardsTableViewController: UITableViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        ContactsHandler.sharedInstance.delegate = self
         if self.cloudBoardsHandler == nil
         {
             self.cloudBoardsHandler = TaskBoardsHandler(delegate: self)

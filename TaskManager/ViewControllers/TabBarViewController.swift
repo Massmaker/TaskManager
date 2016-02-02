@@ -10,6 +10,12 @@ import UIKit
 
 class TabBarViewController: UITabBarController {
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        DataSyncronizer.sharedSyncronizer.requestForRemoteChanges()
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         //print("\n - TabBarController viewDidApear \n")

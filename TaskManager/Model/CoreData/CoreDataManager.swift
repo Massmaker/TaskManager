@@ -325,6 +325,73 @@ class CoreDataManager
         return failedBoards
     }
     
+    func deleteBoardsByIDs(boardIDs:[String]) throws
+    {
+        var toDelete = [Board]()
+        for anID in boardIDs
+        {
+            if let foundBoard = self.findBoardByRecordId(anID)
+            {
+                toDelete.append(foundBoard)
+            }
+        }
+        
+        var toThrow:ErrorType?
+        
+        defer{
+            print("deleteBoardsByIDs  did finish")
+        }
+        
+        if !toDelete.isEmpty
+        {
+            let lvContext = self.mainQueueManagedObjectContext
+            mainQueueManagedObjectContext.performBlockAndWait(){
+                if #available (iOS 9.0, *)
+                {
+                    var managedIDs = [NSManagedObjectID]()
+                    for aBoard in toDelete
+                    {
+                        managedIDs.append(aBoard.objectID)
+                    }
+                    let batchDeleteRequest = NSBatchDeleteRequest(objectIDs: managedIDs)
+                    
+                    do
+                    {
+                        try lvContext.executeRequest(batchDeleteRequest)
+                    }
+                    catch let batchDeleteError
+                    {
+                        toThrow = batchDeleteError
+                    }
+                }
+                else
+                {
+                    for aBoard in toDelete
+                    {
+                        lvContext.deleteObject(aBoard)
+                    }
+                }
+                
+                if lvContext.hasChanges
+                {
+                    do{
+                        try lvContext.save()
+                    }
+                    catch let saveError
+                    {
+                        toThrow =  saveError
+                    }
+                }
+            }
+        }
+        
+        if let _ = toThrow
+        {
+            print("error while saving context after deleting boards")
+            throw toThrow!
+        }
+    }
+
     
     
 }//class end

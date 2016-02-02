@@ -98,6 +98,8 @@
 		F8832BC41C4FB64500D75FAE /* TaskErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8832BC31C4FB64500D75FAE /* TaskErrors.swift */; };
 		F8832BC61C4FCDEC00D75FAE /* AddTaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8832BC51C4FCDEC00D75FAE /* AddTaskTableViewCell.swift */; };
 		F8832BC81C4FE1D200D75FAE /* CloudKitErrorParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8832BC71C4FE1D200D75FAE /* CloudKitErrorParser.swift */; };
+		F884BC441C60AB1F0057539E /* DataSyncronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F884BC431C60AB1F0057539E /* DataSyncronizer.swift */; };
+		F884BC461C60CB960057539E /* BoardsTableViewController+ContactsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F884BC451C60CB960057539E /* BoardsTableViewController+ContactsHandlerDelegate.swift */; };
 		F88669951C577A5200F56C0A /* BoardsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669941C577A5200F56C0A /* BoardsTableViewCell.swift */; };
 		F88669971C5786D100F56C0A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669961C5786D100F56C0A /* CoreDataManager.swift */; };
 		F88669991C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */; };
@@ -207,6 +209,8 @@
 		F8832BC31C4FB64500D75FAE /* TaskErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskErrors.swift; sourceTree = "<group>"; };
 		F8832BC51C4FCDEC00D75FAE /* AddTaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTaskTableViewCell.swift; sourceTree = "<group>"; };
 		F8832BC71C4FE1D200D75FAE /* CloudKitErrorParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitErrorParser.swift; sourceTree = "<group>"; };
+		F884BC431C60AB1F0057539E /* DataSyncronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSyncronizer.swift; sourceTree = "<group>"; };
+		F884BC451C60CB960057539E /* BoardsTableViewController+ContactsHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BoardsTableViewController+ContactsHandlerDelegate.swift"; sourceTree = "<group>"; };
 		F88669941C577A5200F56C0A /* BoardsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsTableViewCell.swift; sourceTree = "<group>"; };
 		F88669961C5786D100F56C0A /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactsCollectionViewController+ContactsHandlerDelegate.swift"; sourceTree = "<group>"; };
@@ -377,6 +381,7 @@
 				F84D690A1C4D3EA000EF8A16 /* TaskBoardsHandler.swift */,
 				F84B4D681C4E69240013D7F1 /* TasksHolder.swift */,
 				F8832BC11C4FA27E00D75FAE /* TasksCloudHandler.swift */,
+				F884BC431C60AB1F0057539E /* DataSyncronizer.swift */,
 				F84D68881C4CEB6900EF8A16 /* CoreData */,
 				F84D68911C4CEB6900EF8A16 /* PhoneContactsHandling */,
 				F84D68991C4CEB6900EF8A16 /* UserAuthentication */,
@@ -479,6 +484,7 @@
 				F84D68B41C4CEB6900EF8A16 /* BoardsTableViewController.swift */,
 				F84D68FC1C4CFE8E00EF8A16 /* BoardsTableViewController+BoardsHolderDelegate.swift */,
 				F84D690C1C4D40D000EF8A16 /* BoardsTableViewController+BoardCloudHandlerDelegate.swift */,
+				F884BC451C60CB960057539E /* BoardsTableViewController+ContactsHandlerDelegate.swift */,
 				F88669941C577A5200F56C0A /* BoardsTableViewCell.swift */,
 			);
 			path = UserBoards;
@@ -702,6 +708,7 @@
 				F87D68041C4FE740003C5689 /* CloudKitResults.swift in Sources */,
 				F8832BC01C4F9AF800D75FAE /* TaskEditType.swift in Sources */,
 				F84CAD181C56339600BC2ECC /* UserProfileHeaderDelegate.swift in Sources */,
+				F884BC441C60AB1F0057539E /* DataSyncronizer.swift in Sources */,
 				F84B4D721C4E71C60013D7F1 /* TaskEditViewController.swift in Sources */,
 				F84D68CD1C4CEB6900EF8A16 /* DeviceContact+Extension.swift in Sources */,
 				F84D68E21C4CEB6900EF8A16 /* BoardEditNavigationController.swift in Sources */,
@@ -734,6 +741,7 @@
 				F858B73F1C57CAC4003BF286 /* CloudRegisteredUsersOperation.swift in Sources */,
 				F80191BE1C50F3E30007D2AF /* SortableByIndex.swift in Sources */,
 				F84D68D31C4CEB6900EF8A16 /* BoardsHolderDelegate.swift in Sources */,
+				F884BC461C60CB960057539E /* BoardsTableViewController+ContactsHandlerDelegate.swift in Sources */,
 				F84D68E51C4CEB6900EF8A16 /* BoardsTableViewController.swift in Sources */,
 				F84D68661C4CEB2E00EF8A16 /* AppDelegate.swift in Sources */,
 				F84D68B61C4CEB6900EF8A16 /* CloudKitDatabaseHandler.swift in Sources */,

@@ -21,6 +21,7 @@ class SubscriptionsHandler:SubscriptionsHandling {
         return syncing
     }
     
+    /// starts query to load all curren subscriptions
     func loadAll()
     {
         syncing = true

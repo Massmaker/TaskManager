@@ -115,4 +115,23 @@ class UserDefaultsManager{
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     
+    //MARK: - CloudKit change token
+    class func getCloudKitChangeToken() -> NSData?
+    {
+        return defaults.objectForKey("ChangeToken") as? NSData
+    }
+    
+    class func setCloudKitChangeToken(token:NSData?)
+    {
+        if let token = token
+        {
+            defaults.setObject(token, forKey: "ChangeToken")
+        }
+        else
+        {
+            defaults.removeObjectForKey("ChangeToken")
+        }
+        defaults.synchronize()
+    }
+    
 }

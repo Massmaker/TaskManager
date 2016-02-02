@@ -50,9 +50,7 @@ class CloudKitDatabaseHandler{
         return nil
     }
     
-    lazy var subscriptionsTasks = [CKSubscription]()
-    
-    lazy var subscriptionsBoards = [CKSubscription]()
+    lazy var privateOperationQueue = NSOperationQueue()
     
     init() {
         self.container = CKContainer.defaultContainer()
@@ -171,91 +169,91 @@ class CloudKitDatabaseHandler{
     func submitSubscription(subscription:CKSubscription, completion:((subscription:CKSubscription?, errorMessage:String?)->()) )
     {
         networkingIndicator(true)
-        publicDB.saveSubscription(subscription) { (savedSubscription, error) -> Void in
-            
-            let result = CloudKitErrorParser.handleCloudKitErrorAs(error, retryAttempt: 10.0)
-            switch result
-            {
-            case .Success:
-                if let savedSubscription = savedSubscription
-                {
-                    completion(subscription:savedSubscription, errorMessage:nil)
-                }
-                else
-                {
-                    completion(subscription: nil, errorMessage: "Empty succeeded subscriptions")
-                }
-                
-            case .Fail(let message):
-                completion(subscription: nil, errorMessage: message)
-                
-            case .Retry(let afterSeconds):
-                
-                if afterSeconds < 10
-                {
-                    let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * afterSeconds))
-                    dispatch_after(timeout, dispatch_get_main_queue()){ () -> Void in
-                        self.submitSubscription(subscription, completion: completion)
-                    }
-                }
-                else
-                {
-                    completion(subscription: nil, errorMessage: "failed to subscript after timeout")
-                }
-                
-            case .RecoverableError:
-                completion(subscription: nil, errorMessage: "Try later")
-            }
-
-            
-            networkingIndicator(false)
-        }
-        
-        return
-        
-//        let completionBlock : (([CKSubscription]?, [String]?, NSError?) -> Void) = {newSubscriptions, _ , error in
+//        publicDB.saveSubscription(subscription) { (savedSubscription, error) -> Void in
+//            
 //            let result = CloudKitErrorParser.handleCloudKitErrorAs(error, retryAttempt: 10.0)
 //            switch result
 //            {
-//                case .Success:
-//                    if let savedSubscriptions = newSubscriptions where !savedSubscriptions.isEmpty
-//                    {
-//                        completion(subscription:savedSubscriptions.first!, errorMessage:nil)
-//                    }
-//                    else
-//                    {
-//                        completion(subscription: nil, errorMessage: "Empty succeeded subscriptions")
-//                    }
+//            case .Success:
+//                if let savedSubscription = savedSubscription
+//                {
+//                    completion(subscription:savedSubscription, errorMessage:nil)
+//                }
+//                else
+//                {
+//                    completion(subscription: nil, errorMessage: "Empty succeeded subscriptions")
+//                }
 //                
-//                case .Fail(let message):
-//                    completion(subscription: nil, errorMessage: message)
+//            case .Fail(let message):
+//                completion(subscription: nil, errorMessage: message)
 //                
-//                case .Retry(let afterSeconds):
-//                 
-//                    if afterSeconds < 10
-//                    {
-//                        let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * afterSeconds))
-//                        dispatch_after(timeout, dispatch_get_main_queue()){ () -> Void in
-//                            self.submitSubscription(subscription, completion: completion)
-//                        }
-//                    }
-//                    else
-//                    {
-//                        completion(subscription: nil, errorMessage: "failed to subscript after timeout")
-//                    }
+//            case .Retry(let afterSeconds):
 //                
-//                case .RecoverableError:
-//                    completion(subscription: nil, errorMessage: "Try later")
+//                if afterSeconds < 10
+//                {
+//                    let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * afterSeconds))
+//                    dispatch_after(timeout, dispatch_get_main_queue()){ () -> Void in
+//                        self.submitSubscription(subscription, completion: completion)
+//                    }
+//                }
+//                else
+//                {
+//                    completion(subscription: nil, errorMessage: "failed to subscript after timeout")
+//                }
+//                
+//            case .RecoverableError:
+//                completion(subscription: nil, errorMessage: "Try later")
 //            }
+//
+//            
 //            networkingIndicator(false)
 //        }
 //        
-//        let modifyToInsertOp = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: nil)
-//        modifyToInsertOp.qualityOfService = .Utility
-//        modifyToInsertOp.modifySubscriptionsCompletionBlock = completionBlock
-//        
-//        networkingIndicator(true)
-//        publicDB.addOperation(modifyToInsertOp)
+//        return
+        
+        let completionBlock : (([CKSubscription]?, [String]?, NSError?) -> Void) = {newSubscriptions, _ , error in
+            let result = CloudKitErrorParser.handleCloudKitErrorAs(error, retryAttempt: 10.0)
+            switch result
+            {
+                case .Success:
+                    if let savedSubscriptions = newSubscriptions where !savedSubscriptions.isEmpty
+                    {
+                        completion(subscription:savedSubscriptions.first!, errorMessage:nil)
+                    }
+                    else
+                    {
+                        completion(subscription: nil, errorMessage: "Empty succeeded subscriptions")
+                    }
+                
+                case .Fail(let message):
+                    completion(subscription: nil, errorMessage: message)
+                
+                case .Retry(let afterSeconds):
+                 
+                    if afterSeconds < 10
+                    {
+                        let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * afterSeconds))
+                        dispatch_after(timeout, dispatch_get_main_queue()){ () -> Void in
+                            self.submitSubscription(subscription, completion: completion)
+                        }
+                    }
+                    else
+                    {
+                        completion(subscription: nil, errorMessage: "failed to subscript after timeout")
+                    }
+                
+                case .RecoverableError:
+                    completion(subscription: nil, errorMessage: "Try later")
+            }
+            networkingIndicator(false)
+        }
+        
+        let modifyToInsertOp = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: nil)
+        modifyToInsertOp.qualityOfService = .Utility
+        modifyToInsertOp.modifySubscriptionsCompletionBlock = completionBlock
+        
+        networkingIndicator(true)
+        publicDB.addOperation(modifyToInsertOp)
     }
     
     //MARK: - Notifications
@@ -292,6 +290,90 @@ class CloudKitDatabaseHandler{
         
         networkingIndicator(true)
         NSOperationQueue().addOperation(didReadOperation)
+    }
+    
+    //MARK: - syncing stuff
+    func requestChanges( completion:(notifications:[CKQueryNotification])->() )
+    {
+        print("\n Cloud Kit handler requestChanges.....")
+        
+        var totalNotesRecieved = [CKQueryNotification]()
+        
+        var proceed = false
+        
+        repeat
+        {
+            let result = self.requestMoreChanges()
+            proceed = result.moreComing
+            
+            if let notifs = result.changes
+            {
+                totalNotesRecieved += notifs
+            }
+        }
+        while proceed == true
+        
+        completion(notifications: totalNotesRecieved)
+    }
+    
+    private func requestMoreChanges() -> (moreComing:Bool, changes:[CKQueryNotification]?)
+    {
+        var optionalToken:CKServerChangeToken?
+        
+        if let optionalTokenData = UserDefaultsManager.getCloudKitChangeToken(), let token = NSKeyedUnarchiver.unarchiveObjectWithData(optionalTokenData) as? CKServerChangeToken
+        {
+            optionalToken = token
+        }
+        
+        var optionalChangeNotifications:[CKQueryNotification]?
+        
+        let changesOp = CKFetchNotificationChangesOperation(previousServerChangeToken: optionalToken)
+        
+        var result:(moreComing:Bool, changes:[CKQueryNotification]?) = (moreComing:false, changes:nil)
+        
+        let perNoteCompletionBlock:((CKNotification) -> ()) = { note in
+            if let queryNote = note as? CKQueryNotification
+            {
+                if var optionalChangeNotifications = optionalChangeNotifications
+                {
+                    optionalChangeNotifications.append(queryNote)
+                }
+                else
+                {
+                    optionalChangeNotifications = [CKQueryNotification]()
+                    optionalChangeNotifications!.append(queryNote)
+                }
+            }
+            else
+            {
+                
+            }
+        }
+        
+        let totalCompletion:((CKServerChangeToken?, NSError?) ->()) = {changesToken, error in
+            
+            
+            if changesOp.moreComing{
+                result.moreComing = true
+            }
+            
+            if let newToken = changesToken
+            {
+                let tokenData = NSKeyedArchiver.archivedDataWithRootObject(newToken)
+                UserDefaultsManager.setCloudKitChangeToken(tokenData)
+            }
+            print("Cloud kit handler fetchNotificationChangesCompletionBlock  fired\n")
+        }
+        
+        
+        changesOp.fetchNotificationChangesCompletionBlock = totalCompletion
+        changesOp.notificationChangedBlock = perNoteCompletionBlock
+        changesOp.qualityOfService = .UserInitiated
+        
+        privateOperationQueue.addOperations([changesOp], waitUntilFinished: true)
+        print("Cloud kit handler did finish requesting changes\n")
+        
+        return result
     }
     
     //MARK: - current User
