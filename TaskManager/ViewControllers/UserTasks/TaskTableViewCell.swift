@@ -21,15 +21,15 @@ class TaskTableViewCell: UITableViewCell {
         avatarView.layer.masksToBounds = true
     }
     
-    func setCurrentTask(taskInfo :TaskInfo?)
+    func setCurrentTask(taskInfo :Task?)
     {
         if let task = taskInfo
         {
-            if task.dateTaken != nil && task.dateFinished == nil
+            if task.takenDate != nil && task.finishedDate == nil
             {
                 indicatorView.backgroundColor = UIColor.greenColor()
             }
-            else if task.dateFinished != nil && task.dateTaken != nil
+            else if task.finishedDate != nil && task.takenDate != nil
             {
                 indicatorView.backgroundColor = UIColor.blueColor()
             }
@@ -38,21 +38,21 @@ class TaskTableViewCell: UITableViewCell {
                 indicatorView.backgroundColor = UIColor.whiteColor()
             }
             
-            finishDateLabel.text = task.dateFinished?.dateTimeCustomString()
-            startDateLabel.text = task.dateTaken?.dateTimeCustomString()
+            finishDateLabel.text = task.finishedDate?.dateTimeCustomString()
+            startDateLabel.text = task.takenDate?.dateTimeCustomString()
             titleLabel.text = task.title
             detailsLabel.text = task.details
             avatarView.image = testAvatarImage //TODO:  set creator image if task is not set or current task oaner avatar if task in in process
             
-            if let currentTaskOwnerPhone = task.currentOwner
+            if let currentTaskOwner = task.currentOwner
             {
-                if currentTaskOwnerPhone == anAppDelegate()!.cloudKitHandler.publicCurrentUser!.recordID.recordName
+                if currentTaskOwner.phone! == anAppDelegate()!.cloudKitHandler.publicCurrentUser!.recordID.recordName
                 {
                     avatarView.image = anAppDelegate()?.cloudKitHandler.currentUserAvatar
                 }
                 else
                 {
-                    avatarView.image = ContactsHandler.sharedInstance.contactByPhone(currentTaskOwnerPhone)?.avatarImage
+                    avatarView.image = currentTaskOwner.avatarImage //ContactsHandler.sharedInstance.contactByPhone(currentTaskOwnerPhone)?.avatarImage
                 }
             }
         }

@@ -11,31 +11,34 @@ import CloudKit
 
 class TasksViewController:UITableViewController {
     
-    var tasksSource:TasksHolding?
-    var boardRecordId:CKRecordID?
-    var tasksCloudHandler:TaskCloudHandling?
+    var tasksSource:TasksHolder?
+    var board:Board
+    
     
     private var userRecordId:CKRecordID?
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        self.board = Board()
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.board = Board()
+        super.init(coder: aDecoder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationItem.rightBarButtonItem = self.editButtonItem() //enable deleting of Take/Finish tasks, rearranging tasks
-        self.tasksCloudHandler = TasksCloudHandler(delegate: self)
-        
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if tasksSource == nil
         {
-            if let table = self.view as? UITableView
-            {
-                tasksSource = TasksHolder(tableView: table)
-            }
+            tasksSource = TasksHolder(tableView: self.tableView)
         }
-        
-       
         
         checkAddTaskButtonEnabled()
     }
@@ -45,21 +48,15 @@ class TasksViewController:UITableViewController {
         tasksSource?.delegate = self
         if let countTasks = self.tasksSource?.getTasks().count where countTasks == 0
         {
-            if let boardId = self.boardRecordId
+            if let _ = self.board.recordId
             {
-                tasksSource?.tryFetchingTasksForBoard(boardId)
+                tasksSource?.setTasks(board.orderedTasks)
             }
             else
             {
                 NSLog(" - TasksViewController will not start fetching tasks for current board: No \"boardRecordId\".\n")
             }
         }
-    }
-    
-    //MARK: - IBAction
-    @IBAction func addTaskButtonAction(sender:UIBarButtonItem)
-    {
-        showTaskEditViewCntroller(nil) //create new
     }
     
     //MARK: - UITableVIewDataSource
@@ -203,7 +200,7 @@ class TasksViewController:UITableViewController {
             print(" Committing None")
         case .Delete:
             print(" Comitting Delete")
-            if let deletionWillStart = self.tasksSource?.deleteTaskAtIndex(indexPath.row) where deletionWillStart == true
+            if let deletionDidHappen = self.tasksSource?.deleteTaskAtIndex(indexPath.row) where deletionDidHappen == true
             {
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             }
@@ -218,15 +215,19 @@ class TasksViewController:UITableViewController {
         return self.userRecordId != nil
     }
     
-    private func showTaskEditViewCntroller(task:TaskInfo?)
+    private func showTaskEditViewCntroller(task:Task?)
     {
         if let taskToEdit = task
         {
-            self.performSegueWithIdentifier("StartEditTask", sender: TaskInfoObjectHolder(taskInfo: taskToEdit))
+            self.performSegueWithIdentifier("StartEditTask", sender: taskToEdit)
+        }
+        else if self.board.recordId != nil
+        {
+            self.performSegueWithIdentifier("StartEditTask", sender: self.board)
         }
         else
         {
-            self.performSegueWithIdentifier("StartEditTask", sender: anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID)
+            showAlertController("Error", text: "Can not start adding task without board", closeButtonTitle: "Close")
         }
     }
     
@@ -241,21 +242,16 @@ class TasksViewController:UITableViewController {
                     taskEditorNavVC = segue.destinationViewController as? TaskEditNavigationController,
                     rootEditVC = taskEditorNavVC.viewControllers.first as? TaskEditViewController
                 {
-                    rootEditVC.weakCloudHandler = self.tasksCloudHandler
-                    
-                    if let taskHoler = sender as? TaskInfoObjectHolder
+                    if let taskToEdit = sender as? Task
                     {
-                        rootEditVC.taskEditingType = .EditCurrent(task:taskHoler.taskInfo)
+                        rootEditVC.taskEditingType = .EditCurrent(task:taskToEdit)
                     }
-                    else if let recordId = sender as? CKRecordID, let boardId = self.boardRecordId
+                    else if let board = sender as? Board
                     {
                         rootEditVC.taskEditingType = .CreateNew
-                        rootEditVC.boardRecordId = boardId
-                        rootEditVC.creatorId = recordId
+                        rootEditVC.taskBoard = board
                     }
-                    
                 }
-                
             default:
                 break
             }

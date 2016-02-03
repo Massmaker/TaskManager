@@ -2,28 +2,47 @@
 //  BoardsTableViewController+BoardsHolderDelegate.swift
 //  TaskManager
 //
-//  Created by CloudCraft on 1/18/16.
+//  Created by CloudCraft on 2/2/16.
 //  Copyright © 2016 CloudCraft. All rights reserved.
 //
 
 import Foundation
-import UIKit
-
-extension BoardsTableViewController:BoardsHolderDelegate{
-    func boardsHolderWillUpdateBoards(handler: BoardsHolding) {
-        self.tableView.userInteractionEnabled = false
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+extension BoardsTableViewController : BoardsHolderDelegate{
+    
+    func boardsDidStartUpdating() {
+        networkingIndicator(true)
+        dispatchMain(){
+            self.tableView.scrollEnabled = false
+        }
+        print(" disabled user scrolling in BOARDS")
     }
     
-    func boardsHolderDidUpdateBoards(handler: BoardsHolding) {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-        dispatch_async(dispatch_get_main_queue()){[weak self] in
-            self?.tableView.reloadData()
-            self?.tableView.userInteractionEnabled = true
-            if let presentedEditor = self?.presentedViewController
+    func boardsDidFinishUpdating() {
+        
+        var currentExecutingQueue:NSOperationQueue?
+        
+        if let currentQueue = NSOperationQueue.currentQueue() where currentQueue == NSOperationQueue.mainQueue()
+        {
+            currentExecutingQueue = currentQueue
+        }
+        else
+        {
+            currentExecutingQueue = NSOperationQueue.mainQueue()
+        }
+        
+        currentExecutingQueue!.addOperationWithBlock(){ [weak self] in
+            networkingIndicator(false)
+            if let visibleIndexPaths = self?.tableView.indexPathsForVisibleRows
             {
-                presentedEditor.dismissViewControllerAnimated(true, completion: nil)
+                self?.tableView.reloadRowsAtIndexPaths(visibleIndexPaths, withRowAnimation: .Automatic)
             }
+            else
+            {
+                self?.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+            }
+            
+            self?.tableView.scrollEnabled = true
+            print(" enabled user scrolling in BOARDS")
         }
     }
 }

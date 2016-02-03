@@ -17,12 +17,12 @@ class UserDefaultsManager{
         defaults.synchronize()
         
         var toSync = [String:String?]()
+        
         let name = getUserNameFromDefaults()
         toSync[UserDefaultKeys.FirstNameKey.rawValue] = name
+        
         let lastName = getUserLastNameFromDefaults()
         toSync[UserDefaultKeys.LastNameKey.rawValue] = lastName
-        let email = getEmailFromDefaults()
-        toSync[UserDefaultKeys.EmailKey.rawValue] = email
         
         if !toSync.isEmpty
         {
@@ -31,13 +31,6 @@ class UserDefaultsManager{
         
     }
     
-    class func getEmailFromDefaults() -> String? {
-        return defaults.objectForKey(UserDefaultKeys.EmailKey.rawValue) as? String
-    }
-    
-    class func setEmailToDefaults(email: String?) {
-        defaults.setObject(email, forKey: UserDefaultKeys.EmailKey.rawValue)
-    }
     
     
     class func setUserNameToDefaults(name:String?)
@@ -68,7 +61,7 @@ class UserDefaultsManager{
     {
         defaults.removeObjectForKey(UserDefaultKeys.LastNameKey.rawValue)
         defaults.removeObjectForKey(UserDefaultKeys.FirstNameKey.rawValue)
-        defaults.removeObjectForKey(UserDefaultKeys.EmailKey.rawValue)
+  
         syncronyzeDefaults()
     }
     
@@ -82,7 +75,6 @@ class UserDefaultsManager{
         
         let nameKey = UserDefaultKeys.FirstNameKey.rawValue
         let lastNameKey = UserDefaultKeys.LastNameKey.rawValue
-        let emailKey = UserDefaultKeys.EmailKey.rawValue
         
         if let name = info[nameKey]
         {
@@ -101,15 +93,6 @@ class UserDefaultsManager{
         else
         {
             NSUserDefaults.standardUserDefaults().removeObjectForKey(lastNameKey)
-        }
-        
-        if let email = info[emailKey]
-        {
-            setEmailToDefaults(email)
-        }
-        else
-        {
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(emailKey)
         }
         
         NSUserDefaults.standardUserDefaults().synchronize()

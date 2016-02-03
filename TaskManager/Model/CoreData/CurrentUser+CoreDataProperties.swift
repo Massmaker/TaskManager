@@ -1,5 +1,5 @@
 //
-//  BoardsHolderDelegate.swift
+//  CurrentUser+CoreDataProperties.swift
 //  TaskManager
 //
 //  Created by CloudCraft on 2/2/16.
@@ -7,7 +7,8 @@
 //
 
 import Foundation
-protocol BoardsHolderDelegate:class{
-    func boardsDidStartUpdating()
-    func boardsDidFinishUpdating()
+import CoreData
+
+extension CurrentUser {
+  
 }

@@ -69,7 +69,57 @@ class DataSyncronizer {
         
         NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStartSyncronizyngNotificationName, object: DataSyncronizer.sharedSyncronizer)
         
-        //TODO: -
+        let dispatchGroupForBoards = dispatch_group_create()
+        
+        let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 1.0))
+        
+        var boardRecordsToSave = [CKRecord]()
+        
+        dispatch_group_enter(dispatchGroupForBoards)
+        anAppDelegate()?.cloudKitHandler.queryForBoardsByCurrentUser(){ (boards, error) -> () in
+            if let boards = boards
+            {
+                boardRecordsToSave += boards
+            }
+            
+            anAppDelegate()?.cloudKitHandler.queryForBoardsSharedWithMe(){ (boards, fetchError) -> () in
+                if let sharedBoards = boards
+                {
+                    boardRecordsToSave += sharedBoards
+                }
+                dispatch_group_leave(dispatchGroupForBoards)
+            }
+        }
+        
+        dispatch_group_wait(dispatchGroupForBoards, timeout)
+        
+        
+        let localDatabaseGroup = dispatch_group_create()
+        
+        let dbTimeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 30.0))
+        
+        
+        dispatch_group_enter(localDatabaseGroup)
+        
+        for aRecord in boardRecordsToSave
+        {
+            do{
+                let boardToSaveToCoreData = try createBoardFromRecord(aRecord)
+                anAppDelegate()?.coreDatahandler?.insert(boardToSaveToCoreData, saveImmediately: false)
+            }
+            catch{
+                
+            }
+        }
+        
+        anAppDelegate()?.coreDatahandler?.saveMainContext()
+        
+        dispatch_group_leave(localDatabaseGroup)
+        
+        
+        dispatch_group_wait(localDatabaseGroup, dbTimeout)
+        
+        print("didLoad boards: \(boardRecordsToSave.count) ")
         
         objc_sync_enter(self)
         syncing = false
@@ -78,21 +128,4 @@ class DataSyncronizer {
         NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
     }
     
-    func startSyncingTasks()
-    {
-        objc_sync_enter(self)
-        syncing = true
-        objc_sync_exit(self)
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStartSyncronizyngNotificationName, object: DataSyncronizer.sharedSyncronizer)
-     
-        
-        //TODO: -
-        
-        objc_sync_enter(self)
-        syncing = false
-        objc_sync_exit(self)
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
-    }
 }

@@ -12,21 +12,19 @@ import Eureka
 
 class TaskEditViewController: FormViewController {
 
-    var boardRecordId:CKRecordID?
-    var creatorId:CKRecordID?
-    
-    private var currentTask:TaskInfo?
-    
-    weak var weakCloudHandler:TaskCloudHandling?
+    var taskBoard:Board?
+    var creatorId:String?
+    weak var weakTasksHolder:TasksHolder?
+    private var currentTask:Task?
     
     var taskEditingType:TaskEditType = .CreateNew{
         didSet{
             switch taskEditingType{
                 case .EditCurrent(let task):
                     self.currentTask = task
-                    self.initialDetails = task.details
-                    self.initialTitle = task.title
-                    self.boardRecordId = task.taskBoardId
+                    self.initialDetails = task.details!
+                    self.initialTitle = task.title!
+                    //self.boardRecordId = task.board?.recordId
                 
                 default:
                     break
@@ -77,11 +75,12 @@ class TaskEditViewController: FormViewController {
                         else
                         {
                             if let changedTitle = titlewRow.value,
-                                let boardRecId = self.boardRecordId,
-                                let creator = self.creatorId,
-                                let newTask = TaskInfo(taskBoardRecordId: boardRecId, creatorRecordId: creator, title: changedTitle, details: "")
+                                let board = self.taskBoard,
+                                let creator = self.creatorId
                             {
-                                self.currentTask = newTask
+                                self.currentTask = Task()
+                                self.currentTask?.title = changedTitle
+                                self.currentTask?.board = board
                             }
                             self.checkSaveButtonEnabled()
                         }
@@ -98,11 +97,13 @@ class TaskEditViewController: FormViewController {
                         else
                         {
                             if  let changedDetails = detailsRow.value,
-                                let boardRecId = self.boardRecordId,
-                                let creator = self.creatorId,
-                                let newTask = TaskInfo(taskBoardRecordId: boardRecId, creatorRecordId: creator, title: self.initialTitle, details: changedDetails)
+                                let board = self.taskBoard,
+                                let _ = self.creatorId
+                                //let newTask = TaskInfo(taskBoardRecordId: boardRecId, creatorRecordId: creator, title: self.initialTitle, details: changedDetails)
                             {
-                                self.currentTask = newTask
+                                self.currentTask = Task()
+                                self.currentTask?.details = changedDetails
+                                self.currentTask?.board = board
                             }
 
                             self.checkSaveButtonEnabled()
@@ -240,13 +241,8 @@ class TaskEditViewController: FormViewController {
     //MARK: - Cancel and Save nivigation button actions
     @IBAction func cancelBarButtonAction(sender:AnyObject?)
     {
-        guard let aHandler = self.weakCloudHandler else
-        {
-            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-            return
-        }
-        
-        aHandler.cancelEditingTask()
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        return
     }
     
     func saveEdits(sender:UIBarButtonItem)
@@ -257,9 +253,9 @@ class TaskEditViewController: FormViewController {
             switch self.taskEditingType
             {
                 case .EditCurrent( _ ):
-                    self.weakCloudHandler?.editTask(task)
+                    self.weakTasksHolder?.editTask(task)
                 case .CreateNew:
-                    self.weakCloudHandler?.submitTask(task)
+                    self.weakTasksHolder?.insertNewTask(task)
             }
         }
         else
@@ -275,20 +271,20 @@ class TaskEditViewController: FormViewController {
         {
             return
         }
-        self.weakCloudHandler?.deleteTask(task)
+        self.weakTasksHolder?.delete(task)
     }
     
     func takeTaskPressed()
     {
-        guard var task = self.currentTask, let currentUser = anAppDelegate()?.cloudKitHandler.publicCurrentUser else
+        guard var task = self.currentTask, let currentUser = anAppDelegate()?.cloudKitHandler.currentUser else
         {
             return
         }
         
-        task.currentOwner = currentUser.recordID.recordName // phoneNumber is stored both in Record name and currentUser["phoneNumberID"]  String value
-        task.dateTaken = NSDate()
-        task.dateFinished = nil
-        self.weakCloudHandler?.editTask(task)
+        task.currentOwner = currentUser // phoneNumber is stored both in Record name and currentUser["phoneNumberID"]  String value
+        task.dateTaken = NSDate().timeIntervalSinceReferenceDate
+        task.dateFinished = 0.0
+        //self.weakCloudHandler?.editTask(task)
     }
     
     func finishTaskPressed()
@@ -299,8 +295,8 @@ class TaskEditViewController: FormViewController {
         }
         
         task.currentOwner = nil // phoneNumber is stored both in Record name and currentUser["phoneNumberID"]  String value
-        task.dateFinished = NSDate()
-        self.weakCloudHandler?.editTask(task)
+        task.dateFinished = NSDate().timeIntervalSinceReferenceDate
+        //self.weakCloudHandler?.editTask(task)
     }
     
     func cancelTaskPressed()
@@ -311,9 +307,9 @@ class TaskEditViewController: FormViewController {
         }
 
         task.currentOwner = nil
-        task.dateFinished = nil
-        task.dateTaken = nil
+        task.dateFinished = 0.0
+        task.dateTaken = 0.0
         
-        self.weakCloudHandler?.editTask(task)
+        //self.weakCloudHandler?.editTask(task)
     }
 }

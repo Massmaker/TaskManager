@@ -2,7 +2,7 @@
 //  User+CoreDataProperties.swift
 //  TaskManager
 //
-//  Created by CloudCraft on 1/27/16.
+//  Created by CloudCraft on 2/2/16.
 //  Copyright © 2016 CloudCraft. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -18,9 +18,13 @@ extension User {
     @NSManaged var email: String?
     @NSManaged var firstName: String?
     @NSManaged var lastName: String?
-    @NSManaged var registered: NSNumber?
     @NSManaged var phone: String?
-    @NSManaged var boards: NSSet?
+    @NSManaged var registered: Bool
     @NSManaged var currentTask: Task?
+    @NSManaged var boardsVisible: NSSet?
 
+}
+
+extension User:DisplayNameCapable{
+    
 }

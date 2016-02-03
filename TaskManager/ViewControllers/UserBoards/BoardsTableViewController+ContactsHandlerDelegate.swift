@@ -17,4 +17,16 @@ extension BoardsTableViewController:ContactsHandlerDelegate{
     func contactsDidUpdate() {
         self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
     }
+    
+    func contactsHandlerDidFinishFetchingContacts(error: ErrorType?) {
+        
+        if let visibleRowsIndexPaths = self.tableView.indexPathsForSelectedRows
+        {
+            self.tableView.reloadRowsAtIndexPaths(visibleRowsIndexPaths, withRowAnimation: .Automatic)
+        }
+        else
+        {
+            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+        }
+    }
 }

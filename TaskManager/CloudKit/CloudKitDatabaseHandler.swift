@@ -19,7 +19,27 @@ class CloudKitDatabaseHandler{
     private let publicDB:  CKDatabase
     private let privateDB: CKDatabase
     
-    private var currentUserRecord:CKRecord?
+    private var user:CurrentUser?
+    var currentUser:CurrentUser? {
+        if let user = self.user
+        {
+            return user
+        }
+        return nil
+    }
+    
+    private var currentUserRecord:CKRecord? {
+        didSet {
+            if let record = currentUserRecord, let currentUser = anAppDelegate()?.coreDatahandler?.getCurrentUserById(record.recordID.recordName)
+            {
+                self.user = currentUser
+            }
+            else
+            {
+                self.user = nil
+            }
+        }
+    }
     
     var currentUserPhoneNumber:String?{
         didSet{
@@ -573,58 +593,73 @@ class CloudKitDatabaseHandler{
         }
     }
     
-    func submitNewBoardWithInfo(boardInfo:TaskBoardInfo, completion:((createdBoard:CKRecord?, error:NSError?)->()))
+    func submitNewBoardWithInfo(boardInfo:Board, completion:((createdBoard:CKRecord?, error:NSError?)->())) -> Bool
     {
-        guard let currentUser = publicCurrentUser else
+        guard let _ = publicCurrentUser else
         {
-            completion(createdBoard: nil, error: noUserError)
-            return
+            return false
         }
      
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
 
-        let newBoardRecord = createNewBoardRecordFromInfo(boardInfo, creatorId: currentUser.recordID)
-        
-        publicDB.saveRecord(newBoardRecord) { (savedNewBoard, saveError) -> Void in
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        do{
             
-            guard let newBoard = savedNewBoard else
-            {
-                if let anError = saveError
+            let newBoardRecord = try createBoardRecordFrom(boardInfo)
+            publicDB.saveRecord(newBoardRecord) { (savedNewBoard, saveError) -> Void in
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                
+                guard let newBoard = savedNewBoard else
                 {
-                    completion(createdBoard: nil, error: anError)
+                    if let anError = saveError
+                    {
+                        completion(createdBoard: nil, error: anError)
+                    }
+                    else
+                    {
+                        completion(createdBoard: nil, error:unknownError)
+                    }
+                    return
                 }
-                else
-                {
-                    completion(createdBoard: nil, error:unknownError)
-                }
-                return
+                completion(createdBoard: newBoard, error: nil)
             }
-            completion(createdBoard: newBoard, error: nil)
+            
+            return true
         }
+        catch{
+            return false
+        }
+        
     }
     
-    func editBoard(boardInfo:TaskBoardInfo, completion:((editedRecord:CKRecord?, editError:NSError?)->()))
+    func editBoard(boardInfo:Board, completion:((editedRecord:CKRecord?, editError:NSError?)->())) -> Bool
     {
         guard let recordId = boardInfo.recordId else
         {
-            completion(editedRecord: nil, editError: noBoardIdError)
-            return
+            return false
         }
     
         //fetch if there is existing board
-        publicDB.fetchRecordWithID(recordId) {[unowned self] (foundRecord, error) -> Void in
+        let recId = CKRecordID(recordName: recordId)
+        publicDB.fetchRecordWithID(recId) {[unowned self] (foundRecord, error) -> Void in
             if let foundBoard = foundRecord
             {
-                //let boardToUpdate = foundBoard
-                foundBoard[SortOrderIndexIntKey] = NSNumber(integer: boardInfo.sortOrderIndex)
-                foundBoard[BoardTitleKey] = boardInfo.title
-                foundBoard[BoardDetailsKey] = boardInfo.details
-                foundBoard[BoardParticipantsKey] = boardInfo.participants
-                
-                self.saveBoard(foundBoard) { (savedBoard, saveError) -> () in
-                    completion(editedRecord: savedBoard, editError: saveError)
+                do{
+                    let currentBoard = try createBoardRecordFrom(boardInfo)
+                    //let boardToUpdate = foundBoard
+                    foundBoard[SortOrderIndexIntKey] = NSNumber(integer: Int(boardInfo.sortOrder))
+                    foundBoard[BoardTitleKey] = boardInfo.title
+                    foundBoard[BoardDetailsKey] = boardInfo.details
+                    foundBoard[BoardParticipantsKey] = currentBoard[BoardParticipantsKey]
+                    foundBoard[BoardTasksReferenceListKey] = currentBoard[BoardTasksReferenceListKey]
+                    
+                    self.saveBoard(foundBoard) { (savedBoard, saveError) -> () in
+                        completion(editedRecord: savedBoard, editError: saveError)
+                    }
                 }
+                catch let boardRecordError {
+                    completion(editedRecord: nil, editError: boardRecordError as NSError)
+                }
+                
             }
             else
             {
@@ -633,6 +668,8 @@ class CloudKitDatabaseHandler{
                 }
             }
         }
+        
+        return true
     }
     
     func deleteBoardWithID(recordId:CKRecordID, completion:((deletedRecordId:CKRecordID?, error:NSError?)->()))
@@ -666,196 +703,168 @@ class CloudKitDatabaseHandler{
     }
     
     //MARK: - Tasks
-    func loadTasksForBoardId(boardId:CKRecordID, completion:((tasks:[TaskInfo]?, error:ErrorType?)->()))
+    func loadTasksForBoard(board:CKRecord, completion:((tasks:[CKRecord]?, error:ErrorType?)->())) -> Bool
     {
-        let referenceForBoard = CKReference(recordID: boardId, action: .DeleteSelf)
-        let predicate = NSPredicate(format: "board = %@", referenceForBoard)
-        let tasksForBoard = CKQuery(recordType: CloudRecordTypes.Task.rawValue, predicate: predicate)
+        guard let taskReferences = board[BoardTasksReferenceListKey] as? [CKReference] where !taskReferences.isEmpty else
+        {
+            return false
+        }
         
-        publicDB.performQuery(tasksForBoard, inZoneWithID: nil) { (recordsFound, recordsQueryError) -> Void in
-            
-            let errorParsingResult = CloudKitErrorParser.handleCloudKitErrorAs(recordsQueryError)
-           
-            switch errorParsingResult{
-            case .Success:
-                if let taskRecords = recordsFound
-                {
-                    NSLog(" DID load tasks for board: %ld", taskRecords.count)
-                    
-                    var taskInfos = [TaskInfo]()
-                    for aRecord in taskRecords
-                    {
-                        guard let _ = aRecord[TaskCreatorReferenceKey] as? CKReference else
-                        {
-                            print("Could not create task info from CKRecord: task creator reference not found...")
-                            continue
-                        }
-                        
-                        guard let taskInfo = taskInfoFromTaskRecord(aRecord) else
-                        {
-                            print("Could not create task info from CKRecord : returned nil from constructor function")
-                            continue
-                        }
-                        
-                        taskInfos.append(taskInfo)
-                    }
-                    
-                    completion(tasks: taskInfos, error: nil)
-                }
-            default:
-                if let anError = recordsQueryError
-                {
-                    NSLog(" - An error fetching tasks by board:\n%@", anError)
-                    completion(tasks: nil, error: anError)
-                    return
-                }
+        
+        var taskRecordIDs = [CKRecordID]()
+        for aReference in taskReferences
+        {
+            let recordId = aReference.recordID
+            taskRecordIDs.append(recordId)
+        }
+        
+        let fetchRecordsOp = CKFetchRecordsOperation(recordIDs: taskRecordIDs)
+
+        fetchRecordsOp.qualityOfService = .UserInitiated
+        
+        fetchRecordsOp.perRecordCompletionBlock = { record, recordId, error in
+            if let _ = record
+            {
+                print("fetched record per \(recordId!)")
+            }
+            else
+            {
+                print("error per \(recordId!) : \n \(error!)")
             }
         }
+        
+        fetchRecordsOp.fetchRecordsCompletionBlock = { (recordsDict, error) in
+            if let fetchedTasks = recordsDict
+            {
+                var taskRecords = [CKRecord]()
+                for ( _ , aTaskRec) in fetchedTasks
+                {
+                    taskRecords.append(aTaskRec)
+                }
+            }
+            else if let error = error
+            {
+                let errorResult =  CloudKitErrorParser.handleCloudKitErrorAs(error)
+            }
+        }
+        
+        self.publicDB.addOperation(fetchRecordsOp)
+
+        return true
     }
     
-    func submitTask(taskInfo:TaskInfo, completion:((taskRecord:CKRecord?, savingError:NSError?)->()))
+    func submitTask(taskInfo:Task, completion:((taskRecord:CKRecord?, savingError:NSError?)->())) -> Bool
     {
         guard let user = self.currentUserRecord else
         {
-            completion(taskRecord: nil, savingError: UserError.NotFound as NSError)
-            return
+            return false
         }
         
-        if user.recordID.recordName != taskInfo.creatorId.recordName
+        if user.recordID.recordName != taskInfo.creator
         {
-            completion(taskRecord: nil, savingError: UserError.CreatorRecordIdMismatch as NSError)
-            return
+            return false
         }
         
-        let newTaskRecord = createNewTaskRecordFromInfo(taskInfo)
-        
-     
-        publicDB.saveRecord(newTaskRecord) { (savedRecord, savingError) in
-            if let record = savedRecord
-            {
-                completion(taskRecord: record, savingError: nil)
-            }
-            else if let error = savingError
-            {
-                NSLog(" - Error submitting new TASK record to iCloud: \n %@", error)
-                completion(taskRecord: nil, savingError: error)
+        do{
+            let newTaskRecord = try createTaskRecordFrom(taskInfo)
+            
+            publicDB.saveRecord(newTaskRecord) { (savedRecord, savingError) in
+                if let record = savedRecord
+                {
+                    completion(taskRecord: record, savingError: nil)
+                }
+                else if let error = savingError
+                {
+                    NSLog(" - Error submitting new TASK record to iCloud: \n %@", error)
+                    completion(taskRecord: nil, savingError: error)
+                }
             }
         }
+        catch{
+            return false
+        }
+        
+       return true
         
     }
     
-    func editTask(taskInfo:TaskInfo, completion:((editedRecord:CKRecord?, editError:NSError?)->()))
+    func editTask(taskRecord:CKRecord, completion:((editedRecord:CKRecord?, editError:NSError?)->()))
     {
-        //0 declare editing workflow 
-        
-        let editRecord:(record:CKRecord, editingInfo:TaskInfo)->() = {[weak self] (var record:CKRecord, taskInfo:TaskInfo) in
+        //0 declare editing workflow
+        let editRecord:(record:CKRecord, editingInfo:CKRecord)->() = {[weak self] (let record:CKRecord, editing:CKRecord) in
             
-            record[TitleStringKey] = taskInfo.title
-            record[DetailsStringKey] = taskInfo.details
-            record[SortOrderIndexIntKey] = taskInfo.sortOrderIndex
-            updateOwnerForTaskRecord(&record, ownerId: taskInfo.currentOwner, dates:(taskInfo.dateTaken , taskInfo.dateFinished))
-            
-            self?.publicDB.saveRecord(record) { (savedRecord, saveError)  in
+            self?.publicDB.saveRecord(editing) { (savedRecord, saveError)  in
                 completion(editedRecord: savedRecord, editError: saveError)
             }
         }
         
-        //1 finc record to edit
-        if let taskRecordId = taskInfo.recordId
+        //1 find record to edit
+        let taskRecordId = taskRecord.recordID
+        
+        self.publicDB.fetchRecordWithID(taskRecordId) { (foundRecord, fetchError) in
+            if let existingTaskRecord = foundRecord
+            {
+                //execute editing at position 0
+                editRecord(record: existingTaskRecord, editingInfo: taskRecord)
+            }
+            else
+            {   //execute saving new record into CloudKit
+                self.publicDB.saveRecord(taskRecord) { (saved, errorSaving) -> Void in
+                    completion(editedRecord: saved, editError: errorSaving)
+                }
+            }
+        }
+        
+        //else
+        //{
+           // completion(editedRecord: nil, editError: NSError(domain: "TaskEditing", code: -2, userInfo: [NSLocalizedFailureReasonErrorKey:"Task recordID was not found", NSLocalizedDescriptionKey:"Could not edit task. Internal error."]))
+        //}
+    }
+    
+    func deleteTasks(recordIDs:[String], completion:((deletedCount:Int, deletionError:NSError?)->())) -> Bool
+    {
+        guard !recordIDs.isEmpty else
         {
-            self.publicDB.fetchRecordWithID(taskRecordId) { (foundRecord, fetchError) in
-                if let existingTaskRecord = foundRecord
+            return false
+        }
+        
+        let lvPubliDB = self.publicDB
+        let bgQueueDeleteOperation = NSBlockOperation(){
+            
+            var taskRecordIDs = [CKRecordID]()
+            for anID in recordIDs
+            {
+                let aRecordId = CKRecordID(recordName: anID)
+                taskRecordIDs.append(aRecordId)
+            }
+            
+            let deleteOp = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: taskRecordIDs)
+            
+            let completionBlock = { ( _:[CKRecord]?, deletedIDs:[CKRecordID]?, error:NSError?) in
+                if let deletedIds = deletedIDs
                 {
-                    editRecord(record: existingTaskRecord, editingInfo: taskInfo)
+                    completion(deletedCount: deletedIds.count, deletionError: error)
                 }
                 else
                 {
-                    self.submitTask(taskInfo) { (taskRecord, savingError) -> () in
-                        completion(editedRecord: taskRecord, editError: savingError)
-                    }
+                    completion(deletedCount: -1, deletionError: error)
                 }
             }
+            
+            deleteOp.modifyRecordsCompletionBlock = completionBlock
+            
+            lvPubliDB.addOperation(deleteOp)
         }
-        else
-        {
-            completion(editedRecord: nil, editError: NSError(domain: "TaskEditing", code: -2, userInfo: [NSLocalizedFailureReasonErrorKey:"Task recordID was not found", NSLocalizedDescriptionKey:"Could not edit task. Internal error."]))
-        }
-    }
-    
-    func deleteTask(taskInfo:TaskInfo, completion:((deletedId:CKRecordID?, deletionError:NSError?)->()))
-    {
-        if let recordID = taskInfo.recordId
-        {
-            publicDB.deleteRecordWithID(recordID) { (deletedRecordID, deletionError) in
-                
-                completion(deletedId: deletedRecordID, deletionError: deletionError)
-            }
-        }
-        else
-        {
-            completion(deletedId: nil, deletionError: NSError(domain: "TaskEditing", code: -2, userInfo: [NSLocalizedFailureReasonErrorKey:"Task recordID was not found", NSLocalizedDescriptionKey:"Could not edit task. Internal error."]))
-        }
+        
+        self.privateOperationQueue.addOperation(bgQueueDeleteOperation)
+        
+        return true
     }
     
 }//class end
 
 
 //MARK: - Helpers
-func createNewTaskRecordFromInfo(taskInfo:TaskInfo) -> CKRecord
-{
-    let newTaskRecord = CKRecord(recordType: CloudRecordTypes.Task.rawValue)
-    
-    let userReference = CKReference(recordID: taskInfo.creatorId, action: .None)
-    let boardReference = CKReference(recordID: taskInfo.taskBoardId , action: .DeleteSelf)
-    newTaskRecord[TaskCreatorReferenceKey] = userReference //not optional
-    newTaskRecord[BoardReferenceKey] = boardReference // not optional
-    newTaskRecord[TitleStringKey] = taskInfo.title //not optional
-    
-    newTaskRecord[DetailsStringKey] = taskInfo.details //non optional but can be empty string
-    newTaskRecord[SortOrderIndexIntKey] =  NSNumber(integer:  taskInfo.sortOrderIndex) // not optional , ZERO by default
-    newTaskRecord[CurrentOwnerStringKey] = taskInfo.currentOwner // optional
-    newTaskRecord[DateTakenDateKey] = taskInfo.dateTaken //optional
-    newTaskRecord[DateFinishedDateKey] = taskInfo.dateFinished //optional
-    
-    return newTaskRecord
-}
-
-func createNewBoardRecordFromInfo(boardInfo:TaskBoardInfo, creatorId:CKRecordID) -> CKRecord
-{
-    let newBoardRecord = CKRecord(recordType: CloudRecordTypes.TaskBoard.rawValue)
-    newBoardRecord[BoardCreatorIDKey] = creatorId.recordName
-    newBoardRecord[BoardTitleKey] = boardInfo.title
-    newBoardRecord[BoardDetailsKey] = boardInfo.details
-    newBoardRecord[SortOrderIndexIntKey] = NSNumber(integer: boardInfo.sortOrderIndex)
-    newBoardRecord[BoardParticipantsKey] = boardInfo.participants
-    
-    return newBoardRecord
-}
-
-func taskInfoFromTaskRecord(record:CKRecord) -> TaskInfo?
-{
-    guard let creatorIdRef = record[TaskCreatorReferenceKey] as? CKReference else
-    {
-        return nil
-    }
-    
-    guard let taskTitle = record[TitleStringKey] as? String else
-    {
-        return nil
-    }
-    
-    let optionalDetails = record[DetailsStringKey] as? String
-    
-    guard var newTask = TaskInfo(taskBoardRecordId: record.recordID, creatorRecordId: creatorIdRef.recordID, title: taskTitle, details: optionalDetails) else
-    {
-        return nil
-    }
-    
-    newTask.setRecordId(record.recordID)
-    newTask.fillOptionalInfoFromTaskRecord(record)
-  
-    return newTask
-}
 
 func updateOwnerForTaskRecord(inout record:CKRecord, ownerId:String?, dates:(taken:NSDate?, finished:NSDate?))
 {

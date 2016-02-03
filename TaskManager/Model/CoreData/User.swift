@@ -15,7 +15,7 @@ class User: NSManagedObject {
 // Insert code here to add functionality to your managed object subclass
 
     var isRegistered:Bool{
-        return self.registered!.boolValue
+        return self.registered
     }
     
     var avatarImage:UIImage? {
@@ -27,33 +27,13 @@ class User: NSManagedObject {
         return nil
     }
     
-    var displayName:String {
-        
-        var returnName = ""
-        if let firstName = self.firstName
-        {
-            returnName += firstName
-        }
-        if let lastName = self.lastName
-        {
-            if !returnName.characters.isEmpty
-            {
-                returnName += " "
-            }
-            
-            returnName += lastName
-        }
-        
-        return returnName
-    }
-    
     func fillInfoFrom(contact:DeviceContact)
     {
         self.firstName = contact.firstName
         self.lastName = contact.lastName
-        self.email = contact.email
+        //self.email = contact.email
         self.phone = contact.fixedPhoneNumber
-        self.registered = NSNumber(bool:contact.registered)
+        self.registered = contact.registered
         
         if let image = contact.avatarImage
         {
@@ -61,4 +41,21 @@ class User: NSManagedObject {
         }
     }
     
+    override func didSave() {
+        if self.deleted
+        {
+            
+        }
+        else
+        {
+            if self.isRegistered
+            {
+                print(" - User is regitered")
+            }
+            else
+            {
+                print(" - User is NOT registered")
+            }
+        }
+    }
 }

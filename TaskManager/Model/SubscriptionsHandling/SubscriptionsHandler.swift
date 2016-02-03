@@ -9,7 +9,7 @@
 import Foundation
 import CloudKit
 
-class SubscriptionsHandler:SubscriptionsHandling {
+class SubscriptionsHandler {
     
     static let sharedInstance = SubscriptionsHandler()
     

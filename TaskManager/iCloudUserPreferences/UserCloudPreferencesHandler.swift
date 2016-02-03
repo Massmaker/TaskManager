@@ -12,7 +12,6 @@ let UserDefaultsWereUpdatedAfteriCloudSyncNotification = "UserDefaultsWereUpdate
 
 class UserCloudPreferencesHandler: NSObject {
 
-    
     private lazy var keyValueCloudStore = NSUbiquitousKeyValueStore.defaultStore()
     
     deinit
@@ -111,11 +110,6 @@ class UserCloudPreferencesHandler: NSObject {
             forUserDefaults[UserDefaultKeys.LastNameKey.rawValue] = lastName
         }
         
-        if let email = keyValueCloudStore.objectForKey(UserDefaultKeys.EmailKey.rawValue) as? String
-        {
-            forUserDefaults[UserDefaultKeys.EmailKey.rawValue] = email
-        }
-        
         return forUserDefaults
     }
     
@@ -124,7 +118,6 @@ class UserCloudPreferencesHandler: NSObject {
         
         if let info = info
         {
-            UserDefaultsManager.setEmailToDefaults(info[UserDefaultKeys.EmailKey.rawValue])
             UserDefaultsManager.setUserNameToDefaults(info[UserDefaultKeys.FirstNameKey.rawValue])
             UserDefaultsManager.setUserLastNameToDefaults(info[UserDefaultKeys.LastNameKey.rawValue])
         }
@@ -132,8 +125,7 @@ class UserCloudPreferencesHandler: NSObject {
         {
             let fName = keyValueCloudStore.objectForKey(UserDefaultKeys.FirstNameKey.rawValue) as? String
             let lName = keyValueCloudStore.objectForKey(UserDefaultKeys.LastNameKey.rawValue) as? String
-            let email = keyValueCloudStore.objectForKey(UserDefaultKeys.EmailKey.rawValue) as? String
-            UserDefaultsManager.setEmailToDefaults(email)
+
             UserDefaultsManager.setUserLastNameToDefaults(lName)
             UserDefaultsManager.setUserNameToDefaults(fName)
         }

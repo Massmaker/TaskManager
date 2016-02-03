@@ -9,36 +9,36 @@
 import UIKit
 import CloudKit
 
-class TasksHolder:TasksHolding {
+class TasksHolder {
     
     
     //MARK: - TasksHolding
     private weak var table:UITableView?
     
-    private lazy var currentTasks:[TaskInfo] = [TaskInfo]()
+    private lazy var currentTasks:[Task] = [Task]()
     
-    weak var delegate:TasksHoldingDelegate?
+    weak var delegate:TasksHolderDelegate?
     
     required init(tableView: UITableView) {
         self.table = tableView
     }
     
-    func setTasks(tasks:[TaskInfo])
+    func setTasks(tasks:[Task])
     {
-        delegate?.tasksHolderWillStartUpdatingHandledTasks()
+        delegate?.tasksWillStartUpdating()
         
         currentTasks.removeAll(keepCapacity: false)
         currentTasks += tasks
         
-        delegate?.tasksHolderDidFinishUpdatingHandledTasks()
+        delegate?.tasksDidFinishUpdating()
     }
     
-    func getTasks() -> [TaskInfo]
+    func getTasks() -> [Task]
     {
         return self.currentTasks
     }
     
-    func taskForRow(row: Int) -> TaskInfo?
+    func taskForRow(row: Int) -> Task?
     {
         if row >= 0 && row < currentTasks.count
         {
@@ -47,98 +47,50 @@ class TasksHolder:TasksHolding {
         return nil
     }
     
-    func addTask(taskInfo:TaskInfo)
+    func delete(task:Task)
     {
-        currentTasks.append(taskInfo)
-        delegate?.tasksHolderDidInsertNewTaskAtIndex(currentTasks.count - 1)
-    }
-    
-    func updateTask(taskInfo:TaskInfo)
-    {
-        if let hasIndex = indexOf(taskInfo, inArray: self.currentTasks)
+        if let index = self.currentTasks.indexOf(task)
         {
-            //update
-            dispatch_sync(dispatch_get_main_queue()){
-                self.delegate?.tasksHolderWillStartUpdatingHandledTasks()
-            }
+            task.toBeDeleted = true
+            anAppDelegate()?.coreDatahandler?.saveMainContext()
             
-            self.currentTasks.removeAtIndex(hasIndex)
-            self.currentTasks.insert(taskInfo, atIndex: hasIndex)
-            
-            self.delegate?.tasksHolderDidFinishUpdatingHandledTasks()
-            
-        }
-        else
-        {
-            //insert
-            let index = self.currentTasks.count
-            dispatch_sync(dispatch_get_main_queue()){
-                self.delegate?.tasksHolderWillInsertNewTaskAtIndex(index)
-            }
-            
-            self.currentTasks.insert(taskInfo, atIndex: index)
-            
-            self.delegate?.tasksHolderDidInsertNewTaskAtIndex(index)
+            self.currentTasks.removeAtIndex(index)
         }
     }
     
-    func deleteTaskAtIndex(index:Int) -> Bool
+    func deleteTaskAtIndex(indexOfTask:Int) -> Bool
     {
-        guard index >= 0 && index < currentTasks.count else
+        guard indexOfTask >= 0 else
         {
             return false
         }
         
-        self.delegate?.tasksHolderWillStartUpdatingHandledTasks()
-        let taskToDelete = currentTasks.removeAtIndex(index)
+        var deletionHappened = false
         
-        anAppDelegate()?.cloudKitHandler.deleteTask(taskToDelete){ (deletedId, deletionError) -> () in
-            if let _ = deletionError
+        if currentTasks.count < indexOfTask
+        {
+            let toDelete = currentTasks.removeAtIndex(indexOfTask)
+            toDelete.toBeDeleted = true
+            anAppDelegate()?.coreDatahandler?.saveMainContext()
+            if let toBeDeletedTaskIDs = anAppDelegate()?.coreDatahandler?.findTasksToDelete()
             {
-                self.currentTasks.insert(taskToDelete, atIndex: index)
+                anAppDelegate()?.cloudKitHandler.deleteTasks(toBeDeletedTaskIDs) { (deletedCount, deletionError) -> () in
+                    
+                }
             }
-            
-            self.delegate?.tasksHolderDidFinishUpdatingHandledTasks()
+            deletionHappened = true
         }
         
-        return true
+        return deletionHappened
     }
     
-    func deleteTask(task: TaskInfo)
+    func editTask(taskToEdit:Task)
     {
-        if let index = indexOf(task, inArray: self.currentTasks)
-        {
-            self.delegate?.tasksHolderWillStartUpdatingHandledTasks()
-            self.currentTasks.removeAtIndex(index)
-            self.delegate?.tasksHolderDidFinishUpdatingHandledTasks()
-        }
+        
     }
     
-    //MARK: - 
-    func tryFetchingTasksForBoard(boardId:CKRecordID)
+    func insertNewTask(taskToInsert:Task)
     {
         
-        guard let aDelegate = anAppDelegate() else
-        {
-            delegate?.tasksHolderDidFinishUpdatingHandledTasks()
-            return
-        }
-        
-        delegate?.tasksHolderWillStartUpdatingHandledTasks()
-        
-        aDelegate.cloudKitHandler.loadTasksForBoardId(boardId) {[weak self] (tasks, error) -> () in
-
-            //self?.delegate?.tasksHolderDidFinishUpdatingHandledTasks()
-            
-            //warning - here is not MainQueue
-            if let records = tasks
-            {
-                self?.setTasks(records)
-            }
-            else if let anError = error
-            {
-                self?.delegate?.tasksHolderDidFailFetchingTasksWithError(anError)
-            }
-        }
     }
 }

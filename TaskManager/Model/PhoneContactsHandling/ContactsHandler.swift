@@ -134,8 +134,9 @@ class ContactsHandler {
             if !self.phoneBookPermissionGranted
             {
                 self.pContacts = nil
-                
-                self.delegate?.contactsHandlerDidFinishFetchingContacts(nil)
+                dispatchMain(){
+                    self.delegate?.contactsHandlerDidFinishFetchingContacts(nil)
+                }
                 return
             }
             
@@ -157,12 +158,16 @@ class ContactsHandler {
                         print(" - Inserted \(contacts!.count - failedContacts.count )")
                     }
                     catch let savingError {
-                        self.delegate?.contactsHandlerDidFinishFetchingContacts(savingError)
+                        dispatchMain(){
+                            self.delegate?.contactsHandlerDidFinishFetchingContacts(savingError)
+                        }
                         return
                     }
                 }
                 
-                self.delegate?.contactsHandlerDidFinishFetchingContacts(nil)
+                dispatchMain(){
+                    self.delegate?.contactsHandlerDidFinishFetchingContacts(nil)
+                }
             }
         }
         
@@ -216,7 +221,7 @@ class ContactsHandler {
         
         for aUser in allDBContacts
         {
-            if aUser.registered!.boolValue
+            if aUser.registered
             {
                 continue
             }

@@ -17,13 +17,6 @@ class BoardEditNavigationController: UINavigationController {
         }
     }
     
-    var boardEditingHandler:BoardCloudHandling?{
-        didSet{
-            //yes, I know this is bad
-            (self.viewControllers.first! as! BoardEditViewController).setEditingHandler(boardEditingHandler)
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 

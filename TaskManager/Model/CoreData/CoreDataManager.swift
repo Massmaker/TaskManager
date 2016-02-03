@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import CloudKit
 
 class CoreDataManager
 {
@@ -61,7 +62,119 @@ class CoreDataManager
         })
        
     }
-
+    //MARK: - 
+    func saveMainContext()
+    {
+        let context = self.mainQueueManagedObjectContext
+        context.performBlockAndWait(){
+            if context.hasChanges
+            {
+                do{
+                    try context.save()
+                }
+                catch{
+                    print("\n - did not save managed object context - \n")
+                }
+            }
+            else
+            {
+                print("Context does not have any changes")
+            }
+        }
+    }
+    
+    //MARK: - CurrentUser
+    func getCurrentUserById(recordID:String) -> CurrentUser?
+    {
+        var toReturn:CurrentUser?
+        
+        let fetchRequest = NSFetchRequest(entityName: "CurrentUser")
+        let predicate = NSPredicate(format: "phone = %@", recordID)
+        fetchRequest.predicate = predicate
+        
+        let mainContext = self.mainQueueManagedObjectContext
+        
+        mainContext.performBlockAndWait(){
+            do
+            {
+                if var foundUsers = try mainContext.executeFetchRequest(fetchRequest) as? [CurrentUser] where foundUsers.count > 0
+                {
+                    //
+                    toReturn = foundUsers.removeFirst()
+                    
+                    //clear database for duplicates
+                    if !foundUsers.isEmpty
+                    {
+                        for aUser in foundUsers
+                        {
+                            mainContext.deleteObject(aUser)
+                        }
+                    }
+                }
+            }
+            catch let fetchError
+            {
+                print(" - Error fetching current user:")
+                print(fetchError)
+            }
+        }
+        
+        return toReturn
+    }
+    
+    func setCurrentUser(user:CurrentUser)
+    {
+        guard let _ = user.phone else
+        {
+            return
+        }
+        
+        if let existing = getCurrentUserById(user.phone!)
+        {
+            existing.firstName = user.firstName
+            existing.lastName = user.lastName
+            existing.avatarData = user.avatarData
+        }
+        else
+        {
+            self.mainQueueManagedObjectContext.insertObject(user)
+        }
+        
+        saveMainContext()
+    }
+    
+    /// used when user presses
+    func deleteCurrentUser()
+    {
+        let fetch = NSFetchRequest(entityName: "CurrentUser")
+        if #available(iOS 9.0, *) {
+            let batchDeletion = NSBatchDeleteRequest(fetchRequest: fetch)
+            do
+            {
+                try self.mainQueueManagedObjectContext.executeRequest(batchDeletion)
+            }
+            catch let batchDeletionError
+            {
+                print("Error batch deleting CurrentUser entities:")
+                print(batchDeletionError)
+            }
+        }
+        else
+        {
+            do{
+                let entities = try self.mainQueueManagedObjectContext.executeFetchRequest(fetch) as! [NSManagedObject]
+                for anEntity in entities
+                {
+                    mainQueueManagedObjectContext.deleteObject(anEntity)
+                }
+            }
+            catch {
+                
+            }
+        }
+        
+    }
+    
     //MARK: - Contacts
     
     /**
@@ -325,6 +438,56 @@ class CoreDataManager
         return failedBoards
     }
     
+    func insert(board:Board, saveImmediately:Bool)
+    {
+        if let found = findBoardByRecordId(board.recordId!)
+        {
+            found.recordId = board.recordId
+            found.title = board.title
+            found.details = board.details
+            found.participants = board.participants
+            found.dateCreated = board.dateCreated
+            found.sortOrder = board.sortOrder
+            found.toBeDeleted = board.toBeDeleted
+        }
+        else
+        {
+            self.mainQueueManagedObjectContext.insertObject(board)
+        }
+        
+        if saveImmediately{
+            do{
+                try self.mainQueueManagedObjectContext.save()
+            }
+            catch let saveError {
+                print("  Could not save after straight insertion of Board entity: \n")
+                print(saveError)
+            }
+        }
+    }
+    
+    func updateTasks(tasks:[Task], forBoard board:Board, saveImmediately:Bool)
+    {
+        board.setValue(nil, forKey: "tasks")
+        
+        board.addTasks(tasks)
+        
+//        for aTask in tasks
+//        {
+//            aTask.board = board
+//        }
+        
+        if saveImmediately {
+            do{
+                try self.mainQueueManagedObjectContext.save()
+            }
+            catch let saveError {
+                print("  Could not save after straight insertion of Board entity: \n")
+                print(saveError)
+            }
+        }
+    }
+    
     func deleteBoardsByIDs(boardIDs:[String]) throws
     {
         var toDelete = [Board]()
@@ -392,6 +555,160 @@ class CoreDataManager
         }
     }
 
+    //MARK: - Tasks
+    func insertTaskRecords(records:[CKRecord])
+    {
+        for aRecord in records
+        {
+            let task = Task()
+            
+        }
+    }
+    
+    func updateTask(taskToUpdate:Task)
+    {
+        guard let recordId = taskToUpdate.recordId else
+        {
+            return
+        }
+        
+        if let found = findTaskById(recordId)
+        {
+            self.mainQueueManagedObjectContext.deleteObject(found)
+        }
+        
+        self.mainQueueManagedObjectContext.insertObject(taskToUpdate)
+        
+        if self.mainQueueManagedObjectContext.hasChanges
+        {
+            self.saveMainContext()
+        }
+        
+        
+    }
+    
+    func insertSingle(task:Task)
+    {
+        guard let recordId = task.recordId else
+        {
+            return
+        }
+        
+        if let _ = findTaskById(recordId)
+        {
+            return
+        }
+        
+        let context = self.mainQueueManagedObjectContext
+        
+        context.performBlock(){
+            
+            context.insertObject(task)
+            
+            do{
+                try context.save()
+                print("inserted single task to main context (saved) ")
+            }
+            catch let error{
+                print("could not save private context when inserting new task")
+                print(error)
+            }
+        }
+    }
+    
+    func insertMany(tasks:[Task])
+    {
+        let aContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        aContext.parentContext = self.mainQueueManagedObjectContext
+        aContext.performBlock(){
+            for aTask in tasks
+            {
+                aContext.insertObject(aTask)
+            }
+            
+            if aContext.hasChanges
+            {
+                do{
+                    try aContext.save()
+                    print("\n - did insert Tasks into mainContext (not saved) ")
+                }
+                catch let privateError{
+                    print("\n - Could not save private context after inserting several tasks:")
+                    print("\(privateError)")
+                }
+            }
+        }
+    }
+    
+    func findTaskById(recordId:String) -> Task?
+    {
+        let predicate = NSPredicate(format: "recordId = %@", recordId)
+        let fetchRequest = NSFetchRequest(entityName: "Task")
+        fetchRequest.predicate = predicate
+        
+        let context = self.mainQueueManagedObjectContext
+        var taskToReturn:Task?
+        
+        context .performBlockAndWait(){
+            do{
+                if var foundTasks = try context.executeFetchRequest(fetchRequest) as? [Task] where foundTasks.count > 0
+                {
+                    taskToReturn = foundTasks.removeFirst()
+                    
+                    for aTask in foundTasks //remove possible duplicate entries
+                    {
+                        context.deleteObject(aTask)
+                    }
+                }
+                
+            }catch let fetchError {
+                print(" - Could not fetch task by ID:")
+                print(fetchError)
+            }
+        }
+        
+        return taskToReturn
+    }
+    
+    func findTasksToDelete() -> [String]?
+    {
+        var toReturn = [String]()
+        
+        let fetchDeleted = NSFetchRequest(entityName: "Task")
+        fetchDeleted.resultType = .DictionaryResultType
+        fetchDeleted.propertiesToFetch = ["recortId"]
+        let predicate = NSPredicate(format: "toBeDeleted = YES AND recordId != nil")
+        fetchDeleted.predicate = predicate
+        
+        do
+        {
+            if let result = try mainQueueManagedObjectContext.executeFetchRequest(fetchDeleted) as? [[String:String]]
+            {
+                print("Found tasks to delete: \(result.count)")
+                for aDict in result
+                {
+                    for (_ , value) in aDict
+                    {
+                        toReturn.append(value)
+                    }
+                }
+            }
+            else
+            {
+                assertionFailure("Did not fetch deleted tasks.")
+            }
+        }
+        catch
+        {
+            
+        }
+        
+        if !toReturn.isEmpty
+        {
+            return toReturn
+        }
+        return nil
+    }
     
     
 }//class end

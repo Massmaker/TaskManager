@@ -12,25 +12,7 @@ import CloudKit
 
 class ContactProfileViewController: FormViewController {
 
-    var contact:User?{
-        didSet{
-            if let aUser = contact, task = aUser.currentTask
-            {
-                let boardId = CKRecordID(recordName:task.board!.recordId!)
-                let creatorId = CKRecordID(recordName: task.board!.creatorId!)
-                
-                let taskInfo = TaskInfo(taskBoardRecordId:boardId , creatorRecordId: creatorId, title: task.title!, details: task.details)
-                
-                self.currentTask = taskInfo
-            }
-        }
-    }
-    
-    var currentTask:TaskInfo?{
-        didSet{
-            
-        }
-    }
+    var contact:User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,7 +77,7 @@ class ContactProfileViewController: FormViewController {
                     }
             }
         
-            if let taskTaken = currentTask
+            if let taskTaken = contact.currentTask
             {
                 form
                     +++

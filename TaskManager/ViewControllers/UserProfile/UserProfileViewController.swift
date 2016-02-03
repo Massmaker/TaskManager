@@ -84,7 +84,7 @@ class UserProfileViewController: FormViewController {
             
             sectionWithInfo[1] = lastNameRowWith(self.currentProfileInfo?.lastName)
             
-            sectionWithInfo[2] = emailRowWith( self.currentProfileInfo?.email)
+            //sectionWithInfo[2] = emailRowWith( self.currentProfileInfo?.email)
         }
     }
     
@@ -106,7 +106,6 @@ class UserProfileViewController: FormViewController {
         
         self.currentProfileInfo?.firstName = UserDefaultsManager.getUserNameFromDefaults()
         self.currentProfileInfo?.lastName = UserDefaultsManager.getUserLastNameFromDefaults()
-        self.currentProfileInfo?.email = UserDefaultsManager.getEmailFromDefaults()
     }
     
     private func setupProfileTableView()
@@ -127,24 +126,24 @@ class UserProfileViewController: FormViewController {
             <<< firstNameRowWith(self.currentProfileInfo?.firstName)
             <<< lastNameRowWith(self.currentProfileInfo?.lastName)
             
-            <<< emailRowWith(self.currentProfileInfo?.email)
+            //<<< emailRowWith(self.currentProfileInfo?.email)
     }
     
-    private func emailRowWith(email:String?) -> EmailRow
-    {
-        let emailRow =   EmailRow(){
-            $0.title = "Email:"
-            $0.placeholder = optionalPlaceholder
-            $0.value = email
-            }.onCellHighlight(){ (_, _) -> () in
-                //if onHighLight is not implemented - "onUnHighLight" is not called
-            }.onCellUnHighlight(){[weak self] ( _ , row) -> () in
-                self?.currentProfileInfo?.email = row.value
-                UserDefaultsManager.setEmailToDefaults(self?.currentProfileInfo?.email)
-        }
-        
-        return emailRow
-    }
+//    private func emailRowWith(email:String?) -> EmailRow
+//    {
+//        let emailRow =   EmailRow(){
+//            $0.title = "Email:"
+//            $0.placeholder = optionalPlaceholder
+//            $0.value = email
+//            }.onCellHighlight(){ (_, _) -> () in
+//                //if onHighLight is not implemented - "onUnHighLight" is not called
+//            }.onCellUnHighlight(){[weak self] ( _ , row) -> () in
+//                self?.currentProfileInfo?.email = row.value
+//                UserDefaultsManager.setEmailToDefaults(self?.currentProfileInfo?.email)
+//        }
+//        
+//        return emailRow
+//    }
     
     private func lastNameRowWith(lastName:String?) -> NameRow
     {

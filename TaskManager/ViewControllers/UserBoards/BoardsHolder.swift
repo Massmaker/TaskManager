@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class BoardsHolder:BoardsHolding {
+class BoardsHolder {
     
     //MARK: -
     convenience init(delegate:BoardsHolderDelegate)
@@ -17,13 +17,20 @@ class BoardsHolder:BoardsHolding {
     }
     
     //MARK: - BoardsHolding
-    weak var delegate:BoardsHolderDelegate?
-    private var currentBoards:[TaskBoardInfo] = [TaskBoardInfo]()
+    weak var delegate:BoardsHolderDelegate?{
+        didSet{
+            if let _ = self.delegate
+            {
+                self.fetchBoardsFromCoreData()
+            }
+        }
+    }
+    private var currentBoards:[Board] = [Board]()
     
     var boardsCount:Int{
         return currentBoards.count
     }
-    func boardForRow(row: Int) -> TaskBoardInfo? {
+    func boardForRow(row: Int) -> Board? {
         if row < currentBoards.count
         {
             return currentBoards[row]
@@ -37,7 +44,7 @@ class BoardsHolder:BoardsHolding {
             var indexes = [Int]()
             for aTaskBoard in currentBoards
             {
-                indexes.append(aTaskBoard.sortOrderIndex)
+                indexes.append(Int(aTaskBoard.sortOrder))
             }
             return indexes
         }
@@ -47,18 +54,29 @@ class BoardsHolder:BoardsHolding {
         }
     }
     
-    func setBoards(boards: [TaskBoardInfo]) {
-        delegate?.boardsHolderWillUpdateBoards(self)
+    func setBoards(boards: [Board]) {
+        delegate?.boardsDidStartUpdating()
         self.currentBoards.removeAll(keepCapacity: false)
-        self.currentBoards = boards
-        delegate?.boardsHolderDidUpdateBoards(self)
+
+        for aBoard in boards
+        {
+            anAppDelegate()?.coreDatahandler?.insert(aBoard, saveImmediately: false)
+        }
+        
+        anAppDelegate()?.coreDatahandler?.saveMainContext()
+        
+        delegate?.boardsDidFinishUpdating()
     }
     
-    func getBoards() -> [TaskBoardInfo] {
+    func getBoards() -> [Board] {
+        if self.currentBoards.isEmpty
+        {
+            self.fetchBoardsFromCoreData()
+        }
         return self.currentBoards
     }
     
-    func removeBoardAtIndex(index:Int) throws -> TaskBoardInfo
+    func removeBoardAtIndex(index:Int) throws -> Board
     {
         if index >= currentBoards.count
         {
@@ -68,54 +86,62 @@ class BoardsHolder:BoardsHolding {
         return currentBoards.removeAtIndex(index)
     }
     
-    func insertBoard(board:TaskBoardInfo, atIndex index:Int) throws
+    func insertBoard(board:Board, atIndex index:Int) throws
     {
         if index > currentBoards.count
         {
             throw TaskBoardError.NotFound
         }
-        delegate?.boardsHolderWillUpdateBoards(self)
-        currentBoards.insert(board, atIndex: index)
-        delegate?.boardsHolderDidUpdateBoards(self)
     }
     
-    func updateBoard(board:TaskBoardInfo)
+    func deleteFromDatabase(board:Board)
+    {
+        board.toBeDeleted = true
+        anAppDelegate()?.coreDatahandler?.saveMainContext()
+    }
+    
+    func updateBoard(board:Board)
     {
         guard let _ = board.recordId else
         {
-            delegate?.boardsHolderDidUpdateBoards(self)
             return
         }
         
-        delegate?.boardsHolderWillUpdateBoards(self)
+        delegate?.boardsDidStartUpdating()
         
-        var foundBoard:TaskBoardInfo?
+        var foundBoard:Board?
         
-        var index:Int = 0
-        
-        if let indexOfBoard = indexOf(board, inArray: self.currentBoards)
+        if let indexOfBoard = self.currentBoards.indexOf(board)
         {
-            index = indexOfBoard
             foundBoard = self.currentBoards[indexOfBoard]
         }
         
-        
-        foundBoard?.title = board.title
-        foundBoard?.details = board.details
-        foundBoard?.sortOrderIndex = board.sortOrderIndex
-        foundBoard?.participants = board.participants
         if let toInsert = foundBoard
         {
-            self.currentBoards.removeAtIndex(index)
-            self.currentBoards.insert(toInsert, atIndex: index)
+            toInsert.title = board.title
+            toInsert.details = board.details
+            toInsert.sortOrder = board.sortOrder
+            toInsert.participants = board.participants
         }
         else
         {
+            anAppDelegate()?.coreDatahandler?.insert(board, saveImmediately: false)
+           
             self.currentBoards.append(board)
         }
+        anAppDelegate()?.coreDatahandler?.saveMainContext()
         
-        delegate?.boardsHolderDidUpdateBoards(self)
+        delegate?.boardsDidFinishUpdating()
     }
     
+    private func fetchBoardsFromCoreData()
+    {
+        if let coreDatahandler = anAppDelegate()?.coreDatahandler
+        {
+            let boardsFromCoreData = coreDatahandler.allBoards()
+            
+            self.currentBoards = boardsFromCoreData
+        }
+    }
  
 }

@@ -10,18 +10,19 @@
 		CDD0B8B4BBD933628DCC37D3 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DBADABF801DE9AB814CD0EB /* Pods.framework */; };
 		F80191BE1C50F3E30007D2AF /* SortableByIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80191BD1C50F3E30007D2AF /* SortableByIndex.swift */; };
 		F80191C01C50F94D0007D2AF /* RecordIdIndexable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80191BF1C50F94D0007D2AF /* RecordIdIndexable.swift */; };
-		F80ABB6F1C4E89F900C98540 /* TaskCloudHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80ABB6E1C4E89F900C98540 /* TaskCloudHandling.swift */; };
-		F80ABB711C4E8A0700C98540 /* TaskCloudHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80ABB701C4E8A0700C98540 /* TaskCloudHandlerDelegate.swift */; };
-		F80ABB731C4E8EA300C98540 /* TasksViewController+TaskCloudhandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80ABB721C4E8EA300C98540 /* TasksViewController+TaskCloudhandlerDelegate.swift */; };
+		F8067C421C60F34000782E63 /* BoardsHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C411C60F34000782E63 /* BoardsHolderDelegate.swift */; };
+		F8067C441C60F38300782E63 /* BoardsTableViewController+BoardsHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C431C60F38300782E63 /* BoardsTableViewController+BoardsHolderDelegate.swift */; };
+		F8067C461C60F88800782E63 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C451C60F88800782E63 /* CurrentUser.swift */; };
+		F8067C481C60F8A200782E63 /* CurrentUser+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C471C60F8A200782E63 /* CurrentUser+CoreDataProperties.swift */; };
+		F8067C4A1C60F9A800782E63 /* DisplayNameCapable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C491C60F9A800782E63 /* DisplayNameCapable.swift */; };
+		F8067C4C1C60FAF200782E63 /* TasksHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C4B1C60FAF200782E63 /* TasksHolderDelegate.swift */; };
+		F8067C4E1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C4D1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift */; };
 		F81954D91C565669007D15E8 /* UserCloudPreferencesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81954D81C565669007D15E8 /* UserCloudPreferencesHandler.swift */; };
 		F82755CF1C58F804005A1964 /* Extensions+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82755CE1C58F804005A1964 /* Extensions+String.swift */; };
 		F8386A2D1C5B6A0B00C298A5 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8386A2C1C5B6A0B00C298A5 /* TaskTableViewCell.swift */; };
 		F83D16031C4F825100E46E43 /* UserErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83D16021C4F825100E46E43 /* UserErrors.swift */; };
 		F84B4D651C4E66C70013D7F1 /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D641C4E66C70013D7F1 /* TasksViewController.swift */; };
-		F84B4D671C4E67260013D7F1 /* TasksHolding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D661C4E67260013D7F1 /* TasksHolding.swift */; };
 		F84B4D691C4E69240013D7F1 /* TasksHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D681C4E69240013D7F1 /* TasksHolder.swift */; };
-		F84B4D6B1C4E6BDC0013D7F1 /* TasksHoldingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D6A1C4E6BDC0013D7F1 /* TasksHoldingDelegate.swift */; };
-		F84B4D6F1C4E709C0013D7F1 /* TasksViewController+TasksHoldingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D6E1C4E709C0013D7F1 /* TasksViewController+TasksHoldingDelegate.swift */; };
 		F84B4D721C4E71C60013D7F1 /* TaskEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D711C4E71C60013D7F1 /* TaskEditViewController.swift */; };
 		F84B4D741C4E720E0013D7F1 /* TaskEditNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D731C4E720E0013D7F1 /* TaskEditNavigationController.swift */; };
 		F84B51741C5A1A010041A248 /* Extensions+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B51731C5A1A010041A248 /* Extensions+UIImage.swift */; };
@@ -40,7 +41,6 @@
 		F84D68B61C4CEB6900EF8A16 /* CloudKitDatabaseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68781C4CEB6900EF8A16 /* CloudKitDatabaseHandler.swift */; };
 		F84D68B71C4CEB6900EF8A16 /* CloudRecordTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68791C4CEB6900EF8A16 /* CloudRecordTypes.swift */; };
 		F84D68B91C4CEB6900EF8A16 /* TaskBoardInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D687B1C4CEB6900EF8A16 /* TaskBoardInfo.swift */; };
-		F84D68BA1C4CEB6900EF8A16 /* TaskInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D687C1C4CEB6900EF8A16 /* TaskInfo.swift */; };
 		F84D68BB1C4CEB6900EF8A16 /* ErrorContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D687E1C4CEB6900EF8A16 /* ErrorContacts.swift */; };
 		F84D68BC1C4CEB6900EF8A16 /* ErrorTaskBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D687F1C4CEB6900EF8A16 /* ErrorTaskBoard.swift */; };
 		F84D68BD1C4CEB6900EF8A16 /* Extensions-UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68811C4CEB6900EF8A16 /* Extensions-UIViewController.swift */; };
@@ -64,8 +64,6 @@
 		F84D68CF1C4CEB6900EF8A16 /* DeviceContactReading.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68981C4CEB6900EF8A16 /* DeviceContactReading.swift */; };
 		F84D68D01C4CEB6900EF8A16 /* PhoneAndCloudAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D689A1C4CEB6900EF8A16 /* PhoneAndCloudAuthenticator.swift */; };
 		F84D68D11C4CEB6900EF8A16 /* UserAuthenticationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D689B1C4CEB6900EF8A16 /* UserAuthenticationStatus.swift */; };
-		F84D68D31C4CEB6900EF8A16 /* BoardsHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D689E1C4CEB6900EF8A16 /* BoardsHolderDelegate.swift */; };
-		F84D68D41C4CEB6900EF8A16 /* BoardsHolding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D689F1C4CEB6900EF8A16 /* BoardsHolding.swift */; };
 		F84D68D61C4CEB6900EF8A16 /* UserAuthenticating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68A11C4CEB6900EF8A16 /* UserAuthenticating.swift */; };
 		F84D68D71C4CEB6900EF8A16 /* UserAuthenticatorDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68A21C4CEB6900EF8A16 /* UserAuthenticatorDelegates.swift */; };
 		F84D68D81C4CEB6900EF8A16 /* PublicFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68A31C4CEB6900EF8A16 /* PublicFunctions.swift */; };
@@ -81,29 +79,23 @@
 		F84D68F31C4CF5D800EF8A16 /* LoginViewController+UserDelegateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68F21C4CF5D800EF8A16 /* LoginViewController+UserDelegateExtensions.swift */; };
 		F84D68F51C4CF8DF00EF8A16 /* BoardEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68F41C4CF8DF00EF8A16 /* BoardEditViewController.swift */; };
 		F84D68F71C4CF8E700EF8A16 /* ContactProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68F61C4CF8E700EF8A16 /* ContactProfileViewController.swift */; };
-		F84D68FD1C4CFE8E00EF8A16 /* BoardsTableViewController+BoardsHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68FC1C4CFE8E00EF8A16 /* BoardsTableViewController+BoardsHolderDelegate.swift */; };
 		F84D68FF1C4D230600EF8A16 /* PublicUserRecordHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68FE1C4D230600EF8A16 /* PublicUserRecordHandling.swift */; };
 		F84D69011C4D2D0500EF8A16 /* AppDelegateError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69001C4D2D0500EF8A16 /* AppDelegateError.swift */; };
-		F84D69031C4D3A5500EF8A16 /* BoardCloudHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69021C4D3A5500EF8A16 /* BoardCloudHandling.swift */; };
-		F84D69051C4D3A7B00EF8A16 /* BoardCloudHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69041C4D3A7B00EF8A16 /* BoardCloudHandlerDelegate.swift */; };
 		F84D69081C4D3DF400EF8A16 /* BoardEditingHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69061C4D3DF400EF8A16 /* BoardEditingHolder.swift */; };
 		F84D69091C4D3DF400EF8A16 /* BoardEditingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69071C4D3DF400EF8A16 /* BoardEditingType.swift */; };
-		F84D690B1C4D3EA000EF8A16 /* TaskBoardsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D690A1C4D3EA000EF8A16 /* TaskBoardsHandler.swift */; };
-		F84D690D1C4D40D000EF8A16 /* BoardsTableViewController+BoardCloudHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D690C1C4D40D000EF8A16 /* BoardsTableViewController+BoardCloudHandlerDelegate.swift */; };
+		F855B53C1C6220B200894413 /* CloudKitRecordKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F855B53B1C6220B200894413 /* CloudKitRecordKeys.swift */; };
 		F858B73F1C57CAC4003BF286 /* CloudRegisteredUsersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F858B73E1C57CAC4003BF286 /* CloudRegisteredUsersOperation.swift */; };
 		F87D68041C4FE740003C5689 /* CloudKitResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87D68031C4FE740003C5689 /* CloudKitResults.swift */; };
-		F8832BBE1C4F97C400D75FAE /* TaskInfoObjectHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8832BBD1C4F97C400D75FAE /* TaskInfoObjectHolder.swift */; };
 		F8832BC01C4F9AF800D75FAE /* TaskEditType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8832BBF1C4F9AF800D75FAE /* TaskEditType.swift */; };
-		F8832BC21C4FA27E00D75FAE /* TasksCloudHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8832BC11C4FA27E00D75FAE /* TasksCloudHandler.swift */; };
 		F8832BC41C4FB64500D75FAE /* TaskErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8832BC31C4FB64500D75FAE /* TaskErrors.swift */; };
 		F8832BC61C4FCDEC00D75FAE /* AddTaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8832BC51C4FCDEC00D75FAE /* AddTaskTableViewCell.swift */; };
 		F8832BC81C4FE1D200D75FAE /* CloudKitErrorParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8832BC71C4FE1D200D75FAE /* CloudKitErrorParser.swift */; };
 		F884BC441C60AB1F0057539E /* DataSyncronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F884BC431C60AB1F0057539E /* DataSyncronizer.swift */; };
 		F884BC461C60CB960057539E /* BoardsTableViewController+ContactsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F884BC451C60CB960057539E /* BoardsTableViewController+ContactsHandlerDelegate.swift */; };
+		F884BC481C60DDF90057539E /* RecordIDStringIndexable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F884BC471C60DDF90057539E /* RecordIDStringIndexable.swift */; };
 		F88669951C577A5200F56C0A /* BoardsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669941C577A5200F56C0A /* BoardsTableViewCell.swift */; };
 		F88669971C5786D100F56C0A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669961C5786D100F56C0A /* CoreDataManager.swift */; };
 		F88669991C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */; };
-		F895CD4D1C5F615D00D08EE9 /* SubscriptionsHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD4C1C5F615D00D08EE9 /* SubscriptionsHandling.swift */; };
 		F895CD501C5F63B100D08EE9 /* SubscriptionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */; };
 		F895CD521C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD511C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift */; };
 		F895CD541C5F8B7F00D08EE9 /* NotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD531C5F8B7F00D08EE9 /* NotificationsHandler.swift */; };
@@ -118,18 +110,19 @@
 		B905EBAA48E071546628AED8 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		F80191BD1C50F3E30007D2AF /* SortableByIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortableByIndex.swift; sourceTree = "<group>"; };
 		F80191BF1C50F94D0007D2AF /* RecordIdIndexable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordIdIndexable.swift; sourceTree = "<group>"; };
-		F80ABB6E1C4E89F900C98540 /* TaskCloudHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCloudHandling.swift; sourceTree = "<group>"; };
-		F80ABB701C4E8A0700C98540 /* TaskCloudHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCloudHandlerDelegate.swift; sourceTree = "<group>"; };
-		F80ABB721C4E8EA300C98540 /* TasksViewController+TaskCloudhandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksViewController+TaskCloudhandlerDelegate.swift"; sourceTree = "<group>"; };
+		F8067C411C60F34000782E63 /* BoardsHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsHolderDelegate.swift; sourceTree = "<group>"; };
+		F8067C431C60F38300782E63 /* BoardsTableViewController+BoardsHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BoardsTableViewController+BoardsHolderDelegate.swift"; sourceTree = "<group>"; };
+		F8067C451C60F88800782E63 /* CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
+		F8067C471C60F8A200782E63 /* CurrentUser+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CurrentUser+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		F8067C491C60F9A800782E63 /* DisplayNameCapable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayNameCapable.swift; sourceTree = "<group>"; };
+		F8067C4B1C60FAF200782E63 /* TasksHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksHolderDelegate.swift; sourceTree = "<group>"; };
+		F8067C4D1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksViewController+TasksHolderDelegate.swift"; sourceTree = "<group>"; };
 		F81954D81C565669007D15E8 /* UserCloudPreferencesHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCloudPreferencesHandler.swift; sourceTree = "<group>"; };
 		F82755CE1C58F804005A1964 /* Extensions+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+String.swift"; sourceTree = "<group>"; };
 		F8386A2C1C5B6A0B00C298A5 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		F83D16021C4F825100E46E43 /* UserErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserErrors.swift; sourceTree = "<group>"; };
 		F84B4D641C4E66C70013D7F1 /* TasksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksViewController.swift; sourceTree = "<group>"; };
-		F84B4D661C4E67260013D7F1 /* TasksHolding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksHolding.swift; sourceTree = "<group>"; };
 		F84B4D681C4E69240013D7F1 /* TasksHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksHolder.swift; sourceTree = "<group>"; };
-		F84B4D6A1C4E6BDC0013D7F1 /* TasksHoldingDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksHoldingDelegate.swift; sourceTree = "<group>"; };
-		F84B4D6E1C4E709C0013D7F1 /* TasksViewController+TasksHoldingDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksViewController+TasksHoldingDelegate.swift"; sourceTree = "<group>"; };
 		F84B4D711C4E71C60013D7F1 /* TaskEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskEditViewController.swift; sourceTree = "<group>"; };
 		F84B4D731C4E720E0013D7F1 /* TaskEditNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskEditNavigationController.swift; sourceTree = "<group>"; };
 		F84B51731C5A1A010041A248 /* Extensions+UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+UIImage.swift"; sourceTree = "<group>"; };
@@ -150,7 +143,6 @@
 		F84D68781C4CEB6900EF8A16 /* CloudKitDatabaseHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitDatabaseHandler.swift; sourceTree = "<group>"; };
 		F84D68791C4CEB6900EF8A16 /* CloudRecordTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudRecordTypes.swift; sourceTree = "<group>"; };
 		F84D687B1C4CEB6900EF8A16 /* TaskBoardInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskBoardInfo.swift; sourceTree = "<group>"; };
-		F84D687C1C4CEB6900EF8A16 /* TaskInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskInfo.swift; sourceTree = "<group>"; };
 		F84D687E1C4CEB6900EF8A16 /* ErrorContacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorContacts.swift; sourceTree = "<group>"; };
 		F84D687F1C4CEB6900EF8A16 /* ErrorTaskBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorTaskBoard.swift; sourceTree = "<group>"; };
 		F84D68811C4CEB6900EF8A16 /* Extensions-UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions-UIViewController.swift"; sourceTree = "<group>"; };
@@ -174,8 +166,6 @@
 		F84D68981C4CEB6900EF8A16 /* DeviceContactReading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceContactReading.swift; sourceTree = "<group>"; };
 		F84D689A1C4CEB6900EF8A16 /* PhoneAndCloudAuthenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneAndCloudAuthenticator.swift; sourceTree = "<group>"; };
 		F84D689B1C4CEB6900EF8A16 /* UserAuthenticationStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAuthenticationStatus.swift; sourceTree = "<group>"; };
-		F84D689E1C4CEB6900EF8A16 /* BoardsHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsHolderDelegate.swift; sourceTree = "<group>"; };
-		F84D689F1C4CEB6900EF8A16 /* BoardsHolding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsHolding.swift; sourceTree = "<group>"; };
 		F84D68A11C4CEB6900EF8A16 /* UserAuthenticating.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAuthenticating.swift; sourceTree = "<group>"; };
 		F84D68A21C4CEB6900EF8A16 /* UserAuthenticatorDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAuthenticatorDelegates.swift; sourceTree = "<group>"; };
 		F84D68A31C4CEB6900EF8A16 /* PublicFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicFunctions.swift; sourceTree = "<group>"; };
@@ -192,29 +182,23 @@
 		F84D68F21C4CF5D800EF8A16 /* LoginViewController+UserDelegateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginViewController+UserDelegateExtensions.swift"; sourceTree = "<group>"; };
 		F84D68F41C4CF8DF00EF8A16 /* BoardEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardEditViewController.swift; sourceTree = "<group>"; };
 		F84D68F61C4CF8E700EF8A16 /* ContactProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactProfileViewController.swift; sourceTree = "<group>"; };
-		F84D68FC1C4CFE8E00EF8A16 /* BoardsTableViewController+BoardsHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BoardsTableViewController+BoardsHolderDelegate.swift"; sourceTree = "<group>"; };
 		F84D68FE1C4D230600EF8A16 /* PublicUserRecordHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicUserRecordHandling.swift; sourceTree = "<group>"; };
 		F84D69001C4D2D0500EF8A16 /* AppDelegateError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateError.swift; sourceTree = "<group>"; };
-		F84D69021C4D3A5500EF8A16 /* BoardCloudHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardCloudHandling.swift; sourceTree = "<group>"; };
-		F84D69041C4D3A7B00EF8A16 /* BoardCloudHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardCloudHandlerDelegate.swift; sourceTree = "<group>"; };
 		F84D69061C4D3DF400EF8A16 /* BoardEditingHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardEditingHolder.swift; path = TaskBoardWork/BoardEditingHolder.swift; sourceTree = "<group>"; };
 		F84D69071C4D3DF400EF8A16 /* BoardEditingType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardEditingType.swift; path = TaskBoardWork/BoardEditingType.swift; sourceTree = "<group>"; };
-		F84D690A1C4D3EA000EF8A16 /* TaskBoardsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskBoardsHandler.swift; sourceTree = "<group>"; };
-		F84D690C1C4D40D000EF8A16 /* BoardsTableViewController+BoardCloudHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BoardsTableViewController+BoardCloudHandlerDelegate.swift"; sourceTree = "<group>"; };
+		F855B53B1C6220B200894413 /* CloudKitRecordKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitRecordKeys.swift; sourceTree = "<group>"; };
 		F858B73E1C57CAC4003BF286 /* CloudRegisteredUsersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudRegisteredUsersOperation.swift; sourceTree = "<group>"; };
 		F87D68031C4FE740003C5689 /* CloudKitResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitResults.swift; sourceTree = "<group>"; };
-		F8832BBD1C4F97C400D75FAE /* TaskInfoObjectHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskInfoObjectHolder.swift; sourceTree = "<group>"; };
 		F8832BBF1C4F9AF800D75FAE /* TaskEditType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskEditType.swift; sourceTree = "<group>"; };
-		F8832BC11C4FA27E00D75FAE /* TasksCloudHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksCloudHandler.swift; sourceTree = "<group>"; };
 		F8832BC31C4FB64500D75FAE /* TaskErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskErrors.swift; sourceTree = "<group>"; };
 		F8832BC51C4FCDEC00D75FAE /* AddTaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTaskTableViewCell.swift; sourceTree = "<group>"; };
 		F8832BC71C4FE1D200D75FAE /* CloudKitErrorParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitErrorParser.swift; sourceTree = "<group>"; };
 		F884BC431C60AB1F0057539E /* DataSyncronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSyncronizer.swift; sourceTree = "<group>"; };
 		F884BC451C60CB960057539E /* BoardsTableViewController+ContactsHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BoardsTableViewController+ContactsHandlerDelegate.swift"; sourceTree = "<group>"; };
+		F884BC471C60DDF90057539E /* RecordIDStringIndexable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordIDStringIndexable.swift; sourceTree = "<group>"; };
 		F88669941C577A5200F56C0A /* BoardsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsTableViewCell.swift; sourceTree = "<group>"; };
 		F88669961C5786D100F56C0A /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactsCollectionViewController+ContactsHandlerDelegate.swift"; sourceTree = "<group>"; };
-		F895CD4C1C5F615D00D08EE9 /* SubscriptionsHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsHandling.swift; sourceTree = "<group>"; };
 		F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsHandler.swift; sourceTree = "<group>"; };
 		F895CD511C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+CKSubscriptionOptions.swift"; sourceTree = "<group>"; };
 		F895CD531C5F8B7F00D08EE9 /* NotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHandler.swift; sourceTree = "<group>"; };
@@ -324,10 +308,9 @@
 				F84D68781C4CEB6900EF8A16 /* CloudKitDatabaseHandler.swift */,
 				F84D68791C4CEB6900EF8A16 /* CloudRecordTypes.swift */,
 				F84D687B1C4CEB6900EF8A16 /* TaskBoardInfo.swift */,
-				F84D687C1C4CEB6900EF8A16 /* TaskInfo.swift */,
-				F8832BBD1C4F97C400D75FAE /* TaskInfoObjectHolder.swift */,
 				F8832BC71C4FE1D200D75FAE /* CloudKitErrorParser.swift */,
 				F87D68031C4FE740003C5689 /* CloudKitResults.swift */,
+				F855B53B1C6220B200894413 /* CloudKitRecordKeys.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -378,9 +361,7 @@
 				F84D69071C4D3DF400EF8A16 /* BoardEditingType.swift */,
 				F8832BBF1C4F9AF800D75FAE /* TaskEditType.swift */,
 				F84D68B31C4CEB6900EF8A16 /* BoardsHolder.swift */,
-				F84D690A1C4D3EA000EF8A16 /* TaskBoardsHandler.swift */,
 				F84B4D681C4E69240013D7F1 /* TasksHolder.swift */,
-				F8832BC11C4FA27E00D75FAE /* TasksCloudHandler.swift */,
 				F884BC431C60AB1F0057539E /* DataSyncronizer.swift */,
 				F84D68881C4CEB6900EF8A16 /* CoreData */,
 				F84D68911C4CEB6900EF8A16 /* PhoneContactsHandling */,
@@ -396,14 +377,16 @@
 		F84D68881C4CEB6900EF8A16 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				F88669961C5786D100F56C0A /* CoreDataManager.swift */,
+				F84D688D1C4CEB6900EF8A16 /* TasksHandlerDataModel.xcdatamodeld */,
 				F84D68891C4CEB6900EF8A16 /* Board+CoreDataProperties.swift */,
 				F84D688A1C4CEB6900EF8A16 /* Board.swift */,
 				F84D688B1C4CEB6900EF8A16 /* Task+CoreDataProperties.swift */,
 				F84D688C1C4CEB6900EF8A16 /* Task.swift */,
-				F84D688D1C4CEB6900EF8A16 /* TasksHandlerDataModel.xcdatamodeld */,
 				F84D688F1C4CEB6900EF8A16 /* User+CoreDataProperties.swift */,
 				F84D68901C4CEB6900EF8A16 /* User.swift */,
-				F88669961C5786D100F56C0A /* CoreDataManager.swift */,
+				F8067C471C60F8A200782E63 /* CurrentUser+CoreDataProperties.swift */,
+				F8067C451C60F88800782E63 /* CurrentUser.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -434,21 +417,16 @@
 		F84D689C1C4CEB6900EF8A16 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				F84D689E1C4CEB6900EF8A16 /* BoardsHolderDelegate.swift */,
 				F84CAD171C56339600BC2ECC /* UserProfileHeaderDelegate.swift */,
+				F8067C491C60F9A800782E63 /* DisplayNameCapable.swift */,
+				F8067C411C60F34000782E63 /* BoardsHolderDelegate.swift */,
+				F8067C4B1C60FAF200782E63 /* TasksHolderDelegate.swift */,
 				F80191BD1C50F3E30007D2AF /* SortableByIndex.swift */,
 				F80191BF1C50F94D0007D2AF /* RecordIdIndexable.swift */,
-				F84D689F1C4CEB6900EF8A16 /* BoardsHolding.swift */,
-				F84D69021C4D3A5500EF8A16 /* BoardCloudHandling.swift */,
-				F84D69041C4D3A7B00EF8A16 /* BoardCloudHandlerDelegate.swift */,
-				F84B4D661C4E67260013D7F1 /* TasksHolding.swift */,
-				F84B4D6A1C4E6BDC0013D7F1 /* TasksHoldingDelegate.swift */,
-				F80ABB6E1C4E89F900C98540 /* TaskCloudHandling.swift */,
-				F80ABB701C4E8A0700C98540 /* TaskCloudHandlerDelegate.swift */,
 				F84D68A11C4CEB6900EF8A16 /* UserAuthenticating.swift */,
 				F84D68FE1C4D230600EF8A16 /* PublicUserRecordHandling.swift */,
 				F84D68A21C4CEB6900EF8A16 /* UserAuthenticatorDelegates.swift */,
-				F895CD4C1C5F615D00D08EE9 /* SubscriptionsHandling.swift */,
+				F884BC471C60DDF90057539E /* RecordIDStringIndexable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -482,9 +460,8 @@
 			children = (
 				F84D68AE1C4CEB6900EF8A16 /* BoardEdit */,
 				F84D68B41C4CEB6900EF8A16 /* BoardsTableViewController.swift */,
-				F84D68FC1C4CFE8E00EF8A16 /* BoardsTableViewController+BoardsHolderDelegate.swift */,
-				F84D690C1C4D40D000EF8A16 /* BoardsTableViewController+BoardCloudHandlerDelegate.swift */,
 				F884BC451C60CB960057539E /* BoardsTableViewController+ContactsHandlerDelegate.swift */,
+				F8067C431C60F38300782E63 /* BoardsTableViewController+BoardsHolderDelegate.swift */,
 				F88669941C577A5200F56C0A /* BoardsTableViewCell.swift */,
 			);
 			path = UserBoards;
@@ -504,10 +481,9 @@
 			children = (
 				F84B4D701C4E71AB0013D7F1 /* TaskEdit */,
 				F84B4D641C4E66C70013D7F1 /* TasksViewController.swift */,
+				F8067C4D1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift */,
 				F8832BC51C4FCDEC00D75FAE /* AddTaskTableViewCell.swift */,
 				F8386A2C1C5B6A0B00C298A5 /* TaskTableViewCell.swift */,
-				F84B4D6E1C4E709C0013D7F1 /* TasksViewController+TasksHoldingDelegate.swift */,
-				F80ABB721C4E8EA300C98540 /* TasksViewController+TaskCloudhandlerDelegate.swift */,
 			);
 			path = UserTasks;
 			sourceTree = "<group>";
@@ -686,15 +662,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F84D690B1C4D3EA000EF8A16 /* TaskBoardsHandler.swift in Sources */,
 				F84D68D91C4CEB6900EF8A16 /* ContactCollectionViewCell.swift in Sources */,
+				F8067C481C60F8A200782E63 /* CurrentUser+CoreDataProperties.swift in Sources */,
 				F84D68F31C4CF5D800EF8A16 /* LoginViewController+UserDelegateExtensions.swift in Sources */,
 				F84D68B71C4CEB6900EF8A16 /* CloudRecordTypes.swift in Sources */,
 				F8386A2D1C5B6A0B00C298A5 /* TaskTableViewCell.swift in Sources */,
 				F84D68C71C4CEB6900EF8A16 /* User+CoreDataProperties.swift in Sources */,
 				F8DD67581C5A0EB300258E44 /* Extensions+NSDate.swift in Sources */,
 				F84CAD1A1C5635E000BC2ECC /* UserProfileViewController+UserProfileHeaderDelegate.swift in Sources */,
-				F84D69051C4D3A7B00EF8A16 /* BoardCloudHandlerDelegate.swift in Sources */,
 				F8832BC61C4FCDEC00D75FAE /* AddTaskTableViewCell.swift in Sources */,
 				F84D68CF1C4CEB6900EF8A16 /* DeviceContactReading.swift in Sources */,
 				F84D68CE1C4CEB6900EF8A16 /* DeviceContact.swift in Sources */,
@@ -717,12 +692,11 @@
 				F895CD501C5F63B100D08EE9 /* SubscriptionsHandler.swift in Sources */,
 				F8DD675E1C5A15C500258E44 /* BoardDetailsHeader.swift in Sources */,
 				F84CAD161C562E0600BC2ECC /* DocumentsFolderFileHandler.swift in Sources */,
-				F84D68BA1C4CEB6900EF8A16 /* TaskInfo.swift in Sources */,
-				F84D68D41C4CEB6900EF8A16 /* BoardsHolding.swift in Sources */,
-				F84D68FD1C4CFE8E00EF8A16 /* BoardsTableViewController+BoardsHolderDelegate.swift in Sources */,
 				F84D68BD1C4CEB6900EF8A16 /* Extensions-UIViewController.swift in Sources */,
 				F84D68C81C4CEB6900EF8A16 /* User.swift in Sources */,
 				F84D68D01C4CEB6900EF8A16 /* PhoneAndCloudAuthenticator.swift in Sources */,
+				F855B53C1C6220B200894413 /* CloudKitRecordKeys.swift in Sources */,
+				F8067C4C1C60FAF200782E63 /* TasksHolderDelegate.swift in Sources */,
 				F84D68DB1C4CEB6900EF8A16 /* ContactsCollectionViewController.swift in Sources */,
 				F83D16031C4F825100E46E43 /* UserErrors.swift in Sources */,
 				F84D68B91C4CEB6900EF8A16 /* TaskBoardInfo.swift in Sources */,
@@ -731,31 +705,27 @@
 				F895CD541C5F8B7F00D08EE9 /* NotificationsHandler.swift in Sources */,
 				F84D68CB1C4CEB6900EF8A16 /* ContactsHandler.swift in Sources */,
 				F84D68C21C4CEB6900EF8A16 /* Board+CoreDataProperties.swift in Sources */,
-				F8832BBE1C4F97C400D75FAE /* TaskInfoObjectHolder.swift in Sources */,
 				F84D68E81C4CEBA100EF8A16 /* LoginViewController.swift in Sources */,
 				F84B4D651C4E66C70013D7F1 /* TasksViewController.swift in Sources */,
-				F80ABB731C4E8EA300C98540 /* TasksViewController+TaskCloudhandlerDelegate.swift in Sources */,
+				F8067C461C60F88800782E63 /* CurrentUser.swift in Sources */,
 				F84D68CA1C4CEB6900EF8A16 /* ContactsFetcherPreIOS9.swift in Sources */,
 				F84CAD1C1C56363D00BC2ECC /* UserProfileViewController+UIImagePickerControllerDelegate.swift in Sources */,
-				F84B4D671C4E67260013D7F1 /* TasksHolding.swift in Sources */,
 				F858B73F1C57CAC4003BF286 /* CloudRegisteredUsersOperation.swift in Sources */,
 				F80191BE1C50F3E30007D2AF /* SortableByIndex.swift in Sources */,
-				F84D68D31C4CEB6900EF8A16 /* BoardsHolderDelegate.swift in Sources */,
+				F8067C4E1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift in Sources */,
 				F884BC461C60CB960057539E /* BoardsTableViewController+ContactsHandlerDelegate.swift in Sources */,
 				F84D68E51C4CEB6900EF8A16 /* BoardsTableViewController.swift in Sources */,
 				F84D68661C4CEB2E00EF8A16 /* AppDelegate.swift in Sources */,
 				F84D68B61C4CEB6900EF8A16 /* CloudKitDatabaseHandler.swift in Sources */,
 				F84D68F51C4CF8DF00EF8A16 /* BoardEditViewController.swift in Sources */,
-				F80ABB711C4E8A0700C98540 /* TaskCloudHandlerDelegate.swift in Sources */,
 				F84D68C91C4CEB6900EF8A16 /* ContactsFetcherIOS9.swift in Sources */,
-				F8832BC21C4FA27E00D75FAE /* TasksCloudHandler.swift in Sources */,
-				F84D690D1C4D40D000EF8A16 /* BoardsTableViewController+BoardCloudHandlerDelegate.swift in Sources */,
 				F84D68C41C4CEB6900EF8A16 /* Task+CoreDataProperties.swift in Sources */,
 				F84CAD0F1C5624F000BC2ECC /* UserProfileViewController.swift in Sources */,
 				F84D68D81C4CEB6900EF8A16 /* PublicFunctions.swift in Sources */,
 				F84CAD201C563FEB00BC2ECC /* UserDefalutKeys.swift in Sources */,
 				F84D69081C4D3DF400EF8A16 /* BoardEditingHolder.swift in Sources */,
 				F8832BC81C4FE1D200D75FAE /* CloudKitErrorParser.swift in Sources */,
+				F884BC481C60DDF90057539E /* RecordIDStringIndexable.swift in Sources */,
 				F84CAD141C562AF700BC2ECC /* UserProfileHeader.swift in Sources */,
 				F82755CF1C58F804005A1964 /* Extensions+String.swift in Sources */,
 				F84D68D11C4CEB6900EF8A16 /* UserAuthenticationStatus.swift in Sources */,
@@ -764,20 +734,18 @@
 				F84D68C51C4CEB6900EF8A16 /* Task.swift in Sources */,
 				F84D68CC1C4CEB6900EF8A16 /* ContactsHandlerDelegate.swift in Sources */,
 				F84D68E41C4CEB6900EF8A16 /* BoardsHolder.swift in Sources */,
-				F84D69031C4D3A5500EF8A16 /* BoardCloudHandling.swift in Sources */,
 				F84D68F71C4CF8E700EF8A16 /* ContactProfileViewController.swift in Sources */,
 				F88669991C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift in Sources */,
 				F84B4D741C4E720E0013D7F1 /* TaskEditNavigationController.swift in Sources */,
+				F8067C421C60F34000782E63 /* BoardsHolderDelegate.swift in Sources */,
+				F8067C441C60F38300782E63 /* BoardsTableViewController+BoardsHolderDelegate.swift in Sources */,
 				F84D69011C4D2D0500EF8A16 /* AppDelegateError.swift in Sources */,
-				F84B4D6B1C4E6BDC0013D7F1 /* TasksHoldingDelegate.swift in Sources */,
+				F8067C4A1C60F9A800782E63 /* DisplayNameCapable.swift in Sources */,
 				F88669951C577A5200F56C0A /* BoardsTableViewCell.swift in Sources */,
 				F8832BC41C4FB64500D75FAE /* TaskErrors.swift in Sources */,
-				F84B4D6F1C4E709C0013D7F1 /* TasksViewController+TasksHoldingDelegate.swift in Sources */,
 				F84D68BC1C4CEB6900EF8A16 /* ErrorTaskBoard.swift in Sources */,
-				F895CD4D1C5F615D00D08EE9 /* SubscriptionsHandling.swift in Sources */,
 				F84B51741C5A1A010041A248 /* Extensions+UIImage.swift in Sources */,
 				F84D68C61C4CEB6900EF8A16 /* TasksHandlerDataModel.xcdatamodeld in Sources */,
-				F80ABB6F1C4E89F900C98540 /* TaskCloudHandling.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

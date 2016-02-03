@@ -10,5 +10,5 @@ import Foundation
 
 enum BoardEditingType {
     case CreateNew
-    case EditCurrent(board:TaskBoardInfo)
+    case EditCurrent(board:Board)
 }

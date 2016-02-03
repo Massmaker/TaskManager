@@ -10,5 +10,6 @@ import Foundation
 enum TaskError:ErrorType
 {
     case Unknown
+    case WrongRecordType
     case CloudKit(cloudError:NSError)
 }

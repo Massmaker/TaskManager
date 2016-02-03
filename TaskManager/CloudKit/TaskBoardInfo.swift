@@ -36,6 +36,11 @@ struct TaskBoardInfo {
     var dateCreated:NSDate?
     var participants = [String]()
     
+    init(){
+        self.title = ""
+        self.details = ""
+    }
+    
     init(title:String)
     {
         self.title = title
@@ -87,6 +92,27 @@ struct TaskBoardInfo {
     mutating func setCreatorId(string:String?)
     {
         self.creatorId = string
+    }
+    
+    mutating func setInfoFromBoard(board:Board)
+    {
+        self.title = board.title ?? ""
+        self.details = board.details ?? ""
+        self.sortOrderIndex = Int(board.sortOrder)
+        self.creatorId = board.creatorId
+        self.dateCreated = NSDate(timeIntervalSinceReferenceDate: board.dateCreated)
+
+        if let _ = board.recordId
+        {
+            self.recordId = CKRecordID(recordName: board.recordId!)
+        }
+        
+       
+    }
+    
+    mutating func setNewParticipants(participants:[String])
+    {
+        self.participants = participants
     }
 }
 

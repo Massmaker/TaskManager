@@ -9,5 +9,5 @@
 import Foundation
 enum TaskEditType{
     case CreateNew
-    case EditCurrent(task:TaskInfo)
+    case EditCurrent(task:Task)
 }

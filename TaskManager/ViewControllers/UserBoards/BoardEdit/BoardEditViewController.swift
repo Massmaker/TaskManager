@@ -8,6 +8,7 @@
 
 import UIKit
 import Eureka
+import CloudKit
 
 class BoardEditViewController: FormViewController {
     
@@ -20,15 +21,14 @@ class BoardEditViewController: FormViewController {
                     populateTableViewWithBoard(nil)
                 case .EditCurrent(let board):
                     self.title = NSLocalizedString("Edit Board", comment: "")
-                    self.tempParticimantIDs = Set(board.participants)
-                    self.initialParticipantIDs = Set(board.participants)
+                    self.initialParticipantIDs = board.participantIDsSet
+                    self.tempParticimantIDs = board.participantIDsSet
                     populateTableViewWithBoard(board)
             }
         }
     }
     
-    private weak var boardCloudHandler:BoardCloudHandling?
-    private var currentBoard:TaskBoardInfo?
+    private var currentBoard:Board?
     private lazy var initialTitle = ""
     private lazy var initialDetails = ""
     
@@ -55,12 +55,7 @@ class BoardEditViewController: FormViewController {
         self.editingType = type
     }
     
-    func setEditingHandler(handler:BoardCloudHandling?)
-    {
-        self.boardCloudHandler = handler
-    }
-    
-    private func populateTableViewWithBoard(board:TaskBoardInfo?)
+    private func populateTableViewWithBoard(board:Board?)
     {
         let titleSectionTitle = "board title"
         let detailsSectionTitle = "board details"
@@ -78,7 +73,8 @@ class BoardEditViewController: FormViewController {
                             }
                             else //create new board with board title set
                             {
-                                let newBoard = TaskBoardInfo(title:title)
+                                let newBoard = Board()
+                                newBoard.title = title
                                 self.currentBoard = newBoard
                                 self.checkSaveButtonEnabled()
                             }
@@ -95,7 +91,8 @@ class BoardEditViewController: FormViewController {
                             }
                             else //create new board with boardDetails set
                             {
-                                let newBoard = TaskBoardInfo(details: details)
+                                let newBoard = Board()
+                                newBoard.details = details
                                 self.currentBoard = newBoard
                                 self.checkSaveButtonEnabled()
                             }
@@ -182,10 +179,10 @@ class BoardEditViewController: FormViewController {
         addContactsSection()
     }
 
-    private func setupInitialValuesWithBoard(board:TaskBoardInfo)
+    private func setupInitialValuesWithBoard(board:Board)
     {
-        self.initialTitle = board.title
-        self.initialDetails = board.details
+        self.initialTitle = board.title ?? ""
+        self.initialDetails = board.details ?? ""
     }
     
     private func checkEditingEnabled() -> Bool
@@ -277,26 +274,30 @@ class BoardEditViewController: FormViewController {
     
     @IBAction func cancelBarButtonAction(sender:AnyObject?)
     {
-        guard let aHandler = self.boardCloudHandler else
-        {
+        //guard let aHandler = self.boardCloudHandler else
+        //{
             self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
             return
-        }
+        //}
         
-        aHandler.cancelEditingBoard()
+        //aHandler.cancelEditingBoard()
     }
     
     func saveEdits(sender:UIBarButtonItem)
     {
         
-        if var board = self.currentBoard{
+        if let board = self.currentBoard {
             switch self.editingType
             {
                 case .EditCurrent(  _  ):
-                    board.participants = Array(self.tempParticimantIDs)
-                    self.boardCloudHandler?.editBoard(board)
+                    let newParticipants = Array(self.tempParticimantIDs)
+                    var tempTaskBoard = TaskBoardInfo()
+                    tempTaskBoard.setInfoFromBoard(board)
+                    tempTaskBoard.setNewParticipants(newParticipants)
+                
                 case .CreateNew:
-                    self.boardCloudHandler?.submitBoard(board)
+                    var newTempBoard = TaskBoardInfo()
+                    newTempBoard.setInfoFromBoard(board)
             }
         }
         else

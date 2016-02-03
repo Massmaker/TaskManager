@@ -13,7 +13,8 @@ class BoardsTableViewController: UITableViewController {
     lazy var contactsHandler:ContactsHandler = ContactsHandler()
     
     lazy var boardsHolder:BoardsHolder = BoardsHolder()
-    var cloudBoardsHandler:BoardCloudHandling?
+    
+    private var didSubscribeForBoardsSyncNotification = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,21 +26,31 @@ class BoardsTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
         boardsHolder.delegate = self
+        boardsHolder.getBoards()
     }
 
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if !didSubscribeForBoardsSyncNotification
+        {
+            
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "", name: DataSyncronizerDidStopSyncronyzingNotificationName, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "", name: DataSyncronizerDidStopSyncronyzingNotificationName, object: nil)
+            
+            didSubscribeForBoardsSyncNotification = true
+        }
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         ContactsHandler.sharedInstance.delegate = self
-        if self.cloudBoardsHandler == nil
-        {
-            self.cloudBoardsHandler = TaskBoardsHandler(delegate: self)
-            cloudBoardsHandler?.requestUserBoards()
-        }
     }
 
     //MARK: -
@@ -123,9 +134,9 @@ class BoardsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             do{
-                let boardToDelete = try boardsHolder.removeBoardAtIndex(indexPath.row)
+                let deletedBoard = try boardsHolder.removeBoardAtIndex(indexPath.row)
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-                self.cloudBoardsHandler?.deleteBoard(boardToDelete)
+                boardsHolder.deleteFromDatabase(deletedBoard)
             }
             catch
             {
@@ -169,13 +180,14 @@ class BoardsTableViewController: UITableViewController {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if let board = boardsHolder.boardForRow(indexPath.row)
         {
-            self.performSegueWithIdentifier("ShowTasksList", sender: board.recordId) // selected board
+            self.performSegueWithIdentifier("ShowTasksList", sender: board) // selected board
         }
     }
     
     override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
         if let board = boardsHolder.boardForRow(indexPath.row)
         {
+                
             self.performSegueWithIdentifier("PresentBoardEditing", sender: BoardEditingHolder(boardType: BoardEditingType.EditCurrent(board: board))  )
         }
     }
@@ -199,7 +211,6 @@ class BoardsTableViewController: UITableViewController {
                 case "PresentBoardEditing" :
                     if let editingNavController = segue.destinationViewController as? BoardEditNavigationController
                     {
-                        editingNavController.boardEditingHandler = self.cloudBoardsHandler
                         if let senderType = sender as? BoardEditingHolder
                         {
                             editingNavController.boardEditingType = senderType.boardEditingType
@@ -210,10 +221,10 @@ class BoardsTableViewController: UITableViewController {
                         }
                     }
                 case "ShowTasksList":
-                if let boardRecordId = sender as? CKRecordID, tasksListVC = segue.destinationViewController as? TasksViewController
-                {
-                    tasksListVC.boardRecordId = boardRecordId
-                }
+                    if let boardForTasks = sender as? Board, tasksListVC = segue.destinationViewController as? TasksViewController
+                    {
+                        tasksListVC.board = boardForTasks
+                    }
                 default:
                     break
             }

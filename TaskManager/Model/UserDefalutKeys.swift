@@ -10,5 +10,4 @@ import Foundation
 enum UserDefaultKeys:String{
     case FirstNameKey = "FirstName"
     case LastNameKey = "LastName"
-    case EmailKey = "Email"
 }
