@@ -55,6 +55,17 @@ class TaskTableViewCell: UITableViewCell {
                     avatarView.image = currentTaskOwner.avatarImage //ContactsHandler.sharedInstance.contactByPhone(currentTaskOwnerPhone)?.avatarImage
                 }
             }
+            else if let creator = task.creator
+            {
+                if creator == anAppDelegate()!.cloudKitHandler.publicCurrentUser?.recordID.recordName
+                {
+                    avatarView.image = anAppDelegate()?.cloudKitHandler.currentUserAvatar
+                }
+                else if let contact = anAppDelegate()?.coreDatahandler?.findContactByPhone(creator)
+                {
+                    avatarView.image = contact.avatarImage
+                }
+            }
         }
         else
         {

@@ -12,7 +12,7 @@ extension NSDate {
     func dateTimeCustomString() -> String
     {
         let formatter = NSDateFormatter()
-        formatter.dateFormat = "DD.MM.YY HH:MM"
+        formatter.dateFormat = "dd.MM.YY HH:MM"
         let string = formatter.stringFromDate(self)
         return string
     }

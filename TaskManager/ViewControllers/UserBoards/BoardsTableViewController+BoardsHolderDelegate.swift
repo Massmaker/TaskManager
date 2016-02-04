@@ -19,6 +19,7 @@ extension BoardsTableViewController : BoardsHolderDelegate{
     
     func boardsDidFinishUpdating() {
         
+        // perform on main queue
         var currentExecutingQueue:NSOperationQueue?
         
         if let currentQueue = NSOperationQueue.currentQueue() where currentQueue == NSOperationQueue.mainQueue()

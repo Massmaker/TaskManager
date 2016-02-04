@@ -11,21 +11,19 @@ import CloudKit
 
 class TasksViewController:UITableViewController {
     
-    var tasksSource:TasksHolder?
-    var board:Board
-    
+    lazy var tasksSource:TasksHolder = TasksHolder(tableView: self.tableView)
     
     private var userRecordId:CKRecordID?
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        self.board = Board()
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        self.board = Board()
-        super.init(coder: aDecoder)
-    }
+//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+//        //self.board = Board()
+//        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+//    }
+//    
+//    required init?(coder aDecoder: NSCoder) {
+//        //self.board = Board()
+//        super.init(coder: aDecoder)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,29 +32,33 @@ class TasksViewController:UITableViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        startObservingDataSyncronizerNotifications()
         super.viewWillAppear(animated)
-        if tasksSource == nil
-        {
-            tasksSource = TasksHolder(tableView: self.tableView)
-        }
+        
+        //tasksSource = TasksHolder(tableView: self.tableView)
+        tasksSource.delegate = self
         
         checkAddTaskButtonEnabled()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidDisappear(animated: Bool) {
+        stopObservingDataSyncronizerNotifications()
         super.viewDidAppear(animated)
-        tasksSource?.delegate = self
-        if let countTasks = self.tasksSource?.getTasks().count where countTasks == 0
-        {
-            if let _ = self.board.recordId
-            {
-                tasksSource?.setTasks(board.orderedTasks)
-            }
-            else
-            {
-                NSLog(" - TasksViewController will not start fetching tasks for current board: No \"boardRecordId\".\n")
-            }
-        }
+    }
+    
+    //MARK: - 
+    func startObservingDataSyncronizerNotifications()
+    {
+        let center = NSNotificationCenter.defaultCenter()
+        center.addObserver(self.tasksSource, selector: "handleSyncNotification:", name: DataSyncronizerDidStartSyncronyzingNotificationName, object: nil)
+        center.addObserver(self.tasksSource, selector: "handleSyncNotification:", name: DataSyncronizerDidStopSyncronyzingNotificationName, object: nil)
+    }
+    
+    func stopObservingDataSyncronizerNotifications()
+    {
+        let center = NSNotificationCenter.defaultCenter()
+        center.removeObserver(self.tasksSource, name: DataSyncronizerDidStartSyncronyzingNotificationName, object: nil)
+        center.removeObserver(self.tasksSource, name: DataSyncronizerDidStopSyncronyzingNotificationName, object: nil)
     }
     
     //MARK: - UITableVIewDataSource
@@ -69,7 +71,7 @@ class TasksViewController:UITableViewController {
         case 0:
             return 1
         case 1:
-            return self.tasksSource?.getTasks().count ?? 0
+            return self.tasksSource.getTasks().count
         default:
             return 0
         }
@@ -89,7 +91,7 @@ class TasksViewController:UITableViewController {
             return defaultCell
         case 1:
             
-            let targetTask = self.tasksSource?.taskForRow(indexPath.row)
+            let targetTask = self.tasksSource.taskForRow(indexPath.row)
             
             if let taskCell = tableView.dequeueReusableCellWithIdentifier("TaskTableCell", forIndexPath: indexPath) as? TaskTableViewCell
             {                
@@ -141,7 +143,7 @@ class TasksViewController:UITableViewController {
                 self.showTaskEditViewCntroller(nil) //start adding new task
             }
         case 1:
-            if let selectedTask = self.tasksSource?.taskForRow(indexPath.row)
+            if let selectedTask = self.tasksSource.taskForRow(indexPath.row)
             {
                 self.showTaskEditViewCntroller(selectedTask)
             }
@@ -200,7 +202,7 @@ class TasksViewController:UITableViewController {
             print(" Committing None")
         case .Delete:
             print(" Comitting Delete")
-            if let deletionDidHappen = self.tasksSource?.deleteTaskAtIndex(indexPath.row) where deletionDidHappen == true
+            if self.tasksSource.deleteTaskAtIndex(indexPath.row)
             {
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             }
@@ -208,6 +210,7 @@ class TasksViewController:UITableViewController {
     }
     
     //MARK: -
+    /// if current user id is nil returns false
     private func checkAddTaskButtonEnabled() -> Bool
     {
         //checks "Plus" button on the NavBar right
@@ -221,9 +224,9 @@ class TasksViewController:UITableViewController {
         {
             self.performSegueWithIdentifier("StartEditTask", sender: taskToEdit)
         }
-        else if self.board.recordId != nil
+        else if self.tasksSource.board?.recordId != nil
         {
-            self.performSegueWithIdentifier("StartEditTask", sender: self.board)
+            self.performSegueWithIdentifier("StartEditTask", sender: self.tasksSource.board!)
         }
         else
         {

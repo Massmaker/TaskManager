@@ -112,8 +112,8 @@ func createBoardRecordFrom(board:Board) throws -> CKRecord
     }
     
     newBoardRecord[BoardCreatorIDKey] = creator
-    newBoardRecord[BoardTitleKey] = title
-    newBoardRecord[BoardDetailsKey] = board.details
+    newBoardRecord[TitleStringKey] = title
+    newBoardRecord[DetailsStringKey] = board.details
     newBoardRecord[SortOrderIndexIntKey] = NSNumber(integer: Int(board.sortOrder))
     
     //fill participants field if present
@@ -128,17 +128,13 @@ func createBoardRecordFrom(board:Board) throws -> CKRecord
     //fill task references field if present
     var references = [CKReference]()
     
-    let boardTasks = board.orderedTasks
-    if !boardTasks.isEmpty
+    if let boardTasks = board.taskIDs as? [String]
     {
-        for aTask in boardTasks
+        for aTaskRecordName in boardTasks
         {
-            if let taskID = aTask.recordId
-            {
-                let recordId = CKRecordID(recordName: taskID)
-                let taskReference = CKReference(recordID: recordId, action: .DeleteSelf)
-                references.append(taskReference)
-            }
+            let recordId = CKRecordID(recordName: aTaskRecordName)
+            let taskReference = CKReference(recordID: recordId, action: .DeleteSelf)
+            references.append(taskReference)
         }
     }
     
@@ -147,36 +143,4 @@ func createBoardRecordFrom(board:Board) throws -> CKRecord
     return newBoardRecord
 }
 
-func createBoardFromRecord(boardRecord:CKRecord) throws -> Board
-{
-    let recordType = boardRecord.recordType
-    guard recordType == CloudRecordTypes.TaskBoard.rawValue else
-    {
-        throw TaskError.WrongRecordType
-    }
-    
-    guard let title = boardRecord[TitleStringKey] as? String, creator = boardRecord[BoardCreatorIDKey] as? String else
-    {
-        throw TaskError.CloudKit(cloudError:
-                NSError(domain: "com.TaskManager.ConvertingError", code: -11, userInfo: [NSLocalizedDescriptionKey:"unknown board creator or board title values", NSLocalizedFailureReasonErrorKey:"Wrong Required parameters"]) )
-    }
-    
-    let board = Board()
-    board.title = title
-    board.creatorId = creator
-    board.details = boardRecord[DetailsStringKey] as? String
-    board.sortOrder = Int64(boardRecord[SortOrderIndexIntKey] as? Int ?? 0)
-    board.recordId = boardRecord.recordID.recordName
-    board.dateCreated = boardRecord.creationDate?.timeIntervalSinceReferenceDate ?? 0.0
-    if let participantReferences = boardRecord[BoardParticipantsKey] as? [CKReference]
-    {
-        let strings = NSMutableSet(capacity: participantReferences.count)
-        for aParticipant in participantReferences
-        {
-            strings.addObject(aParticipant.recordID.recordName)
-        }
-        board.participants = NSSet(set: strings)
-    }
-    return board
-}
 

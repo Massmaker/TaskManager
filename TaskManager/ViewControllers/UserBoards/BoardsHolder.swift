@@ -134,7 +134,7 @@ class BoardsHolder {
         delegate?.boardsDidFinishUpdating()
     }
     
-    private func fetchBoardsFromCoreData()
+    func fetchBoardsFromCoreData()
     {
         if let coreDatahandler = anAppDelegate()?.coreDatahandler
         {

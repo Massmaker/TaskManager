@@ -6,7 +6,7 @@
 //  Copyright © 2016 CloudCraft. All rights reserved.
 //
 
-let DataSyncronizerDidStartSyncronizyngNotificationName = "DataSyncronizerDidStartSyncronizyngNotification"
+let DataSyncronizerDidStartSyncronyzingNotificationName = "DataSyncronizerDidStartSyncronizyngNotification"
 let DataSyncronizerDidStopSyncronyzingNotificationName = "DataSyncronizerDidStopSyncronyzingNotification"
 
 import UIKit
@@ -19,6 +19,8 @@ class DataSyncronizer {
     var isSyncing:Bool{
         return syncing
     }
+    
+    lazy var center = NSNotificationCenter.defaultCenter()
     
     private var syncing = false
 
@@ -33,7 +35,7 @@ class DataSyncronizer {
         syncing = true
         objc_sync_exit(self)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStartSyncronizyngNotificationName, object: DataSyncronizer.sharedSyncronizer)
+        NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStartSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
         
         let group = dispatch_group_create()
         dispatch_group_enter(group)
@@ -67,7 +69,7 @@ class DataSyncronizer {
         syncing = true
         objc_sync_exit(self)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStartSyncronizyngNotificationName, object: DataSyncronizer.sharedSyncronizer)
+        NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStartSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
         
         let dispatchGroupForBoards = dispatch_group_create()
         
@@ -81,51 +83,135 @@ class DataSyncronizer {
             {
                 boardRecordsToSave += boards
             }
-            
-            anAppDelegate()?.cloudKitHandler.queryForBoardsSharedWithMe(){ (boards, fetchError) -> () in
-                if let sharedBoards = boards
-                {
-                    boardRecordsToSave += sharedBoards
-                }
-                dispatch_group_leave(dispatchGroupForBoards)
-            }
+            dispatch_group_leave(dispatchGroupForBoards)
         }
+        
+        dispatch_group_enter(dispatchGroupForBoards)
+        anAppDelegate()?.cloudKitHandler.queryForBoardsSharedWithMe(){ (boards, fetchError) -> () in
+            if let sharedBoards = boards
+            {
+                boardRecordsToSave += sharedBoards
+            }
+            dispatch_group_leave(dispatchGroupForBoards)
+        }
+        
+        
         
         dispatch_group_wait(dispatchGroupForBoards, timeout)
         
+        dispatch_group_notify(dispatchGroupForBoards, dispatch_get_main_queue()){[unowned self] in
+            self.saveInMainThread(boardRecordsToSave)
+            
+            print("didLoad boards: \(boardRecordsToSave.count) ")
+            
+            objc_sync_enter(self)
+            self.syncing = false
+            objc_sync_exit(self)
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
+            
+        }
+    }
+    
+    func startSyncingTasksFor(board:Board)
+    {
+        if !self.syncing
+        {
+            objc_sync_enter(self)
+            self.syncing = true
+            objc_sync_exit(self)
+
+            center.postNotificationName(DataSyncronizerDidStartSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
+            
+            var boardRecord = CKRecord(recordType: "TaskBoard")
+            
+            do{
+                boardRecord = try createBoardRecordFrom(board)
+            }
+            catch{
+                
+                objc_sync_enter(self)
+                self.syncing = false
+                center.postNotificationName(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
+                objc_sync_exit(self)
+                
+                return
+            }
+            
+            if boardRecord[BoardTasksReferenceListKey] == nil
+            {
+                objc_sync_enter(self)
+                self.syncing = false
+                center.postNotificationName(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
+                objc_sync_exit(self)
+                return
+            }
+            
+            
+            var taskRecords = [CKRecord]()
+            
+            let group = dispatch_group_create()
+            let timeout30Sec = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 30.0))
+            
+            dispatch_group_enter(group)
+            print("\n - tasks for board did start loading")
+            anAppDelegate()?.cloudKitHandler.loadTasksForBoard(boardRecord) { (tasks, error) -> () in
+                if let tasksRecs = tasks
+                {
+                    taskRecords = tasksRecs
+                }
+                print("\n - tasks for board did finish loading")
+                dispatch_group_leave(group)
+            }
+            
+            print("\n - waiting for tasks finished")
+            dispatch_group_wait(group, timeout30Sec)
+            print("\n - waited for tasks finished")
+            
+            
+            dispatch_group_notify(group, dispatch_get_main_queue()) {[unowned self] in
+                
+                self.saveInMainThreadTasks(taskRecords, forBoard: board)
+                objc_sync_enter(self)
+                self.syncing = false
+                objc_sync_exit(self)
+                
+                NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
+            }
+            
+        }
+    }
+    
+    private func saveInMainThread(records:[CKRecord])
+    {
+        guard let coreDataHandler = anAppDelegate()?.coreDatahandler else
+        {
+            return
+        }
         
-        let localDatabaseGroup = dispatch_group_create()
-        
-        let dbTimeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 30.0))
-        
-        
-        dispatch_group_enter(localDatabaseGroup)
-        
-        for aRecord in boardRecordsToSave
+        for aRecord in records
         {
             do{
-                let boardToSaveToCoreData = try createBoardFromRecord(aRecord)
-                anAppDelegate()?.coreDatahandler?.insert(boardToSaveToCoreData, saveImmediately: false)
+                let _ = try coreDataHandler.createBoardFromRecord(aRecord)
+                //coreDataHandler.insert(boardToSaveToCoreData, saveImmediately: false)
             }
             catch{
                 
             }
         }
         
-        anAppDelegate()?.coreDatahandler?.saveMainContext()
+        coreDataHandler.saveMainContext()
+    }
+    
+    private func saveInMainThreadTasks(tasks:[CKRecord], forBoard board:Board)
+    {
+        guard let coreDataHandler = anAppDelegate()?.coreDatahandler else
+        {
+            return
+        }
         
-        dispatch_group_leave(localDatabaseGroup)
-        
-        
-        dispatch_group_wait(localDatabaseGroup, dbTimeout)
-        
-        print("didLoad boards: \(boardRecordsToSave.count) ")
-        
-        objc_sync_enter(self)
-        syncing = false
-        objc_sync_exit(self)
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
+        coreDataHandler.insertTaskRecords(tasks, forBoard: board, saveImmediately: false)
+        coreDataHandler.saveMainContext()
     }
     
 }

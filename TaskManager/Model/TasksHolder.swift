@@ -9,7 +9,11 @@
 import UIKit
 import CloudKit
 
-class TasksHolder {
+class TasksHolder:NSObject {
+    
+    override init() {
+        super.init()
+    }
     
     
     //MARK: - TasksHolding
@@ -18,10 +22,27 @@ class TasksHolder {
     private lazy var currentTasks:[Task] = [Task]()
     
     weak var delegate:TasksHolderDelegate?
+    weak var board:Board?{
+        didSet{
+            
+            let _ = currentTasks.count
+            
+            if let tasks = board?.orderedTasks
+            {
+                self.currentTasks = tasks
+            }
+            
+            if self.currentTasks.isEmpty && self.board != nil
+            {
+                DataSyncronizer.sharedSyncronizer.startSyncingTasksFor(self.board!)
+            }
+        }
+    }
     
     required init(tableView: UITableView) {
         self.table = tableView
     }
+    
     
     func setTasks(tasks:[Task])
     {
@@ -47,7 +68,7 @@ class TasksHolder {
         return nil
     }
     
-    func delete(task:Task)
+    func deleteTask(task:Task)
     {
         if let index = self.currentTasks.indexOf(task)
         {
@@ -92,5 +113,21 @@ class TasksHolder {
     func insertNewTask(taskToInsert:Task)
     {
         
+    }
+    
+    
+    func handleSyncNotification(note:NSNotification)
+    {
+        switch note.name
+        {
+        case DataSyncronizerDidStartSyncronyzingNotificationName:
+            self.delegate?.tasksWillStartUpdating()
+        case DataSyncronizerDidStopSyncronyzingNotificationName:
+            self.setTasks(board!.orderedTasks)
+            self.table?.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Automatic)
+            self.delegate?.tasksDidFinishUpdating()
+        default:
+            break
+        }
     }
 }

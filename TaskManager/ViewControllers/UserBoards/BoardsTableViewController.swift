@@ -20,16 +20,15 @@ class BoardsTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.tableView.estimatedRowHeight = 69
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        ///----
         boardsHolder.delegate = self
         boardsHolder.getBoards()
     }
 
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -41,10 +40,13 @@ class BoardsTableViewController: UITableViewController {
         if !didSubscribeForBoardsSyncNotification
         {
             
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "", name: DataSyncronizerDidStopSyncronyzingNotificationName, object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "", name: DataSyncronizerDidStopSyncronyzingNotificationName, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "dataSyncronizerDidStartSyncing", name: DataSyncronizerDidStartSyncronyzingNotificationName, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "dataSyncronizerDidFinishSyncing", name: DataSyncronizerDidStopSyncronyzingNotificationName, object: nil)
             
             didSubscribeForBoardsSyncNotification = true
+            
+            DataSyncronizer.sharedSyncronizer.startSyncingBoards()
+            
         }
     }
     
@@ -203,6 +205,21 @@ class BoardsTableViewController: UITableViewController {
         self.performSegueWithIdentifier("PresentBoardEditing", sender: nil)
     }
     
+    func dataSyncronizerDidStartSyncing()
+    {
+        self.tableView.scrollEnabled = false
+    }
+    
+    func dataSyncronizerDidFinishSyncing()
+    {
+        boardsHolder.fetchBoardsFromCoreData()
+        
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+        
+        self.tableView.scrollEnabled = true
+    }
+    
+    //MARK: - Segue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let identifier = segue.identifier
         {
@@ -223,7 +240,7 @@ class BoardsTableViewController: UITableViewController {
                 case "ShowTasksList":
                     if let boardForTasks = sender as? Board, tasksListVC = segue.destinationViewController as? TasksViewController
                     {
-                        tasksListVC.board = boardForTasks
+                        tasksListVC.tasksSource.board = boardForTasks
                     }
                 default:
                     break

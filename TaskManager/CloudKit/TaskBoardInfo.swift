@@ -8,11 +8,6 @@
 import CloudKit
 import Foundation
 
-let BoardCreatorIDKey = "boardCreator"
-let BoardTitleKey = "boardTitle"
-let BoardDetailsKey = "boardDetails"
-let BoardParticipantsKey = "participants"
-
 
 struct TaskBoardInfo {
    
@@ -68,8 +63,8 @@ struct TaskBoardInfo {
             return nil
         }
         
-        self.title = record[BoardTitleKey] as! String
-        self.details = record[BoardDetailsKey] as! String
+        self.title = record[TitleStringKey] as! String
+        self.details = record[DetailsStringKey] as! String
         self.recordId = record.recordID
         self.dateCreated = record.creationDate
         

@@ -50,7 +50,7 @@ class User: NSManagedObject {
         {
             if self.isRegistered
             {
-                print(" - User is regitered")
+                //print(" - User is regitered")
             }
             else
             {

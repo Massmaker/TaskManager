@@ -14,15 +14,16 @@ import CoreData
 
 extension Task {
 
+    @NSManaged var title: String?
+    @NSManaged var details: String?
     @NSManaged var toBeDeleted:Bool
     @NSManaged var changeTag: String?
     @NSManaged var dateFinished: NSTimeInterval
     @NSManaged var dateTaken: NSTimeInterval
     @NSManaged var dateCreated:NSTimeInterval
-    @NSManaged var details: String?
+    
     @NSManaged var recordId: String?
     @NSManaged var sortOrder: Int64
-    @NSManaged var title: String?
     @NSManaged var creator:String?
     
     @NSManaged var board: Board?

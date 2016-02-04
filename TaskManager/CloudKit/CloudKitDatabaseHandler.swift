@@ -573,7 +573,7 @@ class CloudKitDatabaseHandler{
         
         let predicate = NSPredicate(format: "SELF.participants CONTAINS %@", user.recordID.recordName)
         let publicQuery = CKQuery(recordType: CloudRecordTypes.TaskBoard.rawValue, predicate: predicate)
-        publicQuery.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: true)]
+        publicQuery.sortDescriptors = [NSSortDescriptor(key: SortOrderIndexIntKey, ascending: true)]
         
         publicDB.performQuery(publicQuery, inZoneWithID: nil) { (sharedBoardRecords, fetchError) in
             let result = CloudKitErrorParser.handleCloudKitErrorAs(fetchError)
@@ -647,8 +647,8 @@ class CloudKitDatabaseHandler{
                     let currentBoard = try createBoardRecordFrom(boardInfo)
                     //let boardToUpdate = foundBoard
                     foundBoard[SortOrderIndexIntKey] = NSNumber(integer: Int(boardInfo.sortOrder))
-                    foundBoard[BoardTitleKey] = boardInfo.title
-                    foundBoard[BoardDetailsKey] = boardInfo.details
+                    foundBoard[TitleStringKey] = boardInfo.title
+                    foundBoard[DetailsStringKey] = boardInfo.details
                     foundBoard[BoardParticipantsKey] = currentBoard[BoardParticipantsKey]
                     foundBoard[BoardTasksReferenceListKey] = currentBoard[BoardTasksReferenceListKey]
                     
@@ -722,16 +722,16 @@ class CloudKitDatabaseHandler{
 
         fetchRecordsOp.qualityOfService = .UserInitiated
         
-        fetchRecordsOp.perRecordCompletionBlock = { record, recordId, error in
-            if let _ = record
-            {
-                print("fetched record per \(recordId!)")
-            }
-            else
-            {
-                print("error per \(recordId!) : \n \(error!)")
-            }
-        }
+//        fetchRecordsOp.perRecordCompletionBlock = { record, recordId, error in
+//            if let _ = record
+//            {
+//                print("fetched record per \(recordId!)")
+//            }
+//            else
+//            {
+//                print("error per \(recordId!) : \n \(error!)")
+//            }
+//        }
         
         fetchRecordsOp.fetchRecordsCompletionBlock = { (recordsDict, error) in
             if let fetchedTasks = recordsDict
@@ -741,10 +741,12 @@ class CloudKitDatabaseHandler{
                 {
                     taskRecords.append(aTaskRec)
                 }
+                completion(tasks: taskRecords, error: nil)
             }
             else if let error = error
             {
                 let errorResult =  CloudKitErrorParser.handleCloudKitErrorAs(error)
+                completion(tasks: nil, error: error)
             }
         }
         

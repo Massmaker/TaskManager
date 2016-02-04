@@ -357,13 +357,20 @@ class CoreDataManager
     {
         let fetchRequest = NSFetchRequest(entityName: "Board")
         fetchRequest.fetchLimit = 1
-        fetchRequest.predicate = NSPredicate(format: "recordId = \(recordIdString)")
+        fetchRequest.predicate = NSPredicate(format: "recordId = %@", recordIdString)
+        
+        var toReturn:Board?
         
         do
         {
-            if let boardsFound = try self.mainQueueManagedObjectContext.executeFetchRequest(fetchRequest) as? [Board] where !boardsFound.isEmpty
+            if var boardsFound = try self.mainQueueManagedObjectContext.executeFetchRequest(fetchRequest) as? [Board] where !boardsFound.isEmpty
             {
-                return boardsFound.first!
+                toReturn = boardsFound.removeFirst()
+                
+                for aBoard in boardsFound
+                {
+                    self.mainQueueManagedObjectContext.deleteObject(aBoard)
+                }
             }
             //else the bottom 'return nil' will be executed
         }
@@ -372,7 +379,7 @@ class CoreDataManager
             NSLog(" - findBoardByRecordId fetch error: \n \(fetchError)")
         }
         
-        return nil
+        return toReturn
     }
     
     func insert(boards:[TaskBoardInfo]) throws -> [TaskBoardInfo]
@@ -470,12 +477,12 @@ class CoreDataManager
     {
         board.setValue(nil, forKey: "tasks")
         
-        board.addTasks(tasks)
+        //board.addTasks(tasks)
         
-//        for aTask in tasks
-//        {
-//            aTask.board = board
-//        }
+        for aTask in tasks
+        {
+            aTask.board = board
+        }
         
         if saveImmediately {
             do{
@@ -554,14 +561,145 @@ class CoreDataManager
             throw toThrow!
         }
     }
+    
+    func createBoardFromRecord(boardRecord:CKRecord) throws -> Board
+    {
+        let recordType = boardRecord.recordType
+        guard recordType == CloudRecordTypes.TaskBoard.rawValue else
+        {
+            throw TaskError.WrongRecordType
+        }
+        
+        guard let title = boardRecord[TitleStringKey] as? String, creator = boardRecord[BoardCreatorIDKey] as? String else
+        {
+            throw TaskError.CloudKit(cloudError:
+                NSError(domain: "com.TaskManager.ConvertingError", code: -11, userInfo: [NSLocalizedDescriptionKey:"unknown board creator or board title values", NSLocalizedFailureReasonErrorKey:"Wrong Required parameters"]) )
+        }
+        
+        if let boardFound = self.findBoardByRecordId(boardRecord.recordID.recordName)
+        {
+            boardFound.title = title
+            boardFound.creatorId = creator
+            boardFound.details = boardRecord[DetailsStringKey] as? String
+            boardFound.sortOrder = Int64(boardRecord[SortOrderIndexIntKey] as? Int ?? 0)
+            boardFound.recordId = boardRecord.recordID.recordName
+            boardFound.dateCreated = boardRecord.creationDate?.timeIntervalSinceReferenceDate ?? 0.0
+            if let participantReferences = boardRecord[BoardParticipantsKey] as? [CKReference]
+            {
+                let strings = NSMutableSet(capacity: participantReferences.count)
+                for aParticipant in participantReferences
+                {
+                    strings.addObject(aParticipant.recordID.recordName)
+                }
+                boardFound.participants = NSSet(set: strings)
+            }
+            
+            if let boardTasksReferences = boardRecord[BoardTasksReferenceListKey] as? [CKReference]
+            {
+                let taskIDsArray = NSMutableArray()
+                for aRef in boardTasksReferences
+                {
+                    taskIDsArray.addObject(aRef.recordID.recordName)
+                }
+                
+                boardFound.taskIDs = taskIDsArray
+            }
+            return boardFound
+        }
+        
+       
+        
+        guard let board = NSEntityDescription.insertNewObjectForEntityForName("Board", inManagedObjectContext: self.mainQueueManagedObjectContext) as? Board else
+        {
+            throw TaskError.Unknown
+        }
+        
+        board.title = title
+        board.creatorId = creator
+        board.details = boardRecord[DetailsStringKey] as? String
+        board.sortOrder = Int64(boardRecord[SortOrderIndexIntKey] as? Int ?? 0)
+        board.recordId = boardRecord.recordID.recordName
+        board.dateCreated = boardRecord.creationDate?.timeIntervalSinceReferenceDate ?? 0.0
+        if let participantReferences = boardRecord[BoardParticipantsKey] as? [CKReference]
+        {
+            let strings = NSMutableSet(capacity: participantReferences.count)
+            for aParticipant in participantReferences
+            {
+                strings.addObject(aParticipant.recordID.recordName)
+            }
+            board.participants = NSSet(set: strings)
+        }
+        
+        if let boardTasksReferences = boardRecord[BoardTasksReferenceListKey] as? [CKReference]
+        {
+            let taskIDsArray = NSMutableArray()
+            for aRef in boardTasksReferences
+            {
+                taskIDsArray.addObject(aRef.recordID.recordName)
+            }
+            
+            board.taskIDs = taskIDsArray
+        }
+        
+        return board
+    }
 
     //MARK: - Tasks
-    func insertTaskRecords(records:[CKRecord])
+    func insertTaskRecords(records:[CKRecord], forBoard board:Board, saveImmediately:Bool)
     {
         for aRecord in records
         {
-            let task = Task()
+            if let foundTask = findTaskById(aRecord.recordID.recordName)
+            {
+                //update task
+                foundTask.board = board
+           
+                foundTask.recordId = aRecord.recordID.recordName
+                
+                foundTask.changeTag = aRecord.recordChangeTag// optional
+                
+                foundTask.sortOrder = aRecord[SortOrderIndexIntKey] as? Int64 ?? 0
+                foundTask.title = aRecord[TitleStringKey] as? String
+                foundTask.details = aRecord[DetailsStringKey] as? String
+                foundTask.creator = aRecord[TaskCreatorStringKey] as? String
+                foundTask.dateCreated = aRecord.creationDate!.timeIntervalSinceReferenceDate
+                foundTask.dateFinished = (aRecord[DateFinishedDateKey] as? NSDate)?.timeIntervalSinceReferenceDate ?? 0.0
+                foundTask.dateTaken = (aRecord[DateTakenDateKey] as? NSDate)?.timeIntervalSinceReferenceDate ?? 0.0
+                if let ownerID = aRecord[CurrentOwnerStringKey] as? String, userFound = findContactByPhone(ownerID)
+                {
+                    foundTask.currentOwner = userFound
+                }
+            }
+            else
+            {
+                //insert new task
+                guard let newTask = NSEntityDescription.insertNewObjectForEntityForName("Task", inManagedObjectContext: mainQueueManagedObjectContext) as? Task else
+                {
+                    continue
+                }
+                newTask.board = board
+                newTask.recordId = aRecord.recordID.recordName
+                
+                newTask.changeTag = aRecord.recordChangeTag// optional
+                
+                newTask.sortOrder = aRecord[SortOrderIndexIntKey] as? Int64 ?? 0
+                newTask.title = aRecord[TitleStringKey] as? String
+                newTask.details = aRecord[DetailsStringKey] as? String
+                newTask.creator = aRecord[TaskCreatorStringKey] as? String
+                newTask.dateCreated = aRecord.creationDate!.timeIntervalSinceReferenceDate
+                newTask.dateFinished = (aRecord[DateFinishedDateKey] as? NSDate)?.timeIntervalSinceReferenceDate ?? 0.0
+                newTask.dateTaken = (aRecord[DateTakenDateKey] as? NSDate)?.timeIntervalSinceReferenceDate ?? 0.0
+                if let ownerID = aRecord[CurrentOwnerStringKey] as? String, userFound = findContactByPhone(ownerID)
+                {
+                    newTask.currentOwner = userFound
+                }
+            }
             
+        }
+        
+        if saveImmediately
+        {
+            self.saveMainContext()
         }
     }
     

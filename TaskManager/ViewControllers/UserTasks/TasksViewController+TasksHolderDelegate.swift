@@ -8,13 +8,14 @@
 
 import Foundation
 extension TasksViewController : TasksHolderDelegate {
+    
     func tasksWillStartUpdating()
     {
-        
+        setLoadingIndicatorVisible(true)
     }
     
     func tasksDidFinishUpdating()
     {
-        
+        setLoadingIndicatorVisible(false)
     }
 }
