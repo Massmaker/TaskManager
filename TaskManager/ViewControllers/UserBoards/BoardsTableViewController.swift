@@ -27,6 +27,11 @@ class BoardsTableViewController: UITableViewController {
         ///----
         boardsHolder.delegate = self
         boardsHolder.getBoards()
+        let frame = CGRectMake(0, 0, 200, 60)
+        self.refreshControl = UIRefreshControl(frame: frame)
+        
+        self.refreshControl?.addTarget(self, action: "pullLatestBoardsFromCloud:", forControlEvents: .ValueChanged)
+        
     }
 
     
@@ -68,14 +73,6 @@ class BoardsTableViewController: UITableViewController {
         }
         return false
     }
-    
-    func reloadTableViewInMainThread()
-    {
-        dispatch_async(dispatch_get_main_queue()){[weak self] in
-            self?.tableView.reloadData()
-        }
-    }
-    
     
     // MARK: - Table view data source
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -213,11 +210,37 @@ class BoardsTableViewController: UITableViewController {
     
     func dataSyncronizerDidFinishSyncing()
     {
+        boardsHolder.removeAllBoardsFromSelf()
+        
         boardsHolder.fetchBoardsFromCoreData()
         
         self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
         
         self.tableView.scrollEnabled = true
+        
+        if let control = self.refreshControl
+        {
+            if control.refreshing
+            {
+                self.refreshControl?.endRefreshing()
+            }
+        }
+    }
+    
+    func pullLatestBoardsFromCloud(sender:UIRefreshControl)
+    {
+        DataSyncronizer.sharedSyncronizer.startSyncingBoards()
+        let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 20.0))
+        
+        dispatch_after(timeout, dispatch_get_main_queue(), { () -> Void in
+            if let control = self.refreshControl
+            {
+                if control.refreshing
+                {
+                    control.endRefreshing()
+                }
+            }
+        })
     }
     
     //MARK: - Segue

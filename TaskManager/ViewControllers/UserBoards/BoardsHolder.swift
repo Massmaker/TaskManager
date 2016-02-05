@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class BoardsHolder {
+class BoardsHolder : NSObject { 
     
     //MARK: -
     convenience init(delegate:BoardsHolderDelegate)
@@ -192,6 +192,51 @@ class BoardsHolder {
         }
         
         anAppDelegate()?.coreDatahandler?.saveMainContext()
+        
+        anAppDelegate()?.cloudKitHandler.editMany(currentBoards) { (edited, deleted, error) -> () in
+            
+            dispatchMain(){
+                
+                if let edited = edited
+                {
+                    for editedBoardRecord in edited
+                    {
+                        do{
+                            try anAppDelegate()?.coreDatahandler?.createBoardFromRecord(editedBoardRecord)
+                        }
+                        catch{
+                            
+                        }
+                    }
+                }
+                
+                if let deletedIDs = deleted
+                {
+                    var boardIDs = [String]()
+                    for anID in deletedIDs
+                    {
+                       boardIDs.append(anID.recordName)
+                    }
+                    do{
+                        try anAppDelegate()?.coreDatahandler?.deleteBoardsByIDs(boardIDs, saveImmediately: false)
+                    }
+                    catch let error{
+                        print("\n - ERROR: Could not delete boards by board IDs")
+                        print(error)
+                    }
+                }
+                
+                if let error = error
+                {
+                    print(" - error updating Boards in CloudKit:")
+                    print(error)
+                }
+                
+                anAppDelegate()?.coreDatahandler?.saveMainContext()
+                
+                self.fetchBoardsFromCoreData()
+            }
+        }
     }
     
     ///fetches boards and sets result to current Boards
@@ -203,6 +248,11 @@ class BoardsHolder {
             
             self.currentBoards = boardsFromCoreData
         }
+    }
+    
+    func removeAllBoardsFromSelf()
+    {
+        self.currentBoards.removeAll()
     }
  
 }

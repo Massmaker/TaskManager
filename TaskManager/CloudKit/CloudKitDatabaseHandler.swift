@@ -674,6 +674,63 @@ class CloudKitDatabaseHandler{
         return true
     }
     
+    func editMany(boards:[Board], completion:((edited:[CKRecord]?, deleted:[CKRecordID]?, error:NSError?)->()))
+    {
+        if boards.isEmpty
+        {
+            completion(edited: nil, deleted:nil,  error: nil)
+            return
+        }
+        
+        var boardRecordsToSave:[CKRecord]? = [CKRecord]()
+        var boardIDsToDelete:[CKRecordID]? = [CKRecordID]()
+        
+        for aBoard in boards
+        {
+            do{
+                let record = try createBoardRecordFrom(aBoard)
+                if aBoard.toBeDeleted
+                {
+                    boardIDsToDelete?.append(record.recordID)
+                }
+                else
+                {
+                    boardRecordsToSave?.append(record)
+                }
+            }
+            catch{
+                continue
+            }
+        }
+        
+        if boardIDsToDelete!.isEmpty
+        {
+            boardIDsToDelete = nil
+        }
+        if boardRecordsToSave!.isEmpty
+        {
+            boardRecordsToSave = nil
+        }
+        
+        
+        if boardIDsToDelete == nil && boardRecordsToSave == nil
+        {
+            completion(edited: nil, deleted:nil, error: nil)
+            return
+        }
+        
+        print("\n - will edit boards: \(boardRecordsToSave?.count)")
+        print("\n - will deleteBoards: \(boardIDsToDelete?.count)")
+        
+        let editOperation = CKModifyRecordsOperation(recordsToSave: boardRecordsToSave, recordIDsToDelete: boardIDsToDelete)
+        editOperation.qualityOfService = .Utility
+        editOperation.savePolicy = .ChangedKeys
+        editOperation.modifyRecordsCompletionBlock = completion
+        
+        self.publicDB.addOperation(editOperation)
+        
+    }
+    
     func deleteBoardWithID(recordId:CKRecordID, completion:((deletedRecordId:CKRecordID?, error:NSError?)->()))
     {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true

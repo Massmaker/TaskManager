@@ -448,7 +448,7 @@ class CoreDataManager
         }
     }
     
-    func deleteBoardsByIDs(boardIDs:[String]) throws
+    func deleteBoardsByIDs(boardIDs:[String], saveImmediately:Bool = true) throws
     {
         var toDelete = [Board]()
         for anID in boardIDs
@@ -495,7 +495,7 @@ class CoreDataManager
                     }
                 }
                 
-                if lvContext.hasChanges
+                if saveImmediately && lvContext.hasChanges
                 {
                     do{
                         try lvContext.save()
