@@ -19,7 +19,7 @@ class Task: NSManagedObject {
         self.title = record[TitleStringKey] as? String
         self.details = record[DetailsStringKey] as? String
         self.sortOrder = record[SortOrderIndexIntKey] as? Int64 ?? 0
-        
+        self.creator = record[TaskCreatorStringKey] as? String
         self.recordId = record.recordID.recordName
         self.changeTag = record.recordChangeTag
         

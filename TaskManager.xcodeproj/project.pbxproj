@@ -102,6 +102,7 @@
 		F8DD67581C5A0EB300258E44 /* Extensions+NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */; };
 		F8DD675E1C5A15C500258E44 /* BoardDetailsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */; };
 		F8DD67601C5A15ED00258E44 /* BoardDetailsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */; };
+		F8E4DFE51C649CBD008E4F49 /* TempTaskInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E4DFE41C649CBD008E4F49 /* TempTaskInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -205,6 +206,7 @@
 		F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+NSDate.swift"; sourceTree = "<group>"; };
 		F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardDetailsHeader.swift; sourceTree = "<group>"; };
 		F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BoardDetailsHeader.xib; sourceTree = "<group>"; };
+		F8E4DFE41C649CBD008E4F49 /* TempTaskInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempTaskInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -370,6 +372,7 @@
 				F84CAD1D1C563F9300BC2ECC /* UserDefaultsManager.swift */,
 				F84CAD1F1C563FEB00BC2ECC /* UserDefalutKeys.swift */,
 				F895CD4E1C5F63A100D08EE9 /* SubscriptionsHandling */,
+				F8E4DFE41C649CBD008E4F49 /* TempTaskInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -704,6 +707,7 @@
 				F895CD521C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift in Sources */,
 				F895CD541C5F8B7F00D08EE9 /* NotificationsHandler.swift in Sources */,
 				F84D68CB1C4CEB6900EF8A16 /* ContactsHandler.swift in Sources */,
+				F8E4DFE51C649CBD008E4F49 /* TempTaskInfo.swift in Sources */,
 				F84D68C21C4CEB6900EF8A16 /* Board+CoreDataProperties.swift in Sources */,
 				F84D68E81C4CEBA100EF8A16 /* LoginViewController.swift in Sources */,
 				F84B4D651C4E66C70013D7F1 /* TasksViewController.swift in Sources */,

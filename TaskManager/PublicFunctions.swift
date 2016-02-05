@@ -133,7 +133,7 @@ func createBoardRecordFrom(board:Board) throws -> CKRecord
         for aTaskRecordName in boardTasks
         {
             let recordId = CKRecordID(recordName: aTaskRecordName)
-            let taskReference = CKReference(recordID: recordId, action: .DeleteSelf)
+            let taskReference = CKReference(recordID: recordId, action: .None)
             references.append(taskReference)
         }
     }

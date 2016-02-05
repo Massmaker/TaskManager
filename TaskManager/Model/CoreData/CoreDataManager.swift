@@ -382,68 +382,6 @@ class CoreDataManager
         return toReturn
     }
     
-    func insert(boards:[TaskBoardInfo]) throws -> [TaskBoardInfo]
-    {
-        var failedBoards = [TaskBoardInfo]()
-        var errorToThrow:ErrorType? = nil
-        
-        let saveOperation = NSBlockOperation(){
-            for aBoardInfo in boards
-            {
-                guard let recordIdString = aBoardInfo.recordId?.recordName else
-                {
-                    failedBoards.append(aBoardInfo)
-                    continue
-                }
-                
-                if let foundBoard = self.findBoardByRecordId(recordIdString)
-                {
-                    foundBoard.fillBasicInfoFrom(aBoardInfo)
-                    //foundBoard.recordId = recordIdString
-                }
-                else
-                {
-                    guard let _ = aBoardInfo.creatorId else  // we have to know exactly the board`s creator
-                    {
-                        failedBoards.append(aBoardInfo)
-                        continue
-                    }
-                    
-                    guard let newBoard = NSEntityDescription.insertNewObjectForEntityForName("Board", inManagedObjectContext: self.mainQueueManagedObjectContext) as? Board else
-                    {
-                        failedBoards.append(aBoardInfo)
-                        continue
-                    }
-                    
-                    newBoard.fillBasicInfoFrom(aBoardInfo)
-                    newBoard.recordId = recordIdString
-                }
-            }
-            
-            if self.mainQueueManagedObjectContext.hasChanges
-            {
-                do
-                {
-                    try self.mainQueueManagedObjectContext.save()
-                }
-                catch let saveError
-                {
-                    errorToThrow = saveError
-                }
-            }
-        }
-        
-        saveOperation.qualityOfService = .UserInteractive //highest priority
-        
-        NSOperationQueue.mainQueue().addOperations([saveOperation], waitUntilFinished: true)
-        
-        if let anError = errorToThrow
-        {
-            throw anError
-        }
-        //else
-        return failedBoards
-    }
     
     func insert(board:Board, saveImmediately:Bool)
     {
@@ -578,32 +516,9 @@ class CoreDataManager
         
         if let boardFound = self.findBoardByRecordId(boardRecord.recordID.recordName)
         {
+            boardFound.fillInfoFromRecord(boardRecord)
             boardFound.title = title
             boardFound.creatorId = creator
-            boardFound.details = boardRecord[DetailsStringKey] as? String
-            boardFound.sortOrder = Int64(boardRecord[SortOrderIndexIntKey] as? Int ?? 0)
-            boardFound.recordId = boardRecord.recordID.recordName
-            boardFound.dateCreated = boardRecord.creationDate?.timeIntervalSinceReferenceDate ?? 0.0
-            if let participantReferences = boardRecord[BoardParticipantsKey] as? [CKReference]
-            {
-                let strings = NSMutableSet(capacity: participantReferences.count)
-                for aParticipant in participantReferences
-                {
-                    strings.addObject(aParticipant.recordID.recordName)
-                }
-                boardFound.participants = NSSet(set: strings)
-            }
-            
-            if let boardTasksReferences = boardRecord[BoardTasksReferenceListKey] as? [CKReference]
-            {
-                let taskIDsArray = NSMutableArray()
-                for aRef in boardTasksReferences
-                {
-                    taskIDsArray.addObject(aRef.recordID.recordName)
-                }
-                
-                boardFound.taskIDs = taskIDsArray
-            }
             return boardFound
         }
         
@@ -614,37 +529,47 @@ class CoreDataManager
             throw TaskError.Unknown
         }
         
+        board.fillInfoFromRecord(boardRecord)
         board.title = title
         board.creatorId = creator
-        board.details = boardRecord[DetailsStringKey] as? String
-        board.sortOrder = Int64(boardRecord[SortOrderIndexIntKey] as? Int ?? 0)
-        board.recordId = boardRecord.recordID.recordName
-        board.dateCreated = boardRecord.creationDate?.timeIntervalSinceReferenceDate ?? 0.0
-        if let participantReferences = boardRecord[BoardParticipantsKey] as? [CKReference]
-        {
-            let strings = NSMutableSet(capacity: participantReferences.count)
-            for aParticipant in participantReferences
-            {
-                strings.addObject(aParticipant.recordID.recordName)
-            }
-            board.participants = NSSet(set: strings)
-        }
-        
-        if let boardTasksReferences = boardRecord[BoardTasksReferenceListKey] as? [CKReference]
-        {
-            let taskIDsArray = NSMutableArray()
-            for aRef in boardTasksReferences
-            {
-                taskIDsArray.addObject(aRef.recordID.recordName)
-            }
-            
-            board.taskIDs = taskIDsArray
-        }
         
         return board
     }
 
     //MARK: - Tasks
+    func insertNewTaskFrom(info:TempTaskInfo) -> Task?
+    {
+        guard let newTask = NSEntityDescription.insertNewObjectForEntityForName("Task", inManagedObjectContext: self.mainQueueManagedObjectContext) as? Task else
+        {
+            return nil
+        }
+        
+        guard let board = findBoardByRecordId(info.boardID) else
+        {
+            return nil
+        }
+        
+        newTask.board = board
+        newTask.title = info.title
+        newTask.details = info.details
+        newTask.creator = info.creator
+        
+        if self.mainQueueManagedObjectContext.hasChanges
+        {
+            do{
+                try self.mainQueueManagedObjectContext.save()
+                return newTask
+            }
+            catch{
+                return nil
+            }
+        }
+        else
+        {
+            return nil
+        }
+    }
+    
     func insertTaskRecords(records:[CKRecord], forBoard board:Board, saveImmediately:Bool)
     {
         for aRecord in records
@@ -652,23 +577,18 @@ class CoreDataManager
             if let foundTask = findTaskById(aRecord.recordID.recordName)
             {
                 //update task
+                foundTask.fillInfoFrom(aRecord)
+                
                 foundTask.board = board
            
                 foundTask.recordId = aRecord.recordID.recordName
-                
-                foundTask.changeTag = aRecord.recordChangeTag// optional
-                
-                foundTask.sortOrder = aRecord[SortOrderIndexIntKey] as? Int64 ?? 0
-                foundTask.title = aRecord[TitleStringKey] as? String
-                foundTask.details = aRecord[DetailsStringKey] as? String
-                foundTask.creator = aRecord[TaskCreatorStringKey] as? String
-                foundTask.dateCreated = aRecord.creationDate!.timeIntervalSinceReferenceDate
-                foundTask.dateFinished = (aRecord[DateFinishedDateKey] as? NSDate)?.timeIntervalSinceReferenceDate ?? 0.0
-                foundTask.dateTaken = (aRecord[DateTakenDateKey] as? NSDate)?.timeIntervalSinceReferenceDate ?? 0.0
+
                 if let ownerID = aRecord[CurrentOwnerStringKey] as? String, userFound = findContactByPhone(ownerID)
                 {
                     foundTask.currentOwner = userFound
                 }
+                
+                print(" - Updated TASK")
             }
             else
             {
@@ -677,22 +597,18 @@ class CoreDataManager
                 {
                     continue
                 }
+                
+                newTask.fillInfoFrom(aRecord)
+                
                 newTask.board = board
+                
                 newTask.recordId = aRecord.recordID.recordName
-                
-                newTask.changeTag = aRecord.recordChangeTag// optional
-                
-                newTask.sortOrder = aRecord[SortOrderIndexIntKey] as? Int64 ?? 0
-                newTask.title = aRecord[TitleStringKey] as? String
-                newTask.details = aRecord[DetailsStringKey] as? String
-                newTask.creator = aRecord[TaskCreatorStringKey] as? String
-                newTask.dateCreated = aRecord.creationDate!.timeIntervalSinceReferenceDate
-                newTask.dateFinished = (aRecord[DateFinishedDateKey] as? NSDate)?.timeIntervalSinceReferenceDate ?? 0.0
-                newTask.dateTaken = (aRecord[DateTakenDateKey] as? NSDate)?.timeIntervalSinceReferenceDate ?? 0.0
+           
                 if let ownerID = aRecord[CurrentOwnerStringKey] as? String, userFound = findContactByPhone(ownerID)
                 {
                     newTask.currentOwner = userFound
                 }
+                print(" - Inserted TASK")
             }
             
         }
@@ -701,28 +617,6 @@ class CoreDataManager
         {
             self.saveMainContext()
         }
-    }
-    
-    func updateTask(taskToUpdate:Task)
-    {
-        guard let recordId = taskToUpdate.recordId else
-        {
-            return
-        }
-        
-        if let found = findTaskById(recordId)
-        {
-            self.mainQueueManagedObjectContext.deleteObject(found)
-        }
-        
-        self.mainQueueManagedObjectContext.insertObject(taskToUpdate)
-        
-        if self.mainQueueManagedObjectContext.hasChanges
-        {
-            self.saveMainContext()
-        }
-        
-        
     }
     
     func insertSingle(task:Task)
@@ -814,7 +708,7 @@ class CoreDataManager
         
         let fetchDeleted = NSFetchRequest(entityName: "Task")
         fetchDeleted.resultType = .DictionaryResultType
-        fetchDeleted.propertiesToFetch = ["recortId"]
+        fetchDeleted.propertiesToFetch = ["recordId"]
         let predicate = NSPredicate(format: "toBeDeleted = YES AND recordId != nil")
         fetchDeleted.predicate = predicate
         
@@ -848,6 +742,58 @@ class CoreDataManager
         return nil
     }
     
+    func deleteTasksByIDs(taskIDs:[String])
+    {
+        for anId in taskIDs
+        {
+            if let task = findTaskById(anId)
+            {
+                self.mainQueueManagedObjectContext.deleteObject(task)
+            }
+        }
+        
+        self.saveMainContext()
+    }
+    
+    //MARK: - 
+    func pairTasksByIDs(ids:[String], to board: Board)
+    {
+        if ids.isEmpty
+        {
+            //delete tasks from DB
+            if !board.orderedTasks.isEmpty
+            {
+                for aTask in board.orderedTasks
+                {
+                    self.mainQueueManagedObjectContext.deleteObject(aTask)
+                }
+                do{
+                    try self.mainQueueManagedObjectContext.save()
+                }
+                catch{
+                    
+                }
+            }
+            return
+        }
+        
+//        for aTask in board.orderedTasks
+//        {
+//            board.removeTasksObject(aTask)
+//        }
+        
+        for aTaskId in ids
+        {
+            if let taskFound = findTaskById(aTaskId)
+            {
+                board.addTasksObject(taskFound)
+            }
+        }
+        
+        board.checkTaskIDsToBeEqualToTasks()
+        
+        
+    }
     
 }//class end
 

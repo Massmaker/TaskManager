@@ -5,12 +5,12 @@
         <attribute name="creatorId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="participants" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="recordId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sortOrder" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="taskIDs" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="title" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
         <attribute name="toBeDeleted" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <relationship name="participants" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="boardsVisible" inverseEntity="User" syncable="YES"/>
         <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Task" inverseName="board" inverseEntity="Task" syncable="YES"/>
     </entity>
     <entity name="CurrentUser" syncable="YES">
@@ -29,7 +29,7 @@
         <attribute name="recordId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sortOrder" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
-        <attribute name="toBeDeleted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="toBeDeleted" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="board" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Board" inverseName="tasks" inverseEntity="Board" syncable="YES"/>
         <relationship name="currentOwner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="currentTask" inverseEntity="User" syncable="YES"/>
     </entity>
@@ -39,13 +39,12 @@
         <attribute name="lastName" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
         <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="registered" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <relationship name="boardsVisible" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Board" inverseName="participants" inverseEntity="Board" syncable="YES"/>
         <relationship name="currentTask" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="currentOwner" inverseEntity="Task" syncable="YES"/>
     </entity>
     <elements>
         <element name="Board" positionX="-297" positionY="-135" width="128" height="210"/>
         <element name="CurrentUser" positionX="-270" positionY="9" width="128" height="105"/>
         <element name="Task" positionX="-65" positionY="50" width="128" height="225"/>
-        <element name="User" positionX="-468" positionY="78" width="128" height="150"/>
+        <element name="User" positionX="-468" positionY="78" width="128" height="135"/>
     </elements>
 </model>

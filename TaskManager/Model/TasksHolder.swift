@@ -50,7 +50,7 @@ class TasksHolder:NSObject {
         
         currentTasks.removeAll(keepCapacity: false)
         currentTasks += tasks
-        
+        self.table?.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Automatic)
         delegate?.tasksDidFinishUpdating()
     }
     
@@ -74,8 +74,8 @@ class TasksHolder:NSObject {
         {
             task.toBeDeleted = true
             anAppDelegate()?.coreDatahandler?.saveMainContext()
-            
             self.currentTasks.removeAtIndex(index)
+            self.table?.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
         }
     }
     
@@ -88,7 +88,7 @@ class TasksHolder:NSObject {
         
         var deletionHappened = false
         
-        if currentTasks.count < indexOfTask
+        if currentTasks.count > indexOfTask
         {
             let toDelete = currentTasks.removeAtIndex(indexOfTask)
             toDelete.toBeDeleted = true
@@ -96,7 +96,12 @@ class TasksHolder:NSObject {
             if let toBeDeletedTaskIDs = anAppDelegate()?.coreDatahandler?.findTasksToDelete()
             {
                 anAppDelegate()?.cloudKitHandler.deleteTasks(toBeDeletedTaskIDs) { (deletedCount, deletionError) -> () in
-                    
+                    if toBeDeletedTaskIDs.count == deletedCount
+                    {
+                        dispatchMain(){
+                            anAppDelegate()?.coreDatahandler?.deleteTasksByIDs(toBeDeletedTaskIDs)
+                        }
+                    }
                 }
             }
             deletionHappened = true
@@ -110,9 +115,63 @@ class TasksHolder:NSObject {
         
     }
     
-    func insertNewTask(taskToInsert:Task)
+    func insertNewTaskWithInfo(taskToInsert:TempTaskInfo)
     {
+        networkingIndicator(true)
+        guard let coreDataHandler = anAppDelegate()?.coreDatahandler else
+        {
+            return
+        }
         
+        if let newTask = coreDataHandler.insertNewTaskFrom(taskToInsert), let board = newTask.board
+        {
+            self.delegate?.tasksWillStartUpdating()
+            anAppDelegate()?.cloudKitHandler.submitTask(newTask) {[unowned self] (taskRecord, savingError) -> () in
+                dispatchMain(){
+                    if let record = taskRecord
+                    {
+                        //coreDataHandler.insertTaskRecords([record], forBoard: board, saveImmediately: true)
+                        newTask.fillInfoFrom(record)
+                       
+                        board.addTasksObject(newTask)
+                        
+                        self.setTasks(board.orderedTasks)
+                        board.checkTaskIDsToBeEqualToTasks()
+                        
+                        coreDataHandler.saveMainContext()
+                        
+                        self.delegate?.tasksDidFinishUpdating()
+                        
+                        anAppDelegate()?.cloudKitHandler.editBoard(board) {[unowned self] (editedRecord, editError) -> () in
+                            dispatchMain(){
+                                if let record = editedRecord
+                                {
+                                    board.fillInfoFromRecord(record)
+                                    if let ids = board.taskIDs as? [String]
+                                    {
+                                        coreDataHandler.pairTasksByIDs(ids, to: board)
+                                        coreDataHandler.saveMainContext()
+                                        self.setTasks(board.orderedTasks)
+                                    }
+                                    else{
+                                        assert(false)
+                                    }
+                                }
+                                else
+                                {
+                                    
+                                }
+                                networkingIndicator(false)
+                            }
+                        }
+                    }
+                    else
+                    {
+                        networkingIndicator(false)
+                    }
+                }
+            }
+        }
     }
     
     

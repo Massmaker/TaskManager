@@ -625,7 +625,8 @@ class CloudKitDatabaseHandler{
             
             return true
         }
-        catch{
+        catch
+        {
             return false
         }
         
@@ -651,6 +652,7 @@ class CloudKitDatabaseHandler{
                     foundBoard[DetailsStringKey] = boardInfo.details
                     foundBoard[BoardParticipantsKey] = currentBoard[BoardParticipantsKey]
                     foundBoard[BoardTasksReferenceListKey] = currentBoard[BoardTasksReferenceListKey]
+                    print(" \n  - edited board participants: \((foundBoard[BoardParticipantsKey] as? [String])?.count) ")
                     
                     self.saveBoard(foundBoard) { (savedBoard, saveError) -> () in
                         completion(editedRecord: savedBoard, editError: saveError)

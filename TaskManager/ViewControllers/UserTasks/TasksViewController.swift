@@ -206,6 +206,10 @@ class TasksViewController:UITableViewController {
             {
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             }
+            else
+            {
+                tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Right)
+            }
         }
     }
     
@@ -245,6 +249,8 @@ class TasksViewController:UITableViewController {
                     taskEditorNavVC = segue.destinationViewController as? TaskEditNavigationController,
                     rootEditVC = taskEditorNavVC.viewControllers.first as? TaskEditViewController
                 {
+                    rootEditVC.weakTasksHolder = self.tasksSource
+                    
                     if let taskToEdit = sender as? Task
                     {
                         rootEditVC.taskEditingType = .EditCurrent(task:taskToEdit)

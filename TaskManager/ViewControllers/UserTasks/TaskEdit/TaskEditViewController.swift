@@ -32,6 +32,8 @@ class TaskEditViewController: FormViewController {
         }
     }
     
+    private var newTaskInfo:TempTaskInfo?
+    
     private var initialTitle = ""
     private var initialDetails = ""
     
@@ -48,6 +50,8 @@ class TaskEditViewController: FormViewController {
             default:
                 break
         }
+        
+        self.creatorId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName
     }
 
     override func didReceiveMemoryWarning() {
@@ -67,43 +71,44 @@ class TaskEditViewController: FormViewController {
                  <<< TextAreaRow(){
                         $0.placeholder = "enter task title"
                     }.onChange{ [unowned self] (titlewRow) in
-                        if let _ = self.currentTask //update board title
+                        if let _ = self.newTaskInfo //update board title
                         {
-                            self.currentTask?.title = titlewRow.value ?? self.initialTitle
+                            self.newTaskInfo?.title = titlewRow.value ?? self.initialTitle
                             self.checkSaveButtonEnabled()
                         }
                         else
                         {
                             if let changedTitle = titlewRow.value,
-                                let board = self.taskBoard,
+                                let taskInfo = TempTaskInfo(boardRecord: self.taskBoard?.recordId),
                                 let creator = self.creatorId
                             {
-                                self.currentTask = Task()
-                                self.currentTask?.title = changedTitle
-                                self.currentTask?.board = board
+                                self.newTaskInfo = taskInfo
+                                self.newTaskInfo?.setTitle(changedTitle)
+                                self.newTaskInfo?.setCreator(creator)
                             }
                             self.checkSaveButtonEnabled()
                         }
                     }
+                
                 +++ Section(detailsSectionTitle)
                 <<< TextAreaRow() {
                         $0.placeholder = "enter task details"
                     }.onChange{ [unowned self] (detailsRow) in
-                        if let _ = self.currentTask //update board title
+                        if let _ = self.newTaskInfo //update board title
                         {
-                            self.currentTask?.details = detailsRow.value ?? self.initialDetails
+                            self.newTaskInfo?.setDetails(detailsRow.value ?? self.initialDetails)
                             self.checkSaveButtonEnabled()
                         }
                         else
                         {
                             if  let changedDetails = detailsRow.value,
-                                let board = self.taskBoard,
-                                let _ = self.creatorId
+                                let taskInfo = TempTaskInfo(boardRecord: self.taskBoard?.recordId),
+                                let creatorId = self.creatorId
                                 //let newTask = TaskInfo(taskBoardRecordId: boardRecId, creatorRecordId: creator, title: self.initialTitle, details: changedDetails)
                             {
-                                self.currentTask = Task()
-                                self.currentTask?.details = changedDetails
-                                self.currentTask?.board = board
+                                self.newTaskInfo = taskInfo
+                                self.newTaskInfo?.setDetails(changedDetails)
+                                self.newTaskInfo?.setCreator(creatorId)
                             }
 
                             self.checkSaveButtonEnabled()
@@ -132,6 +137,9 @@ class TaskEditViewController: FormViewController {
                     self.checkSaveButtonEnabled()
                 }
     }
+    
+    
+    
     
     //MARK: - Task Actions setup
     private func setupTakeOrFinishButtonCell()
@@ -214,28 +222,53 @@ class TaskEditViewController: FormViewController {
     //MARK: -
     private func checkSaveButtonEnabled()
     {
-        guard let task = self.currentTask else
+        
+        switch taskEditingType
         {
-            self.navigationItem.rightBarButtonItem = nil
-            return
+            case .CreateNew:
+                if let tempTask = self.newTaskInfo where !tempTask.title.isEmpty
+                {
+                    enableSaveButton()
+                }
+                else
+                {
+                    disableSaveButton()
+                }
+            case .EditCurrent(_):
+                guard let task = self.currentTask else
+                {
+                    disableSaveButton()
+                    return
+                }
+                
+                if initialTitle == task.title && initialDetails == task.details
+                {
+                    disableSaveButton()
+                }
+                else if task.title == ""
+                {
+                    disableSaveButton() //there is no reason to create a task without at least a title
+                }
+                else //set SAVE button visible
+                {
+                    enableSaveButton()
+                }
         }
         
-        if initialTitle == task.title && initialDetails == task.details
+    }
+    
+    private func enableSaveButton()
+    {
+        if self.navigationItem.rightBarButtonItem == nil
         {
-            self.navigationItem.rightBarButtonItem = nil
+            let saveBarButton = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "saveEdits:")
+            self.navigationItem.rightBarButtonItem = saveBarButton
         }
-        else if task.title == ""
-        {
-            self.navigationItem.rightBarButtonItem = nil //there is no reason to create a task without at least a title
-        }
-        else //set SAVE button visible
-        {
-            if self.navigationItem.rightBarButtonItem == nil
-            {
-                let saveBarButton = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "saveEdits:")
-                self.navigationItem.rightBarButtonItem = saveBarButton
-            }
-        }
+    }
+    
+    private func disableSaveButton()
+    {
+        self.navigationItem.rightBarButtonItem = nil
     }
     
     //MARK: - Cancel and Save nivigation button actions
@@ -247,20 +280,27 @@ class TaskEditViewController: FormViewController {
     
     func saveEdits(sender:UIBarButtonItem)
     {
-        if let task = self.currentTask{
-            
-            
-            switch self.taskEditingType
-            {
-                case .EditCurrent( _ ):
-                    self.weakTasksHolder?.editTask(task)
-                case .CreateNew:
-                    self.weakTasksHolder?.insertNewTask(task)
-            }
-        }
-        else
+        switch self.taskEditingType
         {
-            self.cancelBarButtonAction(nil)
+        case .EditCurrent( _ ):
+            if let task = self.currentTask
+            {
+                self.weakTasksHolder?.editTask(task)
+            }
+            else
+            {
+                self.cancelBarButtonAction(nil)
+            }
+        case .CreateNew:
+            if let taskInfo = self.newTaskInfo
+            {
+                self.weakTasksHolder?.insertNewTaskWithInfo(taskInfo)
+                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+            }
+            else
+            {
+                self.cancelBarButtonAction(nil)
+            }
         }
     }
     
@@ -271,7 +311,7 @@ class TaskEditViewController: FormViewController {
         {
             return
         }
-        self.weakTasksHolder?.delete(task)
+        self.weakTasksHolder?.deleteTask(task)
     }
     
     func takeTaskPressed()
@@ -309,7 +349,6 @@ class TaskEditViewController: FormViewController {
         task.currentOwner = nil
         task.dateFinished = 0.0
         task.dateTaken = 0.0
-        
         //self.weakCloudHandler?.editTask(task)
     }
 }

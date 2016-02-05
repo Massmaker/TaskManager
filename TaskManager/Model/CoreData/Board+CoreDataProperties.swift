@@ -22,9 +22,13 @@ extension Board {
     @NSManaged var sortOrder: Int64
     @NSManaged var title: String?
     @NSManaged var toBeDeleted: Bool
-    
-    @NSManaged var participants: NSSet?
+    ///array of user ids
+    @NSManaged var participants: NSObject? //array of strings
     @NSManaged var tasks: NSSet? // <Task>
+    ///array of task record ids
     @NSManaged var taskIDs: NSObject? // array of <String>
+    
+    @NSManaged func addTasksObject(task:Task)
+    @NSManaged func removeTasksObject(task:Task)
 
 }
