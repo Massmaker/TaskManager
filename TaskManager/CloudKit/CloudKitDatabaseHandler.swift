@@ -748,6 +748,12 @@ class CloudKitDatabaseHandler{
             else if let error = error
             {
                 let errorResult =  CloudKitErrorParser.handleCloudKitErrorAs(error)
+                switch errorResult
+                {
+                case .Fail(let message):
+                    print(message)
+                default:break
+                }
                 completion(tasks: nil, error: error)
             }
         }

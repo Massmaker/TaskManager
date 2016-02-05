@@ -19,6 +19,7 @@ class Board: NSManagedObject {
         
         self.toBeDeleted = false
         self.sortOrder = 0
+        self.title = ""
     }
     
     var createDate:NSDate {

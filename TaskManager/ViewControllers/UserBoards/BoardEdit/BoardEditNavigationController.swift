@@ -9,13 +9,6 @@
 import UIKit
 
 class BoardEditNavigationController: UINavigationController {
-
-    var boardEditingType:BoardEditingType = .CreateNew{
-        didSet{
-            //yes, I know this is bad
-            (self.viewControllers.first! as! BoardEditViewController).setEditingType(boardEditingType)
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

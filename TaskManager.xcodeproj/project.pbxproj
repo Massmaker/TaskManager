@@ -40,7 +40,6 @@
 		F84D68701C4CEB2E00EF8A16 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F84D686E1C4CEB2E00EF8A16 /* LaunchScreen.storyboard */; };
 		F84D68B61C4CEB6900EF8A16 /* CloudKitDatabaseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68781C4CEB6900EF8A16 /* CloudKitDatabaseHandler.swift */; };
 		F84D68B71C4CEB6900EF8A16 /* CloudRecordTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68791C4CEB6900EF8A16 /* CloudRecordTypes.swift */; };
-		F84D68B91C4CEB6900EF8A16 /* TaskBoardInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D687B1C4CEB6900EF8A16 /* TaskBoardInfo.swift */; };
 		F84D68BB1C4CEB6900EF8A16 /* ErrorContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D687E1C4CEB6900EF8A16 /* ErrorContacts.swift */; };
 		F84D68BC1C4CEB6900EF8A16 /* ErrorTaskBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D687F1C4CEB6900EF8A16 /* ErrorTaskBoard.swift */; };
 		F84D68BD1C4CEB6900EF8A16 /* Extensions-UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68811C4CEB6900EF8A16 /* Extensions-UIViewController.swift */; };
@@ -143,7 +142,6 @@
 		F84D68711C4CEB2E00EF8A16 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F84D68781C4CEB6900EF8A16 /* CloudKitDatabaseHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitDatabaseHandler.swift; sourceTree = "<group>"; };
 		F84D68791C4CEB6900EF8A16 /* CloudRecordTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudRecordTypes.swift; sourceTree = "<group>"; };
-		F84D687B1C4CEB6900EF8A16 /* TaskBoardInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskBoardInfo.swift; sourceTree = "<group>"; };
 		F84D687E1C4CEB6900EF8A16 /* ErrorContacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorContacts.swift; sourceTree = "<group>"; };
 		F84D687F1C4CEB6900EF8A16 /* ErrorTaskBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorTaskBoard.swift; sourceTree = "<group>"; };
 		F84D68811C4CEB6900EF8A16 /* Extensions-UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions-UIViewController.swift"; sourceTree = "<group>"; };
@@ -309,7 +307,6 @@
 			children = (
 				F84D68781C4CEB6900EF8A16 /* CloudKitDatabaseHandler.swift */,
 				F84D68791C4CEB6900EF8A16 /* CloudRecordTypes.swift */,
-				F84D687B1C4CEB6900EF8A16 /* TaskBoardInfo.swift */,
 				F8832BC71C4FE1D200D75FAE /* CloudKitErrorParser.swift */,
 				F87D68031C4FE740003C5689 /* CloudKitResults.swift */,
 				F855B53B1C6220B200894413 /* CloudKitRecordKeys.swift */,
@@ -702,7 +699,6 @@
 				F8067C4C1C60FAF200782E63 /* TasksHolderDelegate.swift in Sources */,
 				F84D68DB1C4CEB6900EF8A16 /* ContactsCollectionViewController.swift in Sources */,
 				F83D16031C4F825100E46E43 /* UserErrors.swift in Sources */,
-				F84D68B91C4CEB6900EF8A16 /* TaskBoardInfo.swift in Sources */,
 				F84D68D71C4CEB6900EF8A16 /* UserAuthenticatorDelegates.swift in Sources */,
 				F895CD521C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift in Sources */,
 				F895CD541C5F8B7F00D08EE9 /* NotificationsHandler.swift in Sources */,

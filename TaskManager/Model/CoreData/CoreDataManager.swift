@@ -331,11 +331,17 @@ class CoreDataManager
     
     
     //MARK: - Boards
-    func allBoards() -> [Board]
+    func allBoards(includeDeleted:Bool = true) -> [Board]
     {
         let fetchRequest = NSFetchRequest(entityName: "Board")
         let sort = NSSortDescriptor(key: "sortOrder", ascending: true)
         fetchRequest.sortDescriptors = [sort]
+        
+        if !includeDeleted
+        {
+            let predicate = NSPredicate(format: "toBeDeleted = NO")
+            fetchRequest.predicate = predicate
+        }
         
         do
         {
@@ -382,6 +388,15 @@ class CoreDataManager
         return toReturn
     }
     
+    func insertEmpty() -> Board?
+    {
+        if let newBoard = NSEntityDescription.insertNewObjectForEntityForName("Board", inManagedObjectContext: self.mainQueueManagedObjectContext) as? Board
+        {
+            return newBoard
+        }
+        
+        return nil
+    }
     
     func insert(board:Board, saveImmediately:Bool)
     {
@@ -498,6 +513,48 @@ class CoreDataManager
             print("error while saving context after deleting boards")
             throw toThrow!
         }
+    }
+    
+    func deleteSingle(board:Board, deleteimmediately:Bool = false, saveImmediately:Bool = false)
+    {
+        board.toBeDeleted = true
+        
+        if deleteimmediately
+        {
+            self.mainQueueManagedObjectContext.deleteObject(board)
+        }
+        
+        if saveImmediately
+        {
+            do{
+                try self.mainQueueManagedObjectContext.save()
+            }
+            catch{
+                
+            }
+        }
+    }
+    
+    func boardsToBeDeleted() -> [Board]?
+    {
+        let predicate = NSPredicate(format: "toBeDeleted = YES")
+        let fetchRequest = NSFetchRequest(entityName: "Board")
+        fetchRequest.predicate = predicate
+        
+        var boards:[Board]?
+        do{
+            if let foundBoards = try self.mainQueueManagedObjectContext.executeFetchRequest(fetchRequest) as? [Board] where !foundBoards.isEmpty
+            {
+                boards = foundBoards
+            }
+            
+        }
+        catch{
+            return nil
+        }
+        
+        return boards
+        
     }
     
     func createBoardFromRecord(boardRecord:CKRecord) throws -> Board

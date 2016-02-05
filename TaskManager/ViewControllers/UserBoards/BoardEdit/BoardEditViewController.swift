@@ -12,6 +12,8 @@ import CloudKit
 
 class BoardEditViewController: FormViewController {
     
+    weak var boardsHolder:BoardsHolder?
+    
     private var editingType:BoardEditingType = .CreateNew{
         didSet{
             switch editingType
@@ -69,16 +71,22 @@ class BoardEditViewController: FormViewController {
                             if let _ = self.currentBoard //update board title
                             {
                                 self.currentBoard?.title = title
-                                self.checkSaveButtonEnabled()
                             }
                             else //create new board with board title set
                             {
-                                let newBoard = Board()
-                                newBoard.title = title
-                                self.currentBoard = newBoard
-                                self.checkSaveButtonEnabled()
+                                if let new = anAppDelegate()?.coreDatahandler?.insertEmpty()
+                                {
+                                    self.currentBoard = new
+                                    self.currentBoard?.creatorId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName
+                                }
+                                self.currentBoard?.title = title
                             }
                         }
+                        else
+                        {
+                            self.currentBoard?.title = row.value
+                        }
+                        self.checkSaveButtonEnabled()
                     }//onChange end
                 +++ Section(detailsSectionTitle)
                 <<< TextAreaRow(){ $0.placeholder = "Enter board description"}.onChange(){[unowned self] (row) -> () in
@@ -91,13 +99,15 @@ class BoardEditViewController: FormViewController {
                             }
                             else //create new board with boardDetails set
                             {
-                                let newBoard = Board()
-                                newBoard.details = details
-                                self.currentBoard = newBoard
-                                self.checkSaveButtonEnabled()
+                                if let new = anAppDelegate()?.coreDatahandler?.insertEmpty()
+                                {
+                                    self.currentBoard = new
+                                    self.currentBoard?.creatorId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName
+                                }
+                                self.currentBoard?.details = details                                
                             }
-                            
                         }
+                        self.checkSaveButtonEnabled()
                     }//onChange end
             return
         }
@@ -198,11 +208,12 @@ class BoardEditViewController: FormViewController {
     
     private func checkSaveButtonEnabled()
     {
-        guard let currentBoard = self.currentBoard else
+        guard let currentBoard = self.currentBoard, title = currentBoard.title where !title.isEmpty else
         {
             self.navigationItem.rightBarButtonItem = nil
             return
         }
+        
         
         if initialTitle == currentBoard.title && initialDetails == currentBoard.details && initialParticipantIDs == tempParticimantIDs
         {
@@ -247,7 +258,6 @@ class BoardEditViewController: FormViewController {
                 row.title = aUser.displayName
                 row.value = (self.tempParticimantIDs.contains(aUser.phone!))
                 row.disabled = self.editingDisabledForBoard
-                
             }
             
             if editable
@@ -274,13 +284,20 @@ class BoardEditViewController: FormViewController {
     
     @IBAction func cancelBarButtonAction(sender:AnyObject?)
     {
-        //guard let aHandler = self.boardCloudHandler else
-        //{
-            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-            return
-        //}
         
-        //aHandler.cancelEditingBoard()
+        switch editingType{
+            case BoardEditingType.CreateNew:
+            if let tempNewBoard = self.currentBoard
+            {
+                anAppDelegate()?.coreDatahandler?.deleteSingle(tempNewBoard, deleteimmediately: true, saveImmediately: true)
+            }
+            case .EditCurrent( _ ):
+            print("TO DO: - cancel editing board")
+        }
+        
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        return
+
     }
     
     func saveEdits(sender:UIBarButtonItem)
@@ -290,15 +307,24 @@ class BoardEditViewController: FormViewController {
             switch self.editingType
             {
                 case .EditCurrent(  _  ):
-                    let newParticipants = Array(self.tempParticimantIDs)
-                    var tempTaskBoard = TaskBoardInfo()
-                    tempTaskBoard.setInfoFromBoard(board)
-                    tempTaskBoard.setNewParticipants(newParticipants)
-                
-                case .CreateNew:
-                    var newTempBoard = TaskBoardInfo()
-                    newTempBoard.setInfoFromBoard(board)
+//                    let newParticipants = Array(self.tempParticimantIDs)
+//                    var tempTaskBoard = TaskBoardInfo()
+//                    tempTaskBoard.setInfoFromBoard(board)
+//                    tempTaskBoard.setNewParticipants(newParticipants)
+                    self.boardsHolder?.updateBoard(board)
+                print("\n - Editing board info")
+                    case .CreateNew:
+                    guard let currentUserID = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else
+                    {
+                        self.cancelBarButtonAction(nil)
+                        return
+                    }
+                    
+                    board.creatorId = currentUserID
+                    print("\n - Creating new board")
+                    self.boardsHolder?.addNew(board)
             }
+            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
         }
         else
         {

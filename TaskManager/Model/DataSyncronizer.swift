@@ -155,12 +155,17 @@ class DataSyncronizer {
             
             dispatch_group_enter(group)
             print("\n - tasks for board did start loading")
-            anAppDelegate()?.cloudKitHandler.loadTasksForBoard(boardRecord) { (tasks, error) -> () in
+            let wait = anAppDelegate()!.cloudKitHandler.loadTasksForBoard(boardRecord) { (tasks, error) -> () in
                 if let tasksRecs = tasks
                 {
                     taskRecords = tasksRecs
                 }
                 print("\n - tasks for board did finish loading")
+                dispatch_group_leave(group)
+            }
+            
+            if !wait
+            {
                 dispatch_group_leave(group)
             }
             

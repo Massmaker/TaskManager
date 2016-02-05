@@ -92,6 +92,7 @@ class BoardsHolder {
         {
             throw TaskBoardError.NotFound
         }
+        currentBoards.insert(board, atIndex: index)
     }
     
     func deleteFromDatabase(board:Board)
@@ -132,13 +133,73 @@ class BoardsHolder {
         anAppDelegate()?.coreDatahandler?.saveMainContext()
         
         delegate?.boardsDidFinishUpdating()
+        
+        anAppDelegate()?.cloudKitHandler.editBoard(board) { (editedRecord, editError) -> () in
+            if let error = editError
+            {
+                print("\n - Error updating board in CloudKit database:")
+                print(error)
+            }
+            else{
+                dispatchMain(){
+                    self.delegate?.boardsDidFinishUpdating()
+                }
+            }
+        }
     }
     
+    func addNew(board:Board) -> Bool
+    {
+        guard let coreDataHandler = anAppDelegate()?.coreDatahandler else
+        {
+            return false
+        }
+        
+        //start submitting new board to cloud
+        
+        self.delegate?.boardsDidStartUpdating()
+        let result =  anAppDelegate()!.cloudKitHandler.submitNewBoardWithInfo(board) { (createdBoard, error) -> () in
+            dispatchMain(){
+                if let error = error
+                {
+                    print("\n Did not submit new board to CloudKit:")
+                    print(error)
+                    coreDataHandler.deleteSingle(board)
+                    coreDataHandler.saveMainContext()
+                }
+                else if let recordSaved = createdBoard
+                {
+                    board.fillInfoFromRecord(recordSaved)
+                    coreDataHandler.saveMainContext()
+                    self.fetchBoardsFromCoreData()
+                }
+                
+                self.delegate?.boardsDidFinishUpdating()
+            }
+        }
+        
+        
+        return result
+    }
+    
+    func updateBoardsSortIndexes()
+    {
+        var index:Int64 = 0
+        for aBoard in currentBoards
+        {
+            aBoard.sortOrder = index
+            index += 1
+        }
+        
+        anAppDelegate()?.coreDatahandler?.saveMainContext()
+    }
+    
+    ///fetches boards and sets result to current Boards
     func fetchBoardsFromCoreData()
     {
         if let coreDatahandler = anAppDelegate()?.coreDatahandler
         {
-            let boardsFromCoreData = coreDatahandler.allBoards()
+            let boardsFromCoreData = coreDatahandler.allBoards(false)
             
             self.currentBoards = boardsFromCoreData
         }

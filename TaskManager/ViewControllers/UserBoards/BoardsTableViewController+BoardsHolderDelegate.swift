@@ -33,14 +33,14 @@ extension BoardsTableViewController : BoardsHolderDelegate{
         
         currentExecutingQueue!.addOperationWithBlock(){ [weak self] in
             networkingIndicator(false)
-            if let visibleIndexPaths = self?.tableView.indexPathsForVisibleRows
-            {
-                self?.tableView.reloadRowsAtIndexPaths(visibleIndexPaths, withRowAnimation: .Automatic)
-            }
-            else
-            {
+//            if let visibleIndexPaths = self?.tableView.indexPathsForVisibleRows
+//            {
+//                self?.tableView.reloadRowsAtIndexPaths(visibleIndexPaths, withRowAnimation: .Automatic)
+//            }
+//            else
+//            {
                 self?.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
-            }
+//            }
             
             self?.tableView.scrollEnabled = true
             print(" enabled user scrolling in BOARDS")

@@ -158,6 +158,7 @@ class BoardsTableViewController: UITableViewController {
             do{
                 try boardsHolder.insertBoard(movingBoard, atIndex: toIndexPath.row)
                 //start rearranging logic for TaskBoard "sortOrderIndex" inside the app and submit changes to iCloud
+                boardsHolder.updateBoardsSortIndexes()
             }
             catch
             {
@@ -226,15 +227,17 @@ class BoardsTableViewController: UITableViewController {
             switch identifier
             {
                 case "PresentBoardEditing" :
-                    if let editingNavController = segue.destinationViewController as? BoardEditNavigationController
+                    if let editingNavController = segue.destinationViewController as? BoardEditNavigationController, rootVC = editingNavController.viewControllers.first as? BoardEditViewController
                     {
+                        rootVC.boardsHolder = self.boardsHolder
+                        
                         if let senderType = sender as? BoardEditingHolder
-                        {
-                            editingNavController.boardEditingType = senderType.boardEditingType
+                        {   
+                            rootVC.setEditingType(senderType.boardEditingType)
                         }
                         else
                         {
-                            editingNavController.boardEditingType = BoardEditingType.CreateNew
+                            rootVC.setEditingType(BoardEditingType.CreateNew)
                         }
                     }
                 case "ShowTasksList":
