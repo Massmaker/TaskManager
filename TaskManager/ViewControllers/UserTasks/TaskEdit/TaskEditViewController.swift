@@ -151,16 +151,23 @@ class TaskEditViewController: FormViewController {
     
     private func setupActionsSection()
     {
+        guard let currentLoggedUserID = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else
+        {
+            return
+        }
+        
         let actionsSection = Section("Actions")
        
-        form[2] = actionsSection // 0 - Task title, 1 - Task details, 2 - Task actions(Take or Finish+Cancel)
+         // 0 - Task title, 1 - Task details, 2 - Task actions(Take or Finish+Cancel)
         
-        if let _ = currentTask?.currentOwner
+        if let taskOwner = currentTask?.currentOwner where taskOwner == currentLoggedUserID
         {
+            form[2] = actionsSection
             setupFinishCancelButtons(actionsSection)
         }
         else
         {
+            form[2] = actionsSection
             setupTakeSection(actionsSection)
         }
     }
@@ -216,7 +223,7 @@ class TaskEditViewController: FormViewController {
                 }
 
         
-        form[3] = Section("Danger Zone") <<<  deleteButtonRow
+        form +++ Section("Danger Zone") <<<  deleteButtonRow
     }
     
     //MARK: -
@@ -316,7 +323,12 @@ class TaskEditViewController: FormViewController {
     
     func takeTaskPressed()
     {
-        guard var task = self.currentTask, let currentUser = anAppDelegate()?.cloudKitHandler.currentUser else
+        guard let task = self.currentTask else
+        {
+            return
+        }
+        
+        guard let currentUser = anAppDelegate()?.cloudKitHandler.currentUser else
         {
             return
         }
@@ -324,7 +336,6 @@ class TaskEditViewController: FormViewController {
         task.currentOwner = currentUser // phoneNumber is stored both in Record name and currentUser["phoneNumberID"]  String value
         task.dateTaken = NSDate().timeIntervalSinceReferenceDate
         task.dateFinished = 0.0
-        //self.weakCloudHandler?.editTask(task)
     }
     
     func finishTaskPressed()
@@ -336,7 +347,6 @@ class TaskEditViewController: FormViewController {
         
         task.currentOwner = nil // phoneNumber is stored both in Record name and currentUser["phoneNumberID"]  String value
         task.dateFinished = NSDate().timeIntervalSinceReferenceDate
-        //self.weakCloudHandler?.editTask(task)
     }
     
     func cancelTaskPressed()
@@ -349,6 +359,5 @@ class TaskEditViewController: FormViewController {
         task.currentOwner = nil
         task.dateFinished = 0.0
         task.dateTaken = 0.0
-        //self.weakCloudHandler?.editTask(task)
     }
 }

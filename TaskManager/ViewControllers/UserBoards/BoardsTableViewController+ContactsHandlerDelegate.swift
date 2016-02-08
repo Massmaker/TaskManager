@@ -18,6 +18,14 @@ extension BoardsTableViewController:ContactsHandlerDelegate{
         self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
     }
     
+    func contactshandlerWillStartFetchingContacts() {
+        
+    }
+    
+    func contactsHandlerDidStartFetchingContacts() {
+        
+    }
+    
     func contactsHandlerDidFinishFetchingContacts(error: ErrorType?) {
         
         if let visibleRowsIndexPaths = self.tableView.indexPathsForSelectedRows

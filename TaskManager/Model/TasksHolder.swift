@@ -113,9 +113,38 @@ class TasksHolder:NSObject {
         return deletionHappened
     }
     
-    func editTask(taskToEdit:Task)
-    {
+    func editTask(taskToEdit:Task){
         
+        do{
+            let taskRec = try createTaskRecordFrom(taskToEdit)
+        
+            self.delegate?.tasksWillStartUpdating()
+            
+            anAppDelegate()?.cloudKitHandler.editTask(taskRec){ (editedRecord, editError) -> () in
+                if let editedRecord = editedRecord
+                {
+                    dispatchMain(){
+                        taskToEdit.fillInfoFrom(editedRecord)
+                        anAppDelegate()?.coreDatahandler?.saveMainContext()
+                        self.delegate?.tasksDidFinishUpdating()
+                    }
+                }
+                else if let error = editError
+                {
+                    print("\n -  Error updating task in CLoudKit: ")
+                    print("\(error)")
+                    
+                    dispatchMain(){
+                        anAppDelegate()?.coreDatahandler?.undoChangesInContext()
+                        anAppDelegate()?.coreDatahandler?.saveMainContext()
+                        self.delegate?.tasksDidFinishUpdating()
+                    }
+                }
+            }
+        }
+        catch{
+            self.delegate?.tasksDidFinishUpdating()
+        }
     }
     
     func insertNewTaskWithInfo(taskToInsert:TempTaskInfo)

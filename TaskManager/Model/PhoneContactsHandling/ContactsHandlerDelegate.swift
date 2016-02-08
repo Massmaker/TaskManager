@@ -21,21 +21,21 @@ protocol ContactsHandlerDelegate: class{
     func contactsDidUpdate()
 }
 
-extension ContactsHandlerDelegate{
-    
-    func contactshandlerWillStartFetchingContacts()
-    {
-        print(" ContactsHandlerDelegate \"contactshandlerWillStartFetchingContacts\" extension method called.  Check implementation.")
-    }
-    
-    func contactsHandlerDidStartFetchingContacts()
-    {
-        print(" ContactsHandlerDelegate \"contactsHandlerDidStartFetchingContacts\" extension method called.  Check implementation.")
-    }
-    
-    func contactsHandlerDidFinishFetchingContacts(error:ErrorType?)
-    {
-          print(" ContactsHandlerDelegate \"contactsHandlerDidFinishFetchingContacts\" extension method called.  Check implementation.")
-    }
-    
-}
+//extension ContactsHandlerDelegate{
+//    
+//    func contactshandlerWillStartFetchingContacts()
+//    {
+//        print(" ContactsHandlerDelegate \"contactshandlerWillStartFetchingContacts\" extension method called.  Check implementation.")
+//    }
+//    
+//    func contactsHandlerDidStartFetchingContacts()
+//    {
+//        print(" ContactsHandlerDelegate \"contactsHandlerDidStartFetchingContacts\" extension method called.  Check implementation.")
+//    }
+//    
+//    func contactsHandlerDidFinishFetchingContacts(error:ErrorType?)
+//    {
+//          print(" ContactsHandlerDelegate \"contactsHandlerDidFinishFetchingContacts\" extension method called.  Check implementation.")
+//    }
+//    
+//}

@@ -18,13 +18,25 @@ class DocumentsFolderFileHandler: NSObject {
     
     func getAvatarImageFromDocumentsForUserId(userId:String) -> UIImage?
     {
-        let imagePath = pathToUserPhotoById(userId)
-        guard let data = NSData(contentsOfFile: imagePath), image = UIImage(data: data) else
+        //let imagePath = pathToUserPhotoById(userId)
+        guard let data = getAvatarDataFromDocumentsForUserID(userId), image = UIImage(data: data) else
         {
             return nil
         }
         
         return image
+    }
+    
+    func getAvatarDataFromDocumentsForUserID(userId:String) -> NSData?
+    {
+        let imagePath = pathToUserPhotoById(userId)
+        
+        guard NSFileManager.defaultManager().fileExistsAtPath(imagePath) else {
+            return nil
+        }
+        
+        let data = NSData(contentsOfFile: imagePath)
+        return data
     }
     
     func saveAvatarImageToDocuments(image:UIImage, forUserId:String)

@@ -15,6 +15,7 @@ class ContactsCollectionViewController: UICollectionViewController, UICollection
     private var pCellSize:CGSize = CGSizeZero
     
     lazy var contactsHandler:ContactsHandler = ContactsHandler.sharedInstance
+    lazy var refreshControl = UIRefreshControl()
     
     var cellSize:CGSize{
         get
@@ -43,15 +44,22 @@ class ContactsCollectionViewController: UICollectionViewController, UICollection
     }
     
     let noContactImage = UIImage(named: "No-Contact")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Register cell classes
-        //self.collectionView!.registerClass(ContactCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
+        let frame = CGRectMake(0, 0, 60, 60)
+        refreshControl = UIRefreshControl(frame: frame)
+        refreshControl.addTarget(self, action: "rescanContacts:", forControlEvents: .ValueChanged)
+        self.collectionView?.addSubview(refreshControl)
+        
         
         self.contactsHandler.delegate = self //lazyly initialize and set the delegate
+    }
+    
+    //MARK: -
+    func rescanContacts(sender:UIRefreshControl)
+    {
+        DataSyncronizer.sharedSyncronizer.requestForRemoteChanges()
     }
 
     override func didReceiveMemoryWarning() {

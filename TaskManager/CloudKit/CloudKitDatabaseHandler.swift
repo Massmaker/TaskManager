@@ -30,13 +30,25 @@ class CloudKitDatabaseHandler{
     
     private var currentUserRecord:CKRecord? {
         didSet {
-            if let record = currentUserRecord, let currentUser = anAppDelegate()?.coreDatahandler?.getCurrentUserById(record.recordID.recordName)
+            if let record = currentUserRecord
             {
-                self.user = currentUser
+                if let currentUser = anAppDelegate()?.coreDatahandler?.getCurrentUserById(record.recordID.recordName){
+                    self.user = currentUser
+                }
+                else{
+                    do{
+                        try anAppDelegate()?.coreDatahandler?.setCurrentUser(record)
+                    }
+                    catch let newUserError{
+                        print("\n - Error:  Could not assign new current user:")
+                        print(newUserError)
+                    }
+                }
             }
             else
             {
                 self.user = nil
+                anAppDelegate()?.coreDatahandler?.deleteCurrentUser()
             }
         }
     }
@@ -882,7 +894,13 @@ class CloudKitDatabaseHandler{
         //0 declare editing workflow
         let editRecord:(record:CKRecord, editingInfo:CKRecord)->() = {[weak self] (let record:CKRecord, editing:CKRecord) in
             
-            self?.publicDB.saveRecord(editing) { (savedRecord, saveError)  in
+            record[TitleStringKey] = editing[TitleStringKey]
+            record[DetailsStringKey] = editing[DetailsStringKey]
+            record[CurrentOwnerStringKey] = editing[CurrentOwnerStringKey]
+            record[DateTakenDateKey] = editing[DateTakenDateKey]
+            record[DateFinishedDateKey] = editing[DateFinishedDateKey]
+            
+            self?.publicDB.saveRecord(record) { (savedRecord, saveError)  in
                 completion(editedRecord: savedRecord, editError: saveError)
             }
         }

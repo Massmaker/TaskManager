@@ -6,7 +6,7 @@
 //  Copyright © 2016 CloudCraft. All rights reserved.
 //
 
-import Foundation
+import CloudKit
 import CoreData
 import UIKit
 
@@ -39,6 +39,16 @@ class User: NSManagedObject {
         {
             self.avatarData = UIImagePNGRepresentation(image)
         }
+    }
+    
+    func fillInfoFrom(userRecord:CKRecord)
+    {
+        let recordId = userRecord.recordID.recordName
+        phone = recordId
+        firstName = UserDefaultsManager.getUserNameFromDefaults()
+        lastName = UserDefaultsManager.getUserLastNameFromDefaults()
+        avatarData = DocumentsFolderFileHandler().getAvatarDataFromDocumentsForUserID(recordId)
+        registered = true
     }
     
     override func didSave() {

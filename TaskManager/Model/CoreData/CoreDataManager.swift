@@ -57,6 +57,7 @@ class CoreDataManager
     {
         self.persistentStoreCoordinator = storeCoordinator
         self.mainQueueManagedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        self.mainQueueManagedObjectContext.undoManager = NSUndoManager()
         self.mainQueueManagedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
         let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.2))
         dispatch_after(timeout, dispatch_get_main_queue(), { () -> Void in
@@ -82,6 +83,13 @@ class CoreDataManager
             {
                 print("Context does not have any changes")
             }
+        }
+    }
+    
+    func undoChangesInContext()
+    {
+        dispatchMain(){ [unowned self] in
+            self.mainQueueManagedObjectContext.undo()
         }
     }
     
@@ -122,6 +130,36 @@ class CoreDataManager
         }
         
         return toReturn
+    }
+    
+    func setCurrentUser(userRecord:CKRecord) throws
+    {
+        var toThrow:ErrorType?
+        
+        let context = self.mainQueueManagedObjectContext
+        context.performBlockAndWait(){
+            
+            if let currentUser = NSEntityDescription.insertNewObjectForEntityForName("CurrentUser", inManagedObjectContext: self.mainQueueManagedObjectContext) as? CurrentUser
+            {
+                currentUser.fillInfoFrom(userRecord)
+            }
+            
+            if context.hasChanges
+            {
+                do{
+                    try context.save()
+                }
+                catch let error{
+                    toThrow = error
+                }
+            }
+        }
+        
+        if let error = toThrow
+        {
+            throw error
+        }
+        
     }
     
     func setCurrentUser(user:CurrentUser)
@@ -515,7 +553,6 @@ class CoreDataManager
                 }
             }
         }
-        
         
         if let _ = toThrow
         {
@@ -918,6 +955,46 @@ class CoreDataManager
         
         self.saveMainContext()
     }
+    
+    func deleteAllTasks()
+    {
+        let fetchRequest = NSFetchRequest(entityName: "Task")
+        let context = self.mainQueueManagedObjectContext
+        
+        context.performBlock(){
+            if #available (iOS 9.0, *)
+            {
+                let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                do{
+                    try context.executeRequest(batchDeleteRequest)
+                }
+                catch{
+                    
+                }
+            }
+            else
+            {
+                fetchRequest.resultType = .ManagedObjectResultType
+                do{
+                    if let tasksToDelete = try context.executeFetchRequest(fetchRequest) as? [NSManagedObject] where !tasksToDelete.isEmpty
+                    {
+                        for aTask in tasksToDelete
+                        {
+                            context.deleteObject(aTask)
+                        }
+                    }
+                }
+                catch{
+                    
+                }
+            }
+            
+            self.saveMainContext()
+        }
+        
+        
+    }
+    
     
     //MARK: - 
     func pairTasksByIDs(ids:[String], to board: Board)

@@ -64,7 +64,12 @@ class UserProfileViewController: FormViewController {
         }
         
         Digits.sharedInstance().logOut()
-            
+        
+        anAppDelegate()?.coreDatahandler?.deleteCurrentUser()
+        anAppDelegate()?.coreDatahandler?.deleteAllContacts()
+        anAppDelegate()?.coreDatahandler?.deleteAllBoards()
+        anAppDelegate()?.coreDatahandler?.deleteAllTasks()
+        
         if let loginVC = self.storyboard?.instantiateViewControllerWithIdentifier("LoginViewController") as? LoginViewController,  let delegate = anAppDelegate(), window = delegate.window
         {
             window.rootViewController = loginVC
