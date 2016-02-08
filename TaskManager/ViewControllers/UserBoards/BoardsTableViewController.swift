@@ -143,7 +143,10 @@ class BoardsTableViewController: UITableViewController {
             }
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
+        else if editingStyle == .None{
+            
+        }
     }
     
     // Override to support rearranging the table view.
@@ -190,6 +193,21 @@ class BoardsTableViewController: UITableViewController {
                 
             self.performSegueWithIdentifier("PresentBoardEditing", sender: BoardEditingHolder(boardType: BoardEditingType.EditCurrent(board: board))  )
         }
+    }
+    //MARK: - 
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        if editing
+        {
+            
+        }
+        else
+        {
+            //delete boards if any present (toBeDeleted)
+            anAppDelegate()?.coreDatahandler?.startBoardsDeletionToCloudKit()
+        }
+        
     }
     
     //MARK: - actions

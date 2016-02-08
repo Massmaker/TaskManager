@@ -500,9 +500,6 @@ class CloudKitDatabaseHandler{
                         var foundRecordIDs = [String]()
                         for ( _ , value) in recInfo
                         {
-                            //print(key)
-                            //print(":")
-                            //print(value.recordID.recordName)
                             foundRecordIDs.append(value.recordID.recordName)
                         }
                         
@@ -534,7 +531,12 @@ class CloudKitDatabaseHandler{
         findOperation.qualityOfService = .Utility
 
         findOperation.fetchRecordsCompletionBlock = completionBlock
-        
+        findOperation.perRecordCompletionBlock = {record, recordId, error in
+            if let _ = record
+            {
+                print("  --  found user: \(record!.recordID.recordName)")
+            }
+        }
         self.publicDB.addOperation(findOperation)
     }
     

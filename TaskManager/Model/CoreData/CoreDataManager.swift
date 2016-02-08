@@ -349,6 +349,10 @@ class CoreDataManager
         {
             if let boardsFound = try self.mainQueueManagedObjectContext.executeFetchRequest(fetchRequest) as? [Board]
             {
+                for aBoard in boardsFound
+                {
+                    print("board: \n   title: \(aBoard.title!)\n  Order index: \(aBoard.sortOrder)")
+                }
                 return boardsFound
             }
             return [Board]()
@@ -452,6 +456,10 @@ class CoreDataManager
     
     func deleteBoardsByIDs(boardIDs:[String], saveImmediately:Bool = true) throws
     {
+        guard !boardIDs.isEmpty else {
+            return
+        }
+        
         var toDelete = [Board]()
         for anID in boardIDs
         {
@@ -463,52 +471,51 @@ class CoreDataManager
         
         var toThrow:ErrorType?
         
-        defer{
-            print("deleteBoardsByIDs  did finish")
+        
+        guard !toDelete.isEmpty else {
+            return
         }
         
-        if !toDelete.isEmpty
-        {
-            let lvContext = self.mainQueueManagedObjectContext
-            mainQueueManagedObjectContext.performBlockAndWait(){
-                if #available (iOS 9.0, *)
+        let lvContext = self.mainQueueManagedObjectContext
+        mainQueueManagedObjectContext.performBlockAndWait(){
+            if #available (iOS 9.0, *)
+            {
+                var managedIDs = [NSManagedObjectID]()
+                for aBoard in toDelete
                 {
-                    var managedIDs = [NSManagedObjectID]()
-                    for aBoard in toDelete
-                    {
-                        managedIDs.append(aBoard.objectID)
-                    }
-                    let batchDeleteRequest = NSBatchDeleteRequest(objectIDs: managedIDs)
-                    
-                    do
-                    {
-                        try lvContext.executeRequest(batchDeleteRequest)
-                    }
-                    catch let batchDeleteError
-                    {
-                        toThrow = batchDeleteError
-                    }
+                    managedIDs.append(aBoard.objectID)
                 }
-                else
-                {
-                    for aBoard in toDelete
-                    {
-                        lvContext.deleteObject(aBoard)
-                    }
-                }
+                let batchDeleteRequest = NSBatchDeleteRequest(objectIDs: managedIDs)
                 
-                if saveImmediately && lvContext.hasChanges
+                do
                 {
-                    do{
-                        try lvContext.save()
-                    }
-                    catch let saveError
-                    {
-                        toThrow =  saveError
-                    }
+                    try lvContext.executeRequest(batchDeleteRequest)
+                }
+                catch let batchDeleteError
+                {
+                    toThrow = batchDeleteError
+                }
+            }
+            else
+            {
+                for aBoard in toDelete
+                {
+                    lvContext.deleteObject(aBoard)
+                }
+            }
+            
+            if saveImmediately && lvContext.hasChanges
+            {
+                do{
+                    try lvContext.save()
+                }
+                catch let saveError
+                {
+                    toThrow =  saveError
                 }
             }
         }
+        
         
         if let _ = toThrow
         {
@@ -535,6 +542,45 @@ class CoreDataManager
                 
             }
         }
+    }
+    
+    ///Deletes all "Board" entities from database, DOES NOT save context
+    func deleteAllBoards()
+    {
+        let allBoardsRequest = NSFetchRequest(entityName: "Board")
+        
+        let lvContext = self.mainQueueManagedObjectContext
+        mainQueueManagedObjectContext.performBlockAndWait(){
+            if #available (iOS 9.0, *)
+            {
+                let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: allBoardsRequest )
+                
+                do
+                {
+                    try lvContext.executeRequest(batchDeleteRequest)
+                }
+                catch
+                {
+                   
+                }
+            }
+            else
+            {
+                do{
+                    if let result = try lvContext.executeFetchRequest(allBoardsRequest) as? [NSManagedObject]
+                    {
+                        for aBoard in result
+                        {
+                            lvContext.deleteObject(aBoard)
+                        }
+                    }
+                }
+                catch{
+                    
+                }
+            }
+        }
+
     }
     
     func boardsToBeDeleted() -> [Board]?

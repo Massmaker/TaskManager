@@ -34,7 +34,10 @@ class TasksHolder:NSObject {
             
             if self.currentTasks.isEmpty && self.board != nil
             {
-                DataSyncronizer.sharedSyncronizer.startSyncingTasksFor(self.board!)
+                let bgQueue = dispatch_queue_create("tasks_syncing_queue", DISPATCH_QUEUE_SERIAL)
+                dispatch_async(bgQueue){
+                    DataSyncronizer.sharedSyncronizer.startSyncingTasksFor(self.board!)
+                }
             }
         }
     }

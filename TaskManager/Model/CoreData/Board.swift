@@ -151,9 +151,9 @@ class Board: NSManagedObject {
             self.dateCreated = date.timeIntervalSinceReferenceDate
         }
         self.creatorId = record[BoardCreatorIDKey] as? String
-        if let order = record[SortOrderIndexIntKey] as? Int64
+        if let order = record[SortOrderIndexIntKey] as? NSNumber
         {
-            self.sortOrder = order
+            self.sortOrder = Int64(order.integerValue)
         }
         
         if let taskReferences = record[BoardTasksReferenceListKey] as? [CKReference]

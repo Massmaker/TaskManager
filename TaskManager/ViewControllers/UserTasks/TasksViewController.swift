@@ -15,16 +15,6 @@ class TasksViewController:UITableViewController {
     
     private var userRecordId:CKRecordID?
     
-//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-//        //self.board = Board()
-//        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//    }
-//    
-//    required init?(coder aDecoder: NSCoder) {
-//        //self.board = Board()
-//        super.init(coder: aDecoder)
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,8 +24,7 @@ class TasksViewController:UITableViewController {
     override func viewWillAppear(animated: Bool) {
         startObservingDataSyncronizerNotifications()
         super.viewWillAppear(animated)
-        
-        //tasksSource = TasksHolder(tableView: self.tableView)
+  
         tasksSource.delegate = self
         
         checkAddTaskButtonEnabled()

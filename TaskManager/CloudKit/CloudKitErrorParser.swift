@@ -63,7 +63,7 @@ class CloudKitErrorParser
                 NSLog("Info: \(error)")
                 return .RecoverableError
             case .PartialFailure:
-                print("\(error!)")
+                print("\n PARTIAL FAILURE:\n\(error!)")
                 return .RecoverableError
 //            default:
 //                NSLog("Error: \(error)") //New error introduced in iOS...?

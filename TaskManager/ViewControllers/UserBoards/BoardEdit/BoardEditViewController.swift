@@ -286,15 +286,14 @@ class BoardEditViewController: FormViewController {
             for aUser in contacts
             {
                 let contactCheckRow = LabelRow().cellSetup(){ (cell, row) -> () in
-                    row.value = aUser.displayName
+                    //row.value = NSLocalizedString("add", comment: "titleName for table view cell")
+                    row.title = aUser.displayName
+                    cell.textLabel?.opaque = true
+                    cell.textLabel?.backgroundColor = UIColor.clearColor()
                     
                     if (self.tempParticimantIDs.contains(aUser.phone!))
                     {
-                        cell.textLabel?.textColor = UIColor.blackColor()
-                    }
-                    else
-                    {
-                        cell.textLabel?.textColor = UIColor.grayColor()
+                        cell.contentView.backgroundColor = UIColor.greenColor().colorWithAlphaComponent(0.5)
                     }
                 }
                 
@@ -314,7 +313,10 @@ class BoardEditViewController: FormViewController {
                 anAppDelegate()?.coreDatahandler?.deleteSingle(tempNewBoard, deleteimmediately: true, saveImmediately: true)
             }
             case .EditCurrent( _ ):
-            print("TO DO: - cancel editing board")
+            currentBoard?.title = initialTitle
+            currentBoard?.details = initialDetails
+            currentBoard?.assignParticipants(initialParticipantIDs)
+            anAppDelegate()?.coreDatahandler?.saveMainContext()
         }
         
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
@@ -322,8 +324,7 @@ class BoardEditViewController: FormViewController {
 
     }
     
-    func saveEdits(sender:UIBarButtonItem)
-    {
+    func saveEdits(sender:UIBarButtonItem){
         
         if let board = self.currentBoard {
             switch self.editingType
@@ -331,8 +332,8 @@ class BoardEditViewController: FormViewController {
                 case .EditCurrent(  _  ):
                     board.assignParticipants(self.tempParticimantIDs)
                     self.boardsHolder?.updateBoard(board)
-                print("\n - Editing board info")
-                    case .CreateNew:
+                    print("\n - Editing board info")
+                case .CreateNew:
                     guard let currentUserID = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else
                     {
                         self.cancelBarButtonAction(nil)
