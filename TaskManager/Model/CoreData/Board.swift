@@ -22,6 +22,29 @@ class Board: NSManagedObject {
         self.title = ""
     }
     
+    override func didSave() {
+        if self.deleted
+        {
+            return
+        }
+        else //check for deleted BoardID
+        {
+            if let dbManager = anAppDelegate()?.coreDatahandler
+            {
+                if self.toBeDeleted
+                {
+                    dbManager.appendBoardIDToDelete(self.recordId)
+                }
+                else
+                {
+                    dbManager.removeBoardIDFromToBeDeleted(self.recordId)
+                }
+            }
+        }
+        
+        super.didSave()
+    }
+    
     var createDate:NSDate {
         return NSDate(timeIntervalSinceReferenceDate: self.dateCreated)
     }
@@ -91,12 +114,29 @@ class Board: NSManagedObject {
     func checkTaskIDsToBeEqualToTasks()
     {
         let currentTasks = self.orderedTasks
-        var allTaskIDs = NSMutableArray(capacity: currentTasks.count)
+        let allTaskIDs = NSMutableArray(capacity: currentTasks.count)
         for aTask in currentTasks
         {
             allTaskIDs.addObject(aTask.recordId!)
         }
         self.taskIDs = allTaskIDs
+    }
+    
+    func assignParticipants(newValue:Set<String>?)
+    {
+        guard let participants = newValue else
+        {
+            self.participants = nil
+            return
+        }
+        
+        let anArray = NSMutableArray(capacity: participants.count)
+        for aString in participants
+        {
+            anArray.addObject(aString as NSString)
+        }
+        
+        self.participants = anArray
     }
     
     

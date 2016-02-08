@@ -14,6 +14,8 @@ class CoreDataManager
     private let mainQueueManagedObjectContext:NSManagedObjectContext
     private let persistentStoreCoordinator:NSPersistentStoreCoordinator
     
+    private lazy var boardIDsToDeleteFromCloud:Set<String> = Set<String>()
+    
     //MARK: - Initialization stuff
     class func getManagedObjectModel() -> NSManagedObjectModel?
     {
@@ -554,7 +556,66 @@ class CoreDataManager
         }
         
         return boards
+    }
+    
+    ///Saves a board record id string into `Set<String>`
+    func appendBoardIDToDelete(anID:String?)
+    {
+        guard let boardId = anID else{ return }
         
+        self.boardIDsToDeleteFromCloud.insert(boardId)
+    }
+    
+    ///Removes a board record id string from `Set<String>`
+    func removeBoardIDFromToBeDeleted(anID:String?)
+    {
+        guard let boardId = anID else{ return }
+        
+        self.boardIDsToDeleteFromCloud.remove(boardId)
+    }
+    
+    /// Postpones *CKModifyRecordsOperation* with *.Background* qualityOfService with *recordIDsToDelete* array, created from current boardIDs Set
+    func startBoardsDeletionToCloudKit()
+    {
+        if self.boardIDsToDeleteFromCloud.isEmpty
+        {
+            return
+        }
+        
+        var recordIDs = [CKRecordID]()
+        for anIDstring in boardIDsToDeleteFromCloud
+        {
+            recordIDs.append(CKRecordID(recordName: anIDstring))
+        }
+        
+        anAppDelegate()?.cloudKitHandler.deleteBoards(recordIDs, withPriority: .Background) { (deletedIDs, error) -> () in
+            if let deletionError = error
+            {
+                print("boards left to delete from CloudKit: \(self.boardIDsToDeleteFromCloud.count) ")
+                print("boards deletion error:")
+                print(deletionError)
+            }
+            else if let deletedIDs = deletedIDs
+            {
+                var recordIDsDeletedSet = Set<String>()
+                for aDeleted in deletedIDs
+                {
+                    recordIDsDeletedSet.insert(aDeleted.recordName)
+                }
+                
+                self.boardIDsToDeleteFromCloud.subtractInPlace(recordIDsDeletedSet)
+                
+                print("boards left to delete from CloudKit: \(self.boardIDsToDeleteFromCloud.count) ")
+                dispatchMain(){
+                    do{
+                        try self.deleteBoardsByIDs(Array(recordIDsDeletedSet), saveImmediately: true)
+                    }
+                    catch{
+                        
+                    }
+                }
+            }
+        }
     }
     
     func createBoardFromRecord(boardRecord:CKRecord) throws -> Board

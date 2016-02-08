@@ -251,40 +251,62 @@ class BoardEditViewController: FormViewController {
     private func addRegisteredContacts(contacts:[User], toSection section:Section)
     {
         let editable = checkEditingEnabled()
-        
-        for aUser in contacts
+        if editable
         {
-            let contactCheckRow = CheckRow().cellSetup(){ (cell, row) -> () in
-                row.title = aUser.displayName
-                row.value = (self.tempParticimantIDs.contains(aUser.phone!))
-                row.disabled = self.editingDisabledForBoard
-            }
-            
-            if editable
+            for aUser in contacts
             {
-                contactCheckRow.onChange(){ (chRow) -> () in
+                let contactCheckRow = CheckRow().cellSetup(){ (cell, row) -> () in
+                    row.title = aUser.displayName
+                    row.value = (self.tempParticimantIDs.contains(aUser.phone!))
+                    //row.disabled = self.editingDisabledForBoard
+                }
+                
+//                if editable
+//                {
+                    contactCheckRow.onChange(){ (chRow) -> () in
+                        
+                        if chRow.value == true
+                        {
+                            self.tempParticimantIDs.insert(aUser.phone!)
+                        }
+                        else
+                        {
+                            self.tempParticimantIDs.remove(aUser.phone!)
+                        }
+                        
+                        self.checkSaveButtonEnabled()
+                    }
+//                }
+                
+                section <<< contactCheckRow
+            }
+        }
+        else
+        {
+            for aUser in contacts
+            {
+                let contactCheckRow = LabelRow().cellSetup(){ (cell, row) -> () in
+                    row.value = aUser.displayName
                     
-                    if chRow.value == true
+                    if (self.tempParticimantIDs.contains(aUser.phone!))
                     {
-                        self.tempParticimantIDs.insert(aUser.phone!)
+                        cell.textLabel?.textColor = UIColor.blackColor()
                     }
                     else
                     {
-                        self.tempParticimantIDs.remove(aUser.phone!)
+                        cell.textLabel?.textColor = UIColor.grayColor()
                     }
-                    
-                    self.checkSaveButtonEnabled()
                 }
+                
+                section <<< contactCheckRow
             }
-            
-            section <<< contactCheckRow
         }
+      
     }
     
-    
+    //MARK: -
     @IBAction func cancelBarButtonAction(sender:AnyObject?)
     {
-        
         switch editingType{
             case BoardEditingType.CreateNew:
             if let tempNewBoard = self.currentBoard
@@ -307,10 +329,7 @@ class BoardEditViewController: FormViewController {
             switch self.editingType
             {
                 case .EditCurrent(  _  ):
-//                    let newParticipants = Array(self.tempParticimantIDs)
-//                    var tempTaskBoard = TaskBoardInfo()
-//                    tempTaskBoard.setInfoFromBoard(board)
-//                    tempTaskBoard.setNewParticipants(newParticipants)
+                    board.assignParticipants(self.tempParticimantIDs)
                     self.boardsHolder?.updateBoard(board)
                 print("\n - Editing board info")
                     case .CreateNew:
@@ -319,7 +338,6 @@ class BoardEditViewController: FormViewController {
                         self.cancelBarButtonAction(nil)
                         return
                     }
-                    
                     board.creatorId = currentUserID
                     print("\n - Creating new board")
                     self.boardsHolder?.addNew(board)
@@ -330,10 +348,5 @@ class BoardEditViewController: FormViewController {
         {
             self.cancelBarButtonAction(nil)
         }
-    }
-    
-    private func setNavigationTitle(text:String?)
-    {
-        self.navigationItem.title = text
     }
 }

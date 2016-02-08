@@ -749,6 +749,26 @@ class CloudKitDatabaseHandler{
         }
     }
     
+    func deleteBoards(boardIDs:[CKRecordID], withPriority priority:NSQualityOfService, completion:((deletedIDs:[CKRecordID]?, error:NSError?)->()))
+    {
+        guard !boardIDs.isEmpty else
+        {
+            completion(deletedIDs: boardIDs, error: nil)
+            return
+        }
+        
+        let batchDeleteOp = CKModifyRecordsOperation()
+        batchDeleteOp.recordIDsToDelete = boardIDs
+        batchDeleteOp.qualityOfService = priority
+        batchDeleteOp.savePolicy = .ChangedKeys
+        
+        batchDeleteOp.modifyRecordsCompletionBlock = { _ , deletedBoardIDs, error in
+            completion(deletedIDs: deletedBoardIDs, error: error)
+        }
+        
+        publicDB.addOperation(batchDeleteOp)
+    }
+    
     func findBoardWithID(recordIDString:String, completion:((boardRecord:CKRecord?)->()))
     {
         

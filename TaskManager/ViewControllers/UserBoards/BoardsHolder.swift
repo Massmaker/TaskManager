@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 class BoardsHolder : NSObject { 
     
     //MARK: -
@@ -110,26 +111,6 @@ class BoardsHolder : NSObject {
         
         delegate?.boardsDidStartUpdating()
         
-        var foundBoard:Board?
-        
-        if let indexOfBoard = self.currentBoards.indexOf(board)
-        {
-            foundBoard = self.currentBoards[indexOfBoard]
-        }
-        
-        if let toInsert = foundBoard
-        {
-            toInsert.title = board.title
-            toInsert.details = board.details
-            toInsert.sortOrder = board.sortOrder
-            toInsert.participants = board.participants
-        }
-        else
-        {
-            anAppDelegate()?.coreDatahandler?.insert(board, saveImmediately: false)
-           
-            self.currentBoards.append(board)
-        }
         anAppDelegate()?.coreDatahandler?.saveMainContext()
         
         delegate?.boardsDidFinishUpdating()
