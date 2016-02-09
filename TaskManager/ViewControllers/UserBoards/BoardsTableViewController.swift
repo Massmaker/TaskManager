@@ -228,13 +228,14 @@ class BoardsTableViewController: UITableViewController {
     
     func dataSyncronizerDidFinishSyncing()
     {
+        self.tableView.scrollEnabled = true
+        
         boardsHolder.removeAllBoardsFromSelf()
         
         boardsHolder.fetchBoardsFromCoreData()
         
         self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
-        
-        self.tableView.scrollEnabled = true
+      
         
         if let control = self.refreshControl
         {

@@ -12,8 +12,6 @@
 		F80191C01C50F94D0007D2AF /* RecordIdIndexable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80191BF1C50F94D0007D2AF /* RecordIdIndexable.swift */; };
 		F8067C421C60F34000782E63 /* BoardsHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C411C60F34000782E63 /* BoardsHolderDelegate.swift */; };
 		F8067C441C60F38300782E63 /* BoardsTableViewController+BoardsHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C431C60F38300782E63 /* BoardsTableViewController+BoardsHolderDelegate.swift */; };
-		F8067C461C60F88800782E63 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C451C60F88800782E63 /* CurrentUser.swift */; };
-		F8067C481C60F8A200782E63 /* CurrentUser+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C471C60F8A200782E63 /* CurrentUser+CoreDataProperties.swift */; };
 		F8067C4A1C60F9A800782E63 /* DisplayNameCapable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C491C60F9A800782E63 /* DisplayNameCapable.swift */; };
 		F8067C4C1C60FAF200782E63 /* TasksHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C4B1C60FAF200782E63 /* TasksHolderDelegate.swift */; };
 		F8067C4E1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C4D1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift */; };
@@ -112,8 +110,6 @@
 		F80191BF1C50F94D0007D2AF /* RecordIdIndexable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordIdIndexable.swift; sourceTree = "<group>"; };
 		F8067C411C60F34000782E63 /* BoardsHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsHolderDelegate.swift; sourceTree = "<group>"; };
 		F8067C431C60F38300782E63 /* BoardsTableViewController+BoardsHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BoardsTableViewController+BoardsHolderDelegate.swift"; sourceTree = "<group>"; };
-		F8067C451C60F88800782E63 /* CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
-		F8067C471C60F8A200782E63 /* CurrentUser+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CurrentUser+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		F8067C491C60F9A800782E63 /* DisplayNameCapable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayNameCapable.swift; sourceTree = "<group>"; };
 		F8067C4B1C60FAF200782E63 /* TasksHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksHolderDelegate.swift; sourceTree = "<group>"; };
 		F8067C4D1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksViewController+TasksHolderDelegate.swift"; sourceTree = "<group>"; };
@@ -385,8 +381,6 @@
 				F84D688C1C4CEB6900EF8A16 /* Task.swift */,
 				F84D688F1C4CEB6900EF8A16 /* User+CoreDataProperties.swift */,
 				F84D68901C4CEB6900EF8A16 /* User.swift */,
-				F8067C471C60F8A200782E63 /* CurrentUser+CoreDataProperties.swift */,
-				F8067C451C60F88800782E63 /* CurrentUser.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -663,7 +657,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F84D68D91C4CEB6900EF8A16 /* ContactCollectionViewCell.swift in Sources */,
-				F8067C481C60F8A200782E63 /* CurrentUser+CoreDataProperties.swift in Sources */,
 				F84D68F31C4CF5D800EF8A16 /* LoginViewController+UserDelegateExtensions.swift in Sources */,
 				F84D68B71C4CEB6900EF8A16 /* CloudRecordTypes.swift in Sources */,
 				F8386A2D1C5B6A0B00C298A5 /* TaskTableViewCell.swift in Sources */,
@@ -707,7 +700,6 @@
 				F84D68C21C4CEB6900EF8A16 /* Board+CoreDataProperties.swift in Sources */,
 				F84D68E81C4CEBA100EF8A16 /* LoginViewController.swift in Sources */,
 				F84B4D651C4E66C70013D7F1 /* TasksViewController.swift in Sources */,
-				F8067C461C60F88800782E63 /* CurrentUser.swift in Sources */,
 				F84D68CA1C4CEB6900EF8A16 /* ContactsFetcherPreIOS9.swift in Sources */,
 				F84CAD1C1C56363D00BC2ECC /* UserProfileViewController+UIImagePickerControllerDelegate.swift in Sources */,
 				F858B73F1C57CAC4003BF286 /* CloudRegisteredUsersOperation.swift in Sources */,

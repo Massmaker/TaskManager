@@ -28,44 +28,66 @@ class TaskTableViewCell: UITableViewCell {
             if task.takenDate != nil && task.finishedDate == nil
             {
                 indicatorView.backgroundColor = UIColor.greenColor()
+                if let currentOwner = task.currentOwner
+                {
+                    avatarView.image = currentOwner.avatarImage ?? testAvatarImage
+                }
+                else if let currentTaskOwnerID = task.currentOwnerId
+                {
+                    
+                    if currentTaskOwnerID == anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName
+                    {
+                        avatarView.image = anAppDelegate()?.cloudKitHandler.currentUserAvatar ?? testAvatarImage
+                    }
+                    else if let foundContact = anAppDelegate()?.coreDatahandler?.findContactByPhone(currentTaskOwnerID)
+                    {
+                        avatarView.image = foundContact.avatarImage ?? testAvatarImage
+                    }
+                    else
+                    {
+                        avatarView.image = testAvatarImage
+                    }
+                }
             }
             else if task.finishedDate != nil && task.takenDate != nil
             {
                 indicatorView.backgroundColor = UIColor.blueColor()
+                if let creatorID = task.creator
+                {
+                    if creatorID == anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName
+                    {
+                        avatarView.image = anAppDelegate()?.cloudKitHandler.currentUserAvatar ?? testAvatarImage
+                    }
+                    else if let user = anAppDelegate()?.coreDatahandler?.findContactByPhone(creatorID)
+                    {
+                        avatarView.image = user.avatarImage ?? testAvatarImage
+                    }
+                }
             }
             else
             {
                 indicatorView.backgroundColor = UIColor.whiteColor()
+                if let creatorID = task.creator
+                {
+                    if creatorID == anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName
+                    {
+                        avatarView.image = anAppDelegate()?.cloudKitHandler.currentUserAvatar ?? testAvatarImage
+                    }
+                    else if let user = anAppDelegate()?.coreDatahandler?.findContactByPhone(creatorID)
+                    {
+                        avatarView.image = user.avatarImage ?? testAvatarImage
+                    }
+                }
             }
             
             finishDateLabel.text = task.finishedDate?.dateTimeCustomString()
+            
+            
             startDateLabel.text = task.takenDate?.dateTimeCustomString()
+            
+            
             titleLabel.text = task.title
             detailsLabel.text = task.details
-            avatarView.image = testAvatarImage //TODO:  set creator image if task is not set or current task oaner avatar if task in in process
-            
-            if let currentTaskOwner = task.currentOwner
-            {
-                if currentTaskOwner.phone! == anAppDelegate()!.cloudKitHandler.publicCurrentUser!.recordID.recordName
-                {
-                    avatarView.image = anAppDelegate()?.cloudKitHandler.currentUserAvatar
-                }
-                else
-                {
-                    avatarView.image = currentTaskOwner.avatarImage //ContactsHandler.sharedInstance.contactByPhone(currentTaskOwnerPhone)?.avatarImage
-                }
-            }
-            else if let creator = task.creator
-            {
-                if creator == anAppDelegate()!.cloudKitHandler.publicCurrentUser?.recordID.recordName
-                {
-                    avatarView.image = anAppDelegate()?.cloudKitHandler.currentUserAvatar
-                }
-                else if let contact = anAppDelegate()?.coreDatahandler?.findContactByPhone(creator)
-                {
-                    avatarView.image = contact.avatarImage
-                }
-            }
         }
         else
         {

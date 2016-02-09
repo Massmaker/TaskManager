@@ -13,15 +13,10 @@
         <attribute name="toBeDeleted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Task" inverseName="board" inverseEntity="Task" syncable="YES"/>
     </entity>
-    <entity name="CurrentUser" syncable="YES">
-        <attribute name="avatarData" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
     <entity name="Task" representedClassName=".Task" syncable="YES">
         <attribute name="changeTag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creator" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="currentOwnerId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="dateFinished" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="dateTaken" optional="YES" attributeType="Date" syncable="YES"/>
@@ -43,8 +38,7 @@
     </entity>
     <elements>
         <element name="Board" positionX="-297" positionY="-135" width="128" height="210"/>
-        <element name="CurrentUser" positionX="-270" positionY="9" width="128" height="105"/>
-        <element name="Task" positionX="-65" positionY="50" width="128" height="225"/>
+        <element name="Task" positionX="-65" positionY="50" width="128" height="238"/>
         <element name="User" positionX="-468" positionY="78" width="128" height="135"/>
     </elements>
 </model>

@@ -65,7 +65,8 @@ class UserProfileViewController: FormViewController {
         
         Digits.sharedInstance().logOut()
         
-        anAppDelegate()?.coreDatahandler?.deleteCurrentUser()
+        anAppDelegate()?.cloudKitHandler.currentUserPhoneNumber = nil
+        anAppDelegate()?.cloudKitHandler.deleteCurrentUserRecord()
         anAppDelegate()?.coreDatahandler?.deleteAllContacts()
         anAppDelegate()?.coreDatahandler?.deleteAllBoards()
         anAppDelegate()?.coreDatahandler?.deleteAllTasks()

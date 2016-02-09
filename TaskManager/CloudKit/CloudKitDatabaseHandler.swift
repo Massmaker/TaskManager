@@ -19,51 +19,24 @@ class CloudKitDatabaseHandler{
     private let publicDB:  CKDatabase
     private let privateDB: CKDatabase
     
-    private var user:CurrentUser?
-    var currentUser:CurrentUser? {
-        if let user = self.user
-        {
-            return user
-        }
-        return nil
-    }
-    
-    private var currentUserRecord:CKRecord? {
-        didSet {
-            if let record = currentUserRecord
-            {
-                if let currentUser = anAppDelegate()?.coreDatahandler?.getCurrentUserById(record.recordID.recordName){
-                    self.user = currentUser
-                }
-                else{
-                    do{
-                        try anAppDelegate()?.coreDatahandler?.setCurrentUser(record)
-                    }
-                    catch let newUserError{
-                        print("\n - Error:  Could not assign new current user:")
-                        print(newUserError)
-                    }
-                }
-            }
-            else
-            {
-                self.user = nil
-                anAppDelegate()?.coreDatahandler?.deleteCurrentUser()
-            }
-        }
-    }
+    private var currentUserRecord:CKRecord?
     
     var currentUserPhoneNumber:String?{
         didSet{
             print("new phone number is set in cloudKitDatabaseHandler")
+            print(currentUserPhoneNumber)
         }
     }
     
     private lazy var pCurrentUserAvatar = UIImage()
     
+    var publicCurrentUser:CKRecord?{
+        return self.currentUserRecord
+    }
+    
     var currentUserAvatar:UIImage?{
         
-        if let recordID = anAppDelegate()?.cloudKitHandler.currentUserPhoneNumber
+        if let recordID = self.currentUserRecord?.recordID.recordName
         {
             if self.pCurrentUserAvatar.size == CGSizeZero
             {
@@ -90,10 +63,15 @@ class CloudKitDatabaseHandler{
         self.privateDB = container.privateCloudDatabase
     }
 
-    var publicCurrentUser:CKRecord?{
-        return self.currentUserRecord
+   
+    //MARK: - 
+    func deleteCurrentUserRecord()
+    {
+        self.currentUserRecord = nil
     }
     
+   
+    //MARK: -
     func checkAccountStatus(completion:(status:CKAccountStatus, error:NSError?)->())
     {
         self.container.accountStatusWithCompletionHandler { (accStatus, lvError) in

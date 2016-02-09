@@ -88,132 +88,13 @@ class CoreDataManager
     
     func undoChangesInContext()
     {
-        dispatchMain(){ [unowned self] in
-            self.mainQueueManagedObjectContext.undo()
-        }
-    }
-    
-    //MARK: - CurrentUser
-    func getCurrentUserById(recordID:String) -> CurrentUser?
-    {
-        var toReturn:CurrentUser?
-        
-        let fetchRequest = NSFetchRequest(entityName: "CurrentUser")
-        let predicate = NSPredicate(format: "phone = %@", recordID)
-        fetchRequest.predicate = predicate
-        
-        let mainContext = self.mainQueueManagedObjectContext
-        
-        mainContext.performBlockAndWait(){
-            do
-            {
-                if var foundUsers = try mainContext.executeFetchRequest(fetchRequest) as? [CurrentUser] where foundUsers.count > 0
-                {
-                    //
-                    toReturn = foundUsers.removeFirst()
-                    
-                    //clear database for duplicates
-                    if !foundUsers.isEmpty
-                    {
-                        for aUser in foundUsers
-                        {
-                            mainContext.deleteObject(aUser)
-                        }
-                    }
-                }
-            }
-            catch let fetchError
-            {
-                print(" - Error fetching current user:")
-                print(fetchError)
-            }
-        }
-        
-        return toReturn
-    }
-    
-    func setCurrentUser(userRecord:CKRecord) throws
-    {
-        var toThrow:ErrorType?
-        
         let context = self.mainQueueManagedObjectContext
-        context.performBlockAndWait(){
-            
-            if let currentUser = NSEntityDescription.insertNewObjectForEntityForName("CurrentUser", inManagedObjectContext: self.mainQueueManagedObjectContext) as? CurrentUser
-            {
-                currentUser.fillInfoFrom(userRecord)
-            }
-            
-            if context.hasChanges
-            {
-                do{
-                    try context.save()
-                }
-                catch let error{
-                    toThrow = error
-                }
-            }
-        }
         
-        if let error = toThrow
-        {
-            throw error
+        context.performBlockAndWait() {
+                context.undo()
         }
-        
     }
     
-    func setCurrentUser(user:CurrentUser)
-    {
-        guard let _ = user.phone else
-        {
-            return
-        }
-        
-        if let existing = getCurrentUserById(user.phone!)
-        {
-            existing.firstName = user.firstName
-            existing.lastName = user.lastName
-            existing.avatarData = user.avatarData
-        }
-        else
-        {
-            self.mainQueueManagedObjectContext.insertObject(user)
-        }
-        
-        saveMainContext()
-    }
-    
-    /// used when user presses
-    func deleteCurrentUser()
-    {
-        let fetch = NSFetchRequest(entityName: "CurrentUser")
-        if #available(iOS 9.0, *) {
-            let batchDeletion = NSBatchDeleteRequest(fetchRequest: fetch)
-            do
-            {
-                try self.mainQueueManagedObjectContext.executeRequest(batchDeletion)
-            }
-            catch let batchDeletionError
-            {
-                print("Error batch deleting CurrentUser entities:")
-                print(batchDeletionError)
-            }
-        }
-        else
-        {
-            do{
-                let entities = try self.mainQueueManagedObjectContext.executeFetchRequest(fetch) as! [NSManagedObject]
-                for anEntity in entities
-                {
-                    mainQueueManagedObjectContext.deleteObject(anEntity)
-                }
-            }
-            catch {
-                
-            }
-        }
-        
-    }
     
     //MARK: - Contacts
     
@@ -225,6 +106,11 @@ class CoreDataManager
     @warn_unused_result
     func insert(contacts:[DeviceContact]) throws -> [DeviceContact]
     {
+        guard let currentUserId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else
+        {
+            throw ErrorContacts.NotFound(message: "No Logged user found")
+        }
+        
         var failedUsers = [DeviceContact]()
         var errorToThrow:ErrorType? = nil
         
@@ -232,6 +118,12 @@ class CoreDataManager
          
             for aContact in contacts
             {
+                let fixedNumber = aContact.fixedPhoneNumber
+                if fixedNumber == currentUserId
+                {
+                    continue
+                }
+                
                 if let existingDBUser = self.findContactByPhone(aContact.fixedPhoneNumber)
                 {
                     print("Updating User ...")
@@ -294,15 +186,6 @@ class CoreDataManager
             {
                 self.mainQueueManagedObjectContext.deleteObject(aContact)
             }
-            
-//            do
-//            {
-//                try self.mainQueueManagedObjectContext.save()
-//            }
-//            catch let saveContextError
-//            {
-//                NSLog("\n - Deletion All USERs from local databale failure:\n - Save Context Error:\n \(saveContextError) \n -----")
-//            }
         }
     }
     
@@ -803,7 +686,6 @@ class CoreDataManager
                 
                 newTask.board = board
                 
-                newTask.recordId = aRecord.recordID.recordName
            
                 if let ownerID = aRecord[CurrentOwnerStringKey] as? String, userFound = findContactByPhone(ownerID)
                 {
@@ -820,34 +702,6 @@ class CoreDataManager
         }
     }
     
-    func insertSingle(task:Task)
-    {
-        guard let recordId = task.recordId else
-        {
-            return
-        }
-        
-        if let _ = findTaskById(recordId)
-        {
-            return
-        }
-        
-        let context = self.mainQueueManagedObjectContext
-        
-        context.performBlock(){
-            
-            context.insertObject(task)
-            
-            do{
-                try context.save()
-                print("inserted single task to main context (saved) ")
-            }
-            catch let error{
-                print("could not save private context when inserting new task")
-                print(error)
-            }
-        }
-    }
     
     func insertMany(tasks:[Task])
     {

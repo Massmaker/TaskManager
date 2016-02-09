@@ -2,7 +2,7 @@
 //  Task+CoreDataProperties.swift
 //  TaskManager
 //
-//  Created by CloudCraft on 2/2/16.
+//  Created by CloudCraft on 2/9/16.
 //  Copyright © 2016 CloudCraft. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -14,20 +14,18 @@ import CoreData
 
 extension Task {
 
-    @NSManaged var title: String?
-    @NSManaged var details: String?
-    @NSManaged var toBeDeleted:Bool
     @NSManaged var changeTag: String?
+    @NSManaged var creator: String?
+    @NSManaged var dateCreated: NSTimeInterval
     @NSManaged var dateFinished: NSTimeInterval
     @NSManaged var dateTaken: NSTimeInterval
-    @NSManaged var dateCreated:NSTimeInterval
-    
+    @NSManaged var details: String?
     @NSManaged var recordId: String?
     @NSManaged var sortOrder: Int64
-    @NSManaged var creator:String?
-    
+    @NSManaged var title: String?
+    @NSManaged var toBeDeleted: Bool
+    @NSManaged var currentOwnerId: String?
     @NSManaged var board: Board?
     @NSManaged var currentOwner: User?
-
 
 }

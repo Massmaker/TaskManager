@@ -159,7 +159,7 @@ class TaskEditViewController: FormViewController {
        
          // 0 - Task title, 1 - Task details, 2 - Task actions(Take or Finish+Cancel)
         
-        if let taskOwner = currentTask?.currentOwner where taskOwner == currentLoggedUserID {
+        if let taskOwnerId = currentTask?.currentOwnerId where taskOwnerId == currentLoggedUserID {
             
             form[2] = actionsSection
             setupFinishCancelButtons(actionsSection)
@@ -327,36 +327,33 @@ class TaskEditViewController: FormViewController {
             return
         }
         
-        guard let currentUser = anAppDelegate()?.cloudKitHandler.currentUser, currentUserPhone = currentUser.phone,  let publicUser = anAppDelegate()?.cloudKitHandler.publicCurrentUser where publicUser.recordID.recordName == currentUserPhone else
+        guard let publicUser = anAppDelegate()?.cloudKitHandler.publicCurrentUser else
         {
+            return
+        }        
+        
+        weakTasksHolder?.handleTakingTask(task, byUserID: publicUser.recordID.recordName)
+        
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func finishTaskPressed() {
+        
+        guard let task = self.currentTask, let publicUserID = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else {
             return
         }
         
-        task.currentOwner = currentUser // phoneNumber is stored both in Record name and currentUser["phoneNumberID"]  String value
-        task.dateTaken = NSDate().timeIntervalSinceReferenceDate
-        task.dateFinished = 0.0
+        weakTasksHolder?.handleFinishingTask(task, byUserID: publicUserID)
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func finishTaskPressed()
-    {
-        guard var task = self.currentTask, let _ = anAppDelegate()?.cloudKitHandler.publicCurrentUser else
-        {
-            return
-        }
-        
-        task.currentOwner = nil // phoneNumber is stored both in Record name and currentUser["phoneNumberID"]  String value
-        task.dateFinished = NSDate().timeIntervalSinceReferenceDate
-    }
-    
-    func cancelTaskPressed()
-    {
-        guard var task = self.currentTask, let _ = anAppDelegate()?.cloudKitHandler.publicCurrentUser else
+    func cancelTaskPressed() {
+        guard let task = self.currentTask, let userRecordId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else
         {
             return
         }
 
-        task.currentOwner = nil
-        task.dateFinished = 0.0
-        task.dateTaken = 0.0
+        weakTasksHolder?.handleCancellingTask(task, byUsedID: userRecordId)
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
 }

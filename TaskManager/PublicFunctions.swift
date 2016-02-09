@@ -73,14 +73,17 @@ func indexOf <T:RecordIdIndexable> (target:T, inArray:[T]) -> Int?
 }
 
 
-func createTaskRecordFrom(taskInfo:Task) throws -> CKRecord
+func createTaskRecordFrom(taskInfo:Task, recordID:String? = nil) throws -> CKRecord
 {
     guard let title = taskInfo.title, creator = taskInfo.creator, _ = taskInfo.board?.recordId else
     {
         throw TaskError.Unknown
     }
     
-    let newTaskRecord = CKRecord(recordType: CloudRecordTypes.Task.rawValue)
+    var newTaskRecord = CKRecord(recordType: CloudRecordTypes.Task.rawValue)
+    if let anID = recordID {
+        newTaskRecord = CKRecord(recordType: CloudRecordTypes.Task.rawValue, recordID: CKRecordID(recordName: anID))
+    }
     
     newTaskRecord[TaskCreatorStringKey] = creator //not optional
     

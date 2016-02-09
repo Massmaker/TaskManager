@@ -239,7 +239,137 @@ class TasksHolder:NSObject {
         }
     }
     
+    //MARK: - Task DELETE - TAKE - CANCEL  actions
+    func handleTakingTask(task:Task, byUserID userID:String) -> Bool {
+        
+        guard let recordID = task.recordId else
+        {
+            return false
+        }
+        
+        var toReturn = true
+        
+        do{
+            
+            let taskRecord = try createTaskRecordFrom(task, recordID: recordID)
+            
+            self.delegate?.tasksWillStartUpdating()
+            
+            let bgQueue = dispatch_queue_create("Task_Taking_queue", DISPATCH_QUEUE_SERIAL)
+            dispatch_async(bgQueue){
+                taskRecord[DateTakenDateKey] = NSDate()
+                taskRecord[CurrentOwnerStringKey] = userID
+                taskRecord[DateFinishedDateKey] = nil
+                
+                anAppDelegate()?.cloudKitHandler.editTask(taskRecord) {[weak self] (editedRecord, editError) -> () in
+                    if let edited = editedRecord
+                    {
+                        dispatchMain(){
+                            task.fillInfoFrom(edited)
+                            anAppDelegate()?.coreDatahandler?.saveMainContext()
+                            self?.table?.reloadData()
+                            self?.delegate?.tasksDidFinishUpdating()
+                        }
+                    }
+                }
+            }            
+        }
+        catch let error{
+            print("\n - Error creating TaskRecord From current TASK:")
+            print(error)
+            toReturn = false
+        }
+        
+        return toReturn
+    }
     
+    func handleCancellingTask(task:Task, byUsedID userID:String) -> Bool
+    {
+        guard let recordID = task.recordId else
+        {
+            return false
+        }
+        
+        var toReturn = true
+        
+        do{
+            
+            let taskRecord = try createTaskRecordFrom(task, recordID: recordID)
+            
+            self.delegate?.tasksWillStartUpdating()
+            
+            let bgQueue = dispatch_queue_create("Task_Cancelling_queue", DISPATCH_QUEUE_SERIAL)
+            dispatch_async(bgQueue){
+                taskRecord[DateFinishedDateKey] = nil
+                taskRecord[CurrentOwnerStringKey] = nil
+                taskRecord[DateTakenDateKey] = nil
+                
+                anAppDelegate()?.cloudKitHandler.editTask(taskRecord) {[weak self] (editedRecord, editError) -> () in
+                    if let edited = editedRecord
+                    {
+                        dispatchMain(){
+                            task.fillInfoFrom(edited)
+                            anAppDelegate()?.coreDatahandler?.saveMainContext()
+                            self?.table?.reloadData()
+                            self?.delegate?.tasksDidFinishUpdating()
+                        }
+                    }
+                }
+            }
+        }
+        catch let error{
+            print("\n - Error creating TaskRecord From current TASK:")
+            print(error)
+            toReturn = false
+        }
+        
+        return toReturn
+    }
+    
+    func handleFinishingTask(task:Task, byUserID userID:String) -> Bool
+    {
+        guard let recordID = task.recordId else
+        {
+            return false
+        }
+        
+        var toReturn = true
+        
+        do{
+            
+            let taskRecord = try createTaskRecordFrom(task, recordID: recordID)
+            
+            self.delegate?.tasksWillStartUpdating()
+            
+            let bgQueue = dispatch_queue_create("Task_Finishing_queue", DISPATCH_QUEUE_SERIAL)
+            dispatch_async(bgQueue){
+                taskRecord[DateFinishedDateKey] = NSDate()
+                taskRecord[CurrentOwnerStringKey] = nil
+                
+                anAppDelegate()?.cloudKitHandler.editTask(taskRecord) {[weak self] (editedRecord, editError) -> () in
+                    if let edited = editedRecord
+                    {
+                        dispatchMain(){
+                            task.fillInfoFrom(edited)
+                            anAppDelegate()?.coreDatahandler?.saveMainContext()
+                            self?.table?.reloadData()
+                            self?.delegate?.tasksDidFinishUpdating()
+                        }
+                    }
+                }
+            }
+            
+        }
+        catch let error{
+            print("\n - Error creating TaskRecord From current TASK:")
+            print(error)
+            toReturn = false
+        }
+        
+        return toReturn
+    }
+    
+    //MARK: - Sync NSNotification
     func handleSyncNotification(note:NSNotification)
     {
         switch note.name
