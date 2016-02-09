@@ -65,8 +65,8 @@ class TaskEditViewController: FormViewController {
         let titleSectionTitle = "task title"
         let detailsSectionTitle = "task details"
         
-        guard let task = self.currentTask else
-        {
+        guard let task = self.currentTask else {
+            
             form +++ Section(titleSectionTitle)
                  <<< TextAreaRow(){
                         $0.placeholder = "enter task title"
@@ -149,10 +149,9 @@ class TaskEditViewController: FormViewController {
         setupDeleteSection()
     }
     
-    private func setupActionsSection()
-    {
-        guard let currentLoggedUserID = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else
-        {
+    private func setupActionsSection() {
+        
+        guard let currentLoggedUserID = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else {
             return
         }
         
@@ -160,20 +159,20 @@ class TaskEditViewController: FormViewController {
        
          // 0 - Task title, 1 - Task details, 2 - Task actions(Take or Finish+Cancel)
         
-        if let taskOwner = currentTask?.currentOwner where taskOwner == currentLoggedUserID
-        {
+        if let taskOwner = currentTask?.currentOwner where taskOwner == currentLoggedUserID {
+            
             form[2] = actionsSection
             setupFinishCancelButtons(actionsSection)
         }
-        else
-        {
+        else {
+            
             form[2] = actionsSection
             setupTakeSection(actionsSection)
         }
     }
     
-    private func setupTakeSection(section:Section)
-    {
+    private func setupTakeSection(section:Section) {
+        
         let takeButtonRow = ButtonRow("Take task").cellSetup(){ (cell, row) -> () in
                     cell.textLabel?.font = UIFont.boldSystemFontOfSize(17)
                     cell.tintColor = UIColor.greenColor()
@@ -187,8 +186,8 @@ class TaskEditViewController: FormViewController {
         section.append(takeButtonRow)
     }
     
-    private func setupFinishCancelButtons(section:Section)
-    {
+    private func setupFinishCancelButtons(section:Section) {
+        
         let finishTaskButton = ButtonRow("Finish Task").cellSetup{(cell, row) in
                     cell.textLabel?.font = UIFont.boldSystemFontOfSize(17)
                     cell.tintColor = UIColor.blueColor()
@@ -226,7 +225,7 @@ class TaskEditViewController: FormViewController {
         form +++ Section("Danger Zone") <<<  deleteButtonRow
     }
     
-    //MARK: -
+    //MARK: - Save  button
     private func checkSaveButtonEnabled()
     {
         
@@ -328,7 +327,7 @@ class TaskEditViewController: FormViewController {
             return
         }
         
-        guard let currentUser = anAppDelegate()?.cloudKitHandler.currentUser else
+        guard let currentUser = anAppDelegate()?.cloudKitHandler.currentUser, currentUserPhone = currentUser.phone,  let publicUser = anAppDelegate()?.cloudKitHandler.publicCurrentUser where publicUser.recordID.recordName == currentUserPhone else
         {
             return
         }

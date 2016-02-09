@@ -928,7 +928,7 @@ class CloudKitDatabaseHandler{
         //}
     }
     
-    func deleteTasks(recordIDs:[String], completion:((deletedCount:Int, deletionError:NSError?)->())) -> Bool
+    func deleteTasks(recordIDs:[String], completion:((deletedIDs:[String]?, deletionError:NSError?)->())) -> Bool
     {
         guard !recordIDs.isEmpty else
         {
@@ -936,6 +936,7 @@ class CloudKitDatabaseHandler{
         }
         
         let lvPubliDB = self.publicDB
+        
         let bgQueueDeleteOperation = NSBlockOperation(){
             
             var taskRecordIDs = [CKRecordID]()
@@ -950,11 +951,16 @@ class CloudKitDatabaseHandler{
             let completionBlock = { ( _:[CKRecord]?, deletedIDs:[CKRecordID]?, error:NSError?) in
                 if let deletedIds = deletedIDs
                 {
-                    completion(deletedCount: deletedIds.count, deletionError: error)
+                    var recordIDs = [String]()
+                    for aRecId in deletedIds
+                    {
+                        recordIDs.append(aRecId.recordName)
+                    }
+                    completion(deletedIDs: recordIDs, deletionError: error)
                 }
                 else
                 {
-                    completion(deletedCount: -1, deletionError: error)
+                    completion(deletedIDs: nil, deletionError: error)
                 }
             }
             

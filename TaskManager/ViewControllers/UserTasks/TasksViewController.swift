@@ -101,7 +101,19 @@ class TasksViewController:UITableViewController {
     }
     
     
-    
+    //MARK: - 
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        if editing{
+            
+        }
+        else{
+            self.tasksSource.updateTasksSortIndexes()
+        
+            anAppDelegate()?.coreDatahandler?.startTasksDeletionToCloudKit()
+        }
+    }
     
     //MARK: - UITableViewDelegate
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -171,6 +183,24 @@ class TasksViewController:UITableViewController {
     }
     
     override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+        
+        if sourceIndexPath.section == 1 && destinationIndexPath.section == 1
+        {
+            print("Source path: \(sourceIndexPath.row)")
+            print("Destination path: \(destinationIndexPath.row)")
+            do{
+                let removed = try self.tasksSource.removeTaskAtIndex(sourceIndexPath.row)
+                do{
+                    try self.tasksSource.insertTask(removed, atIndex: destinationIndexPath.row)
+                }
+                catch{
+                    print(" Could not insert task at index: \(destinationIndexPath.row)")
+                }
+            }
+            catch{
+                print(" Could not remove task at index: \(sourceIndexPath.row)")
+            }
+        }
         
     }
     

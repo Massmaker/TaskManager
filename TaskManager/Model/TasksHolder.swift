@@ -82,6 +82,44 @@ class TasksHolder:NSObject {
         }
     }
     
+    func removeTaskAtIndex(index:Int) throws -> Task
+    {
+        if index >= currentTasks.count
+        {
+            throw TaskBoardError.NotFound
+        }
+        
+        return currentTasks.removeAtIndex(index)
+    }
+    
+    func insertTask(task:Task,  atIndex index:Int) throws {
+        if index > currentTasks.count
+        {
+            throw TaskBoardError.NotFound
+        }
+        currentTasks.insert(task, atIndex: index)
+    }
+    
+    //MARK: - 
+    
+    ///Iterates through all tasks in current array and updates **sortOrder** from zero to last index.
+    /// - Does not call `"save context"`.
+    func updateTasksSortIndexes() {
+        
+        if currentTasks.isEmpty{
+            return
+        }
+        
+        var index:Int64 = 0
+        
+        for aTask in currentTasks {
+            
+            aTask.sortOrder = index
+            index += 1
+        }
+    }
+    
+    ///Marks task as toBeDeleted - for deletion from CloudDatabase  and removes task from current tasks array - to be invisible for table view
     func deleteTaskAtIndex(indexOfTask:Int) -> Bool
     {
         guard indexOfTask >= 0 else
@@ -93,21 +131,16 @@ class TasksHolder:NSObject {
         
         if currentTasks.count > indexOfTask
         {
-            let toDelete = currentTasks.removeAtIndex(indexOfTask)
-            toDelete.toBeDeleted = true
-            anAppDelegate()?.coreDatahandler?.saveMainContext()
-            if let toBeDeletedTaskIDs = anAppDelegate()?.coreDatahandler?.findTasksToDelete()
-            {
-                anAppDelegate()?.cloudKitHandler.deleteTasks(toBeDeletedTaskIDs) { (deletedCount, deletionError) -> () in
-                    if toBeDeletedTaskIDs.count == deletedCount
-                    {
-                        dispatchMain(){
-                            anAppDelegate()?.coreDatahandler?.deleteTasksByIDs(toBeDeletedTaskIDs)
-                        }
-                    }
-                }
+            do{
+                let toDelete = try removeTaskAtIndex(indexOfTask)
+                toDelete.toBeDeleted = true
+                anAppDelegate()?.coreDatahandler?.saveMainContext()
+                deletionHappened = true
             }
-            deletionHappened = true
+            catch{
+                
+            }
+
         }
         
         return deletionHappened

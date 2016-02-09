@@ -295,14 +295,14 @@ class CoreDataManager
                 self.mainQueueManagedObjectContext.deleteObject(aContact)
             }
             
-            do
-            {
-                try self.mainQueueManagedObjectContext.save()
-            }
-            catch let saveContextError
-            {
-                NSLog("\n - Deletion All USERs from local databale failure:\n - Save Context Error:\n \(saveContextError) \n -----")
-            }
+//            do
+//            {
+//                try self.mainQueueManagedObjectContext.save()
+//            }
+//            catch let saveContextError
+//            {
+//                NSLog("\n - Deletion All USERs from local databale failure:\n - Save Context Error:\n \(saveContextError) \n -----")
+//            }
         }
     }
     
@@ -956,6 +956,48 @@ class CoreDataManager
         self.saveMainContext()
     }
     
+    func cleanToBeDeletedTasks()
+    {
+        let fetchRequest = NSFetchRequest(entityName: "Task")
+        let predicate = NSPredicate(format: "toBeDeleted = YES")
+        fetchRequest.predicate = predicate
+        
+        let context = self.mainQueueManagedObjectContext
+        
+        context.performBlock(){
+            if #available (iOS 9.0, *)
+            {
+                let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                do{
+                    try context.executeRequest(batchDeleteRequest)
+                }
+                catch let batchError{
+                    print("Error Batch Deleting TASKs toBeDeleted:")
+                    print(batchError)
+                }
+            }
+            else
+            {
+                fetchRequest.resultType = .ManagedObjectResultType
+                do{
+                    if let tasksToDelete = try context.executeFetchRequest(fetchRequest) as? [NSManagedObject] where !tasksToDelete.isEmpty
+                    {
+                        for aTask in tasksToDelete
+                        {
+                            context.deleteObject(aTask)
+                        }
+                    }
+                }
+                catch let fetchError{
+                    print(" \n - Error fetching tasks toBeDeleted:")
+                    print(fetchError)
+                }
+            }
+            
+            self.saveMainContext()
+        }
+    }
+    
     func deleteAllTasks()
     {
         let fetchRequest = NSFetchRequest(entityName: "Task")
@@ -991,10 +1033,64 @@ class CoreDataManager
             
             self.saveMainContext()
         }
-        
-        
     }
     
+    func startTasksDeletionToCloudKit()
+    {
+        guard let toBeDeleted = findTasksToDelete() where toBeDeleted.count > 0 else
+        {
+            return
+        }
+        
+        let targetSet = Set(toBeDeleted)
+        
+        let deleteDidStart = anAppDelegate()!.cloudKitHandler.deleteTasks(toBeDeleted) {[weak self] (deletedTaskIDs, deletionError) -> () in
+            if let deleted = deletedTaskIDs
+            {
+                let resultSet = Set(deleted)
+                
+                if targetSet == resultSet
+                {
+                    print("CloudKit did delete all (\(resultSet.count)) tasks , Success.")
+                    self?.mainQueueManagedObjectContext.performBlock(){
+                        self?.cleanToBeDeletedTasks()
+                        self?.saveMainContext()
+                    }
+                }
+                else
+                {
+                    let setToKeep = targetSet.subtract(resultSet)
+                    if !setToKeep.isEmpty
+                    {
+                        print("\(setToKeep.count) TASKs of total \(targetSet.count) will not be deleted:")
+                        print(setToKeep)
+                    }
+                    
+                    self?.mainQueueManagedObjectContext.performBlock(){
+                        self?.deleteTasksByIDs(Array(resultSet))
+                    }
+                }
+            }
+            else
+            {
+                if let error = deletionError
+                {
+                    print("\n - Error deleting tasks from CloudKit:")
+                    print(error)
+                }
+            }
+        }
+        
+        if deleteDidStart
+        {
+            print("\n - Tasks Deletion DID START submitting to CloudKit.")
+        }
+        else
+        {
+            print("\n - Tasks Deletion DID NOT START submitting to CloudKit.")
+        }
+    
+    }
     
     //MARK: - 
     func pairTasksByIDs(ids:[String], to board: Board)
@@ -1018,11 +1114,6 @@ class CoreDataManager
             return
         }
         
-//        for aTask in board.orderedTasks
-//        {
-//            board.removeTasksObject(aTask)
-//        }
-        
         for aTaskId in ids
         {
             if let taskFound = findTaskById(aTaskId)
@@ -1031,9 +1122,7 @@ class CoreDataManager
             }
         }
         
-        board.checkTaskIDsToBeEqualToTasks()
-        
-        
+        board.checkTaskIDsToBeEqualToTasks()        
     }
     
 }//class end

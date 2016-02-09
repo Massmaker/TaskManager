@@ -220,6 +220,8 @@ class BoardsHolder : NSObject {
         }
     }
     
+    
+    
     ///fetches boards and sets result to current Boards
     func fetchBoardsFromCoreData()
     {

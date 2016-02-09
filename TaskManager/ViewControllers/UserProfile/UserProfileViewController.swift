@@ -54,7 +54,7 @@ class UserProfileViewController: FormViewController {
         self.presentViewController(imagePickerController, animated: true, completion: nil)
     }
     
-    func logoutBarButtonAction(sender:AnyObject?)
+    @IBAction func logoutBarButtonAction(sender:AnyObject?)
     {
         UserDefaultsManager.clearUserDefaults()
         

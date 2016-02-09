@@ -59,7 +59,8 @@ class ContactsCollectionViewController: UICollectionViewController, UICollection
     //MARK: -
     func rescanContacts(sender:UIRefreshControl)
     {
-        DataSyncronizer.sharedSyncronizer.requestForRemoteChanges()
+        contactsHandler.delegate = self
+        contactsHandler.configureAllOperations()
     }
 
     override func didReceiveMemoryWarning() {

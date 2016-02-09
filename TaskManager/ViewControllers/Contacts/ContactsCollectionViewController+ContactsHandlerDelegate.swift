@@ -66,6 +66,11 @@ extension ContactsCollectionViewController : ContactsHandlerDelegate{
         self.collectionView?.scrollEnabled = true
         
         self.collectionView?.reloadSections(NSIndexSet(index: 0))
+        
+        if self.refreshControl.refreshing
+        {
+            self.refreshControl.endRefreshing()
+        }
     }
 
 }
