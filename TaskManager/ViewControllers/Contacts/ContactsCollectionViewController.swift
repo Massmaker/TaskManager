@@ -22,7 +22,6 @@ class ContactsCollectionViewController: UICollectionViewController, UICollection
         {
             if pCellSize == CGSizeZero
             {
-                //print("get cell size")
                 guard let collectionView = self.collectionView else
                 {
                     return CGSizeMake(60, 72)
@@ -56,11 +55,27 @@ class ContactsCollectionViewController: UICollectionViewController, UICollection
         self.contactsHandler.delegate = self //lazyly initialize and set the delegate
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if refreshControl.refreshing{
+            refreshControl.endRefreshing()
+        }
+    }
+    
     //MARK: -
     func rescanContacts(sender:UIRefreshControl)
     {
         contactsHandler.delegate = self
         contactsHandler.configureAllOperations()
+        
+        let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 30.0))
+        dispatch_after(timeout, dispatch_get_main_queue()) {[weak self] () -> Void in
+            if let refresher = self?.refreshControl where refresher.refreshing
+            {
+                refresher.endRefreshing()
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {

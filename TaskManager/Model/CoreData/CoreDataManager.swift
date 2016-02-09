@@ -931,8 +931,7 @@ class CoreDataManager
                 assertionFailure("Did not fetch deleted tasks.")
             }
         }
-        catch
-        {
+        catch{
             
         }
         
