@@ -50,37 +50,32 @@ class SubscriptionsHandler {
     
     func deleteAll()
     {
-       
-        guard let cloudKitHandler = anAppDelegate()?.cloudKitHandler else
-        {
+        guard let cloudKitHandler = anAppDelegate()?.cloudKitHandler else {
             return
         }
         
-        guard !subscriptions.isEmpty else
-        {
+        guard !subscriptions.isEmpty else {
             return
         }
         
         var strings = [String]()
         
-        for aSubsc in subscriptions
-        {
+        for aSubsc in subscriptions {
             strings.append(aSubsc.subscriptionID)
         }
         
         syncing = true
         
         cloudKitHandler.deleteSubscriptions(strings) {[unowned self] (deletedIDs) -> () in
-            if let deleted = deletedIDs
-            {
+            if let deleted = deletedIDs {
+                
                 let deletedCount = deleted.count
-                if deletedCount == self.subscriptions.count
-                {
+                
+                if deletedCount == self.subscriptions.count {
                     self.subscriptions.removeAll()
                     print("\n deleted all subscriptions... OK \n")
                 }
-                else
-                {
+                else{
                     print("\n deleted only \(deletedCount) of \(self.subscriptions.count) subscriptions \n")
                     
                     self.subscriptions = self.subscriptions.filter(){ (subsc) -> Bool in
@@ -125,7 +120,28 @@ class SubscriptionsHandler {
     
     func deleteMany(subscriptions:[CKSubscription])
     {
-        //TODO: - fdsg g  f
+        guard let cloudKitHandler = anAppDelegate()?.cloudKitHandler else {
+            return
+        }
+        
+        guard subscriptions.isEmpty else {
+            return
+        }
+        
+        syncing = true
+        
+        var subscriptionIDs = [String]()
+        for aSubscr in subscriptions{
+            subscriptionIDs.append(aSubscr.subscriptionID)
+        }
+        
+        cloudKitHandler.deleteSubscriptions(subscriptionIDs) {[unowned self] (deletedIDs) in
+            
+            if let deletedSubscriptionIDs = deletedIDs where !deletedSubscriptionIDs.isEmpty{
+                self.removeLocalySavedSubscriptionsByIDs(deletedSubscriptionIDs)
+            }
+            self.syncing = false
+        }
     }
     
     func addSingle(subscription:CKSubscription)
@@ -138,21 +154,48 @@ class SubscriptionsHandler {
         //TODO: - adff sdfd sa
     }
     
-    func addSubscriptionFor(recordID: String, objectType: CloudRecordTypes, changeType: CKSubscriptionOptions) {
-        
-        guard let currentUserID = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else
+    
+    private func removeLocalySavedSubscriptionsByIDs(var subscriptionIDs:[String]) {
+        if subscriptionIDs.isEmpty
         {
             return
         }
         
-        let subscrID = recordID + currentUserID
+        repeat{
+            let firstId = subscriptionIDs.removeFirst()
+            let filtered = self.subscriptions.filter(){ $0.subscriptionID != firstId }
+            
+            self.subscriptions = filtered
+            
+        }
+        while !subscriptionIDs.isEmpty
+    }
+    
+    
+    //MARK: - Task subscriptions
+    func addTaskChangedSubscriptionFor(recordId:String) {
+        self.addTaskSubscription(recordId, objectType: CloudRecordTypes.Task, changeType: CKSubscriptionOptions.FiresOnRecordUpdate)
+    }
+    
+    func addTaskDeletedSubscriptionFor(recordId:String) {
+        
+    }
+    
+    private func addTaskSubscription(recordID:String, objectType:CloudRecordTypes, changeType:CKSubscriptionOptions) {
+        
+        guard let _ = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else
+        {
+            return
+        }
+        
+        //let subscrID = recordID + currentUserID
         
         let predicate = NSPredicate(format: "recordID = %@", CKRecordID(recordName: recordID))
         let desiredKeys = [TitleStringKey, DetailsStringKey, CurrentOwnerStringKey, DateFinishedDateKey, DateTakenDateKey]
         let notifInfo = CKNotificationInfo()
         notifInfo.desiredKeys = desiredKeys
         
-        let aSubscription = CKSubscription(recordType: objectType.rawValue, predicate: predicate, subscriptionID:subscrID ,options: changeType)
+        let aSubscription = CKSubscription(recordType: objectType.rawValue, predicate: predicate/*, subscriptionID:subscrID */,options: changeType)
         aSubscription.notificationInfo = notifInfo
         //let type = aSubscription.subscriptionType
         

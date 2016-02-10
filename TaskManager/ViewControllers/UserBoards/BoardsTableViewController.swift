@@ -285,6 +285,16 @@ class BoardsTableViewController: UITableViewController {
                 case "ShowTasksList":
                     if let boardForTasks = sender as? Board, tasksListVC = segue.destinationViewController as? TasksViewController
                     {
+                        if boardForTasks.orderedTasks.isEmpty
+                        {
+                            //try to find tasks and connect them to board before sending to Tagker tasksListVC
+                            if let arrayOfTaskIDs = boardForTasks.taskIDs as? [String]
+                            {
+                                //anAppDelegate()?.coreDatahandler?.pairTasksByIDs(arrayOfTaskIDs, to: boardForTasks)
+                                //anAppDelegate()?.coreDatahandler?.saveMainContext()
+                            }                           
+                        }
+                        
                         tasksListVC.tasksSource.board = boardForTasks
                     }
                 default:

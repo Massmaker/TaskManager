@@ -24,7 +24,7 @@
         <attribute name="recordId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sortOrder" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
-        <attribute name="toBeDeleted" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="toBeDeleted" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="board" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Board" inverseName="tasks" inverseEntity="Board" syncable="YES"/>
         <relationship name="currentOwner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="currentTask" inverseEntity="User" syncable="YES"/>
     </entity>
@@ -38,7 +38,7 @@
     </entity>
     <elements>
         <element name="Board" positionX="-297" positionY="-135" width="128" height="210"/>
-        <element name="Task" positionX="-65" positionY="50" width="128" height="238"/>
+        <element name="Task" positionX="-65" positionY="50" width="128" height="240"/>
         <element name="User" positionX="-468" positionY="78" width="128" height="135"/>
     </elements>
 </model>

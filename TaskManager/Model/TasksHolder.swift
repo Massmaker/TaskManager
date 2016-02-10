@@ -30,6 +30,7 @@ class TasksHolder:NSObject {
             if let tasks = board?.orderedTasks
             {
                 self.currentTasks = tasks
+                print("\n - \(self.currentTasks.count) tasks for board in DB")
             }
             
             if self.currentTasks.isEmpty && self.board != nil

@@ -42,8 +42,6 @@ class ContactsCollectionViewController: UICollectionViewController, UICollection
         }
     }
     
-    let noContactImage = UIImage(named: "No-Contact")
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         let frame = CGRectMake(0, 0, 60, 60)
@@ -120,7 +118,7 @@ class ContactsCollectionViewController: UICollectionViewController, UICollection
     
         let contactFound = contactForItem(indexPath.item)
         
-        cell.imageView.image = contactFound.avatarImage ?? noContactImage
+        cell.imageView.image = contactFound.avatarImage ?? testAvatarImage
         cell.elementLabel.text = contactFound.displayName
         cell.setRegistered(contactFound.isRegistered)
         

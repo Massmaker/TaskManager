@@ -84,9 +84,7 @@ class Board: NSManagedObject {
         
         if !tasks.isEmpty && tasks.count > 1
         {
-            var notDeletedTasks = tasks.filter{ (aTask) -> Bool in
-                return  aTask.toBeDeleted != true
-            }
+            var notDeletedTasks = tasks.filter{ $0.toBeDeleted != true }
             
             notDeletedTasks.sortInPlace() { $0.0.sortOrder < $0.1.sortOrder }
             tasks = notDeletedTasks

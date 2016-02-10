@@ -21,6 +21,8 @@ class Task: NSManagedObject {
         self.sortOrder = record[SortOrderIndexIntKey] as? Int64 ?? 0
         self.creator = record[TaskCreatorStringKey] as? String
         self.recordId = record.recordID.recordName
+        print(" TAsk .recordId = \(self.recordId!) ")
+        
         self.changeTag = record.recordChangeTag
         self.currentOwnerId = record[CurrentOwnerStringKey] as? String
 

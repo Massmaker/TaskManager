@@ -603,10 +603,9 @@ class CoreDataManager
             boardFound.fillInfoFromRecord(boardRecord)
             boardFound.title = title
             boardFound.creatorId = creator
+            print(" - Updated Board")
             return boardFound
         }
-        
-       
         
         guard let board = NSEntityDescription.insertNewObjectForEntityForName("Board", inManagedObjectContext: self.mainQueueManagedObjectContext) as? Board else
         {
@@ -616,7 +615,7 @@ class CoreDataManager
         board.fillInfoFromRecord(boardRecord)
         board.title = title
         board.creatorId = creator
-        
+        print(" - Created new Board")
         return board
     }
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-let testAvatarImage = UIImage(named: "Test_Icon")
+let testAvatarImage = UIImage(named: "No_Avatar")
 
 extension UIImage{
     

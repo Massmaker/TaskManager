@@ -194,8 +194,6 @@ class DataSyncronizer {
             return
         }
         
-        coreDataHandler.deleteAllBoards()
-        
         for aRecord in records
         {
             do{

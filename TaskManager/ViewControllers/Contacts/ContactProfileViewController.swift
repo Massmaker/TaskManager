@@ -38,7 +38,7 @@ class ContactProfileViewController: FormViewController {
             Section() { section in
                     var header = HeaderFooterView<UserProfileHeader>(.NibFile(name:"UserProfileHeader", bundle:nil))
                     header.onSetupView = {[unowned self] view, section, formController in
-                        view.avatar.image = self.contact?.avatarImage
+                        view.avatar.image = self.contact?.avatarImage ?? testAvatarImage
                     }
                 
                     header.height = { 120.0 }

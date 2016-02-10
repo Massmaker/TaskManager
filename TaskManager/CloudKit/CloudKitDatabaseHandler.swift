@@ -179,82 +179,41 @@ class CloudKitDatabaseHandler{
     func submitSubscription(subscription:CKSubscription, completion:((subscription:CKSubscription?, errorMessage:String?)->()) )
     {
         networkingIndicator(true)
-//        publicDB.saveSubscription(subscription) { (savedSubscription, error) -> Void in
-//            
-//            let result = CloudKitErrorParser.handleCloudKitErrorAs(error, retryAttempt: 10.0)
-//            switch result
-//            {
-//            case .Success:
-//                if let savedSubscription = savedSubscription
-//                {
-//                    completion(subscription:savedSubscription, errorMessage:nil)
-//                }
-//                else
-//                {
-//                    completion(subscription: nil, errorMessage: "Empty succeeded subscriptions")
-//                }
-//                
-//            case .Fail(let message):
-//                completion(subscription: nil, errorMessage: message)
-//                
-//            case .Retry(let afterSeconds):
-//                
-//                if afterSeconds < 10
-//                {
-//                    let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * afterSeconds))
-//                    dispatch_after(timeout, dispatch_get_main_queue()){ () -> Void in
-//                        self.submitSubscription(subscription, completion: completion)
-//                    }
-//                }
-//                else
-//                {
-//                    completion(subscription: nil, errorMessage: "failed to subscript after timeout")
-//                }
-//                
-//            case .RecoverableError:
-//                completion(subscription: nil, errorMessage: "Try later")
-//            }
-//
-//            
-//            networkingIndicator(false)
-//        }
-//        
-//        return
         
         let completionBlock : (([CKSubscription]?, [String]?, NSError?) -> Void) = {newSubscriptions, _ , error in
             let result = CloudKitErrorParser.handleCloudKitErrorAs(error, retryAttempt: 10.0)
-            switch result
-            {
-                case .Success:
-                    if let savedSubscriptions = newSubscriptions where !savedSubscriptions.isEmpty
-                    {
-                        completion(subscription:savedSubscriptions.first!, errorMessage:nil)
+            switch result {
+            case .Success:
+                if let savedSubscriptions = newSubscriptions where !savedSubscriptions.isEmpty
+                {
+                    completion(subscription:savedSubscriptions.first!, errorMessage:nil)
+                }
+                else
+                {
+                    completion(subscription: nil, errorMessage: "Empty succeeded subscriptions")
+                }
+            
+            case .Fail(let message):
+                completion(subscription: nil, errorMessage: message)
+            
+            case .Retry(let afterSeconds):
+             
+                if afterSeconds < 10
+                {
+                    let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * afterSeconds))
+                    dispatch_after(timeout, dispatch_get_main_queue()){ () -> Void in
+                        self.submitSubscription(subscription, completion: completion)
                     }
-                    else
-                    {
-                        completion(subscription: nil, errorMessage: "Empty succeeded subscriptions")
-                    }
-                
-                case .Fail(let message):
-                    completion(subscription: nil, errorMessage: message)
-                
-                case .Retry(let afterSeconds):
-                 
-                    if afterSeconds < 10
-                    {
-                        let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * afterSeconds))
-                        dispatch_after(timeout, dispatch_get_main_queue()){ () -> Void in
-                            self.submitSubscription(subscription, completion: completion)
-                        }
-                    }
-                    else
-                    {
-                        completion(subscription: nil, errorMessage: "failed to subscript after timeout")
-                    }
-                
-                case .RecoverableError:
-                    completion(subscription: nil, errorMessage: "Try later")
+                }
+                else
+                {
+                    completion(subscription: nil, errorMessage: "failed to subscript after timeout")
+                }
+            
+            case .RecoverableError:
+                completion(subscription: nil, errorMessage: "Try later")
             }
+            
             networkingIndicator(false)
         }
         
