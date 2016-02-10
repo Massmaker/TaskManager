@@ -375,6 +375,8 @@ class CoreDataManager
         }
     }
     
+    
+    /// - Throws: if BatchDelete error is caught or if save context error is caught
     func deleteBoardsByIDs(boardIDs:[String], saveImmediately:Bool = true) throws
     {
         guard !boardIDs.isEmpty else {
@@ -399,8 +401,8 @@ class CoreDataManager
         
         let lvContext = self.mainQueueManagedObjectContext
         mainQueueManagedObjectContext.performBlockAndWait(){
-            if #available (iOS 9.0, *)
-            {
+            if #available (iOS 9.0, *) {
+
                 var managedIDs = [NSManagedObjectID]()
                 for aBoard in toDelete
                 {
@@ -408,38 +410,35 @@ class CoreDataManager
                 }
                 let batchDeleteRequest = NSBatchDeleteRequest(objectIDs: managedIDs)
                 
-                do
-                {
+                do{
                     try lvContext.executeRequest(batchDeleteRequest)
                 }
-                catch let batchDeleteError
-                {
+                catch let batchDeleteError{
                     toThrow = batchDeleteError
                 }
             }
-            else
-            {
+            else {
+
                 for aBoard in toDelete
                 {
                     lvContext.deleteObject(aBoard)
                 }
             }
             
-            if saveImmediately && lvContext.hasChanges
-            {
+            //no need to proceed if there is a batch deletion error
+            if toThrow == nil && saveImmediately && lvContext.hasChanges {
+                
                 do{
                     try lvContext.save()
                 }
-                catch let saveError
-                {
+                catch let saveError{
                     toThrow =  saveError
                 }
             }
         }
         
-        if let _ = toThrow
-        {
-            print("error while saving context after deleting boards")
+        if let _ = toThrow {
+            print("\n - deleteBoardsByIDs: saveImmediately: - \n - error  deleting boards")
             throw toThrow!
         }
     }

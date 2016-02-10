@@ -50,9 +50,9 @@ class NotificationsHandler{
     
     func handleNotes(notifications:[CKQueryNotification])
     {
-        var deletionNotes = [CKRecordID]()
-        var updateNotes = [CKRecordID]()
-        var insertNotes = [CKRecordID]()
+        var deletionNotes = Set<CKRecordID>()
+        var updateNotes = Set<CKRecordID>()
+        var insertNotes = Set<CKRecordID>()
         
         for aNote in notifications
         {
@@ -64,7 +64,7 @@ class NotificationsHandler{
                     if let recordID = aNote.recordID
                     {
                         print(" - Should delete record: \(recordID.recordName)")
-                        deletionNotes.append(recordID)
+                        deletionNotes.insert(recordID)
                     }
                 
                 case .RecordCreated:
@@ -72,14 +72,14 @@ class NotificationsHandler{
                     if let recID = aNote.recordID
                     {
                         print(" - Should fetch new record by ID:  \(recID.recordName)")
-                        insertNotes.append(recID)
+                        insertNotes.insert(recID)
                     }
                 
                 case .RecordUpdated:
                     if let recId = aNote.recordID
                     {
                         print("record changed (pruned): \(recId.recordName)")
-                        updateNotes.append(recId)
+                        updateNotes.insert(recId)
                     }
             }//switch end
         }//for loop end

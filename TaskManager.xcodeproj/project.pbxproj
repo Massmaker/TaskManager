@@ -358,13 +358,13 @@
 				F84D68B31C4CEB6900EF8A16 /* BoardsHolder.swift */,
 				F84B4D681C4E69240013D7F1 /* TasksHolder.swift */,
 				F884BC431C60AB1F0057539E /* DataSyncronizer.swift */,
+				F895CD4E1C5F63A100D08EE9 /* SubscriptionsHandling */,
 				F84D68881C4CEB6900EF8A16 /* CoreData */,
 				F84D68911C4CEB6900EF8A16 /* PhoneContactsHandling */,
 				F84D68991C4CEB6900EF8A16 /* UserAuthentication */,
 				F84CAD151C562E0600BC2ECC /* DocumentsFolderFileHandler.swift */,
 				F84CAD1D1C563F9300BC2ECC /* UserDefaultsManager.swift */,
 				F84CAD1F1C563FEB00BC2ECC /* UserDefalutKeys.swift */,
-				F895CD4E1C5F63A100D08EE9 /* SubscriptionsHandling */,
 				F8E4DFE41C649CBD008E4F49 /* TempTaskInfo.swift */,
 			);
 			path = Model;

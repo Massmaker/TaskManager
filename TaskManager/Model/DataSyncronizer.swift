@@ -16,7 +16,7 @@ import CloudKit
 class DataSyncronizer {
     
     static let sharedSyncronizer = DataSyncronizer()
-    var isSyncing:Bool{
+    var isSyncing:Bool {
         return syncing
     }
     
@@ -24,8 +24,8 @@ class DataSyncronizer {
     
     private var syncing = false
 
-    func requestForRemoteChanges()
-    {
+    func requestForRemoteChanges() {
+        
         guard let anAppDelegate  = anAppDelegate() else
         {
             return
@@ -43,15 +43,13 @@ class DataSyncronizer {
         SubscriptionsHandler.sharedInstance.loadAll()
         
         anAppDelegate.cloudKitHandler.requestChanges { (notifications) -> () in
-            defer
-            {
-                dispatch_group_leave(group)
-            }
             
             if !notifications.isEmpty
             {
                 NotificationsHandler.sharedInstance.handleNotes(notifications)
             }
+            
+            dispatch_group_leave(group)
         }
         
         dispatch_group_wait(group, DISPATCH_TIME_FOREVER)
@@ -70,6 +68,7 @@ class DataSyncronizer {
         objc_sync_exit(self)
         
         NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStartSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
+
         
         let dispatchGroupForBoards = dispatch_group_create()
         
@@ -99,18 +98,18 @@ class DataSyncronizer {
         
         dispatch_group_wait(dispatchGroupForBoards, timeout)
         
-        dispatch_group_notify(dispatchGroupForBoards, dispatch_get_main_queue()){[unowned self] in
-            self.saveInMainThread(boardRecordsToSave)
-            
+        self.saveInMainThread(boardRecordsToSave){
             print("didLoad boards: \(boardRecordsToSave.count) ")
             
             objc_sync_enter(self)
             self.syncing = false
             objc_sync_exit(self)
             
-            NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
-            
+            postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
         }
+        
+   
+        
     }
     
     func startSyncingTasksFor(board:Board)
@@ -187,25 +186,70 @@ class DataSyncronizer {
         }
     }
     
-    private func saveInMainThread(records:[CKRecord])
+    private func saveInMainThread(records:[CKRecord], completion:(()->())? = nil)
     {
         guard let coreDataHandler = anAppDelegate()?.coreDatahandler else
         {
+            completion?()
             return
         }
-        
-        for aRecord in records
-        {
-            do{
-                let _ = try coreDataHandler.createBoardFromRecord(aRecord)
-                //coreDataHandler.insert(boardToSaveToCoreData, saveImmediately: false)
+     
+        dispatchMain(){
+            for aRecord in records
+            {
+                do{
+                    let _ = try coreDataHandler.createBoardFromRecord(aRecord)
+                    //coreDataHandler.insert(boardToSaveToCoreData, saveImmediately: false)
+                }
+                catch{
+                    
+                }
             }
-            catch{
+            
+            let allBoards = coreDataHandler.allBoards(true)
+            
+            if allBoards.count != records.count
+            {
+                //fill recordIDs recieved from CloudKit
+                var ckRecordIDs = Set<String>()
+                for aRecord in records
+                {
+                    ckRecordIDs.insert(aRecord.recordID.recordName)
+                }
+                
+                //fill current boardIDs in CoreData
+                var boardRecordIDs = Set<String>()
+                for aBoard in allBoards
+                {
+                    if let recId = aBoard.recordId
+                    {
+                        boardRecordIDs.insert(recId)
+                    }
+                    else
+                    {
+                        anAppDelegate()?.coreDatahandler?.deleteSingle(aBoard, deleteimmediately: true, saveImmediately: false)
+                    }
+                }
+                
+                let boardIdsToDeleteSet = boardRecordIDs.subtract(ckRecordIDs)
+                
+                if !boardRecordIDs.isEmpty
+                {
+                    //delete old boards info from local DB (also will delete tasks, connected to boards)
+                    do{
+                        try anAppDelegate()?.coreDatahandler?.deleteBoardsByIDs(Array(boardIdsToDeleteSet), saveImmediately: false)
+                    }
+                    catch let error{
+                        assertionFailure("Could not perform boards cleanup after pulling from CloudKit: \nError:\n \(error)")
+                    }
+                }
                 
             }
+            
+            coreDataHandler.saveMainContext()
+            
+            completion?()
         }
-        
-        coreDataHandler.saveMainContext()
     }
     
     private func saveInMainThreadTasks(tasks:[CKRecord], forBoard board:Board)

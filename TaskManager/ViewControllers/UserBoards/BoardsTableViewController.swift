@@ -50,8 +50,9 @@ class BoardsTableViewController: UITableViewController {
             
             didSubscribeForBoardsSyncNotification = true
             
-            DataSyncronizer.sharedSyncronizer.startSyncingBoards()
-            
+            //TODO: - handle changes by receiving notifications for boards Subscriptions
+            //DataSyncronizer.sharedSyncronizer.startSyncingBoards()
+            SubscriptionsHandler.sharedInstance.subscriptForBoardsForMe()
         }
     }
     
@@ -248,7 +249,10 @@ class BoardsTableViewController: UITableViewController {
     
     func pullLatestBoardsFromCloud(sender:UIRefreshControl)
     {
+        anAppDelegate()?.coreDatahandler?.deleteAllTasks()
+        
         DataSyncronizer.sharedSyncronizer.startSyncingBoards()
+        
         let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 20.0))
         
         dispatch_after(timeout, dispatch_get_main_queue(), { () -> Void in
@@ -269,32 +273,21 @@ class BoardsTableViewController: UITableViewController {
             switch identifier
             {
                 case "PresentBoardEditing" :
-                    if let editingNavController = segue.destinationViewController as? BoardEditNavigationController, rootVC = editingNavController.viewControllers.first as? BoardEditViewController
-                    {
+                    if let
+                        editingNavController = segue.destinationViewController as? BoardEditNavigationController,
+                        rootVC = editingNavController.viewControllers.first as? BoardEditViewController {
+                            
                         rootVC.boardsHolder = self.boardsHolder
                         
-                        if let senderType = sender as? BoardEditingHolder
-                        {   
+                        if let senderType = sender as? BoardEditingHolder {
                             rootVC.setEditingType(senderType.boardEditingType)
                         }
-                        else
-                        {
+                        else {
                             rootVC.setEditingType(BoardEditingType.CreateNew)
                         }
                     }
                 case "ShowTasksList":
-                    if let boardForTasks = sender as? Board, tasksListVC = segue.destinationViewController as? TasksViewController
-                    {
-                        if boardForTasks.orderedTasks.isEmpty
-                        {
-                            //try to find tasks and connect them to board before sending to Tagker tasksListVC
-                            if let arrayOfTaskIDs = boardForTasks.taskIDs as? [String]
-                            {
-                                //anAppDelegate()?.coreDatahandler?.pairTasksByIDs(arrayOfTaskIDs, to: boardForTasks)
-                                //anAppDelegate()?.coreDatahandler?.saveMainContext()
-                            }                           
-                        }
-                        
+                    if let boardForTasks = sender as? Board, tasksListVC = segue.destinationViewController as? TasksViewController {
                         tasksListVC.tasksSource.board = boardForTasks
                     }
                 default:

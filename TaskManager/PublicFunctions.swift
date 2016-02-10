@@ -147,3 +147,12 @@ func createBoardRecordFrom(board:Board) throws -> CKRecord
 }
 
 
+func postNotificationInMainThread(name:String, object:AnyObject? = nil, userInfo:[NSObject:AnyObject]? = nil) {
+    
+    let note = NSNotification(name: name, object: object, userInfo: userInfo)
+    
+    dispatchMain(){
+        NSNotificationCenter.defaultCenter().postNotification(note)
+    }
+}
+

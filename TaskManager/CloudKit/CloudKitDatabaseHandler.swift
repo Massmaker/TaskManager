@@ -23,7 +23,7 @@ class CloudKitDatabaseHandler{
     
     var currentUserPhoneNumber:String?{
         didSet{
-            print("new phone number is set in cloudKitDatabaseHandler")
+            print("new phone number is set in cloudKitDatabaseHandler : \n \(currentUserPhoneNumber!)")
             print(currentUserPhoneNumber)
         }
     }
@@ -218,6 +218,72 @@ class CloudKitDatabaseHandler{
         }
         
         let modifyToInsertOp = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: nil)
+        modifyToInsertOp.qualityOfService = .Utility
+        modifyToInsertOp.modifySubscriptionsCompletionBlock = completionBlock
+        
+        networkingIndicator(true)
+        publicDB.addOperation(modifyToInsertOp)
+    }
+    
+    func submitManySubscriptions(subscriptions:[CKSubscription], completion:((succeeded:[CKSubscription], failed:[CKSubscription], error:NSError?)->()))
+    {
+        networkingIndicator(true)
+        
+        let completionBlock : (([CKSubscription]?, [String]?, NSError?) -> Void) = {newSubscriptions, _ , error in
+            
+            var succeeded = [CKSubscription]()
+            var failed = [CKSubscription]()
+            
+            if let new = newSubscriptions
+            {
+                succeeded += new
+            }
+            
+            if let error = error
+            {
+                let result = CloudKitErrorParser.handleCloudKitErrorAs(error)
+                switch result
+                {
+                case .Retry(let afterSeconds):
+                
+                    if afterSeconds <= 20 {
+                        
+                        let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * afterSeconds))
+                        let bgQueue = dispatch_queue_create("Retry_Subscriptions_queue", DISPATCH_QUEUE_SERIAL)
+                        dispatch_after(timeout,bgQueue) { () -> Void in
+                            self.submitManySubscriptions(subscriptions, completion: completion)
+                        }
+                    }
+                    else{
+                        completion(succeeded: succeeded, failed: subscriptions, error: error)
+                    }
+                case .RecoverableError: //partial failure
+                    let ckCode =  CKErrorCode(rawValue: error.code)!
+                    switch ckCode
+                    {
+                    case .PartialFailure:
+                        let info = error.userInfo[CKPartialErrorsByItemIDKey]
+                        if let dict = info as? [String:CKSubscription]
+                        {
+                            print("Failed subscriptions: \(dict)")
+                        }
+                        else
+                        {
+                              print("Failed subscriptions: \(info)")
+                        }
+                        
+                    default:
+                        break
+                    }
+                default:
+                    completion(succeeded: succeeded, failed: subscriptions, error: error)
+                }
+            }
+            
+            networkingIndicator(false)
+        }
+        
+        let modifyToInsertOp = CKModifySubscriptionsOperation(subscriptionsToSave: subscriptions, subscriptionIDsToDelete: nil)
         modifyToInsertOp.qualityOfService = .Utility
         modifyToInsertOp.modifySubscriptionsCompletionBlock = completionBlock
         

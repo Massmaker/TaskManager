@@ -90,8 +90,19 @@ class SubscriptionsHandler {
     
     func subscriptionsForBoard(boardId:String) -> [CKSubscription]
     {
-        //TODO: dfkjnf kjasdflh
-        return[CKSubscription]()
+        let predicateToTest = NSPredicate(format: "recordID = %@", CKRecordID(recordName: boardId))
+        
+        var toReturn = [CKSubscription]()
+        
+        for aSubscription in self.subscriptions
+        {
+            if let subscrPredicate = aSubscription.predicate where subscrPredicate == predicateToTest
+            {
+                toReturn.append(aSubscription)
+            }
+        }
+     
+        return toReturn
     }
     
     func subscriptionsForTask(taskId:String) -> [CKSubscription]
@@ -138,6 +149,8 @@ class SubscriptionsHandler {
         cloudKitHandler.deleteSubscriptions(subscriptionIDs) {[unowned self] (deletedIDs) in
             
             if let deletedSubscriptionIDs = deletedIDs where !deletedSubscriptionIDs.isEmpty{
+                print("deleted \(deletedSubscriptionIDs.count) subscriptions")
+                
                 self.removeLocalySavedSubscriptionsByIDs(deletedSubscriptionIDs)
             }
             self.syncing = false
@@ -214,7 +227,30 @@ class SubscriptionsHandler {
         }
     }
     
+    //MARK: - Board Subscriptions
+    func subscriptForChangesInBoards() {
+        
+    }
     
+    func subscriptForBoardsForMe(){
+        guard let currentUserId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else{
+            return
+        }
+        
+        let predicate = NSPredicate(format: "%K CONTAINS %@", BoardParticipantsKey, currentUserId)
+        let querySub = CKSubscription(recordType: CloudRecordTypes.TaskBoard.rawValue, predicate: predicate, options: [CKSubscriptionOptions.FiresOnRecordUpdate, .FiresOnRecordDeletion])
+        
+        anAppDelegate()?.cloudKitHandler.submitSubscription(querySub) {[weak self] (subscription, errorMessage) -> () in
+            
+            if let subscription = subscription {
+                print("SUCCESS: Subscription ID: \(subscription.subscriptionID)")
+                self?.subscriptions.append(subscription)
+            }
+            else if let error = errorMessage{
+                print("\n  -  Error adding subscriptions: \(error)")
+            }
+        }
+    }
     
     
 }
