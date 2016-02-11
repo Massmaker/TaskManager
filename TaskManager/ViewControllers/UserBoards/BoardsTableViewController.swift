@@ -8,8 +8,10 @@
 
 import UIKit
 import CloudKit
-class BoardsTableViewController: UITableViewController {
+class BoardsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    @IBOutlet var tableView:UITableView!
+     var refreshControl:UIRefreshControl?
     lazy var contactsHandler:ContactsHandler = ContactsHandler()
     
     lazy var boardsHolder:BoardsHolder = BoardsHolder()
@@ -76,15 +78,15 @@ class BoardsTableViewController: UITableViewController {
     }
     
     // MARK: - Table view data source
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return boardsHolder.boardsCount
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier("AllBoardsCell", forIndexPath: indexPath) as? BoardsTableViewCell
         {
             let board = boardsHolder.boardForRow(indexPath.row)
@@ -125,13 +127,13 @@ class BoardsTableViewController: UITableViewController {
     }
     
     // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
     
     // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             do{
                 let deletedBoard = try boardsHolder.removeBoardAtIndex(indexPath.row)
@@ -151,7 +153,7 @@ class BoardsTableViewController: UITableViewController {
     }
     
     // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
 
         do{
             let movingBoard = try boardsHolder.removeBoardAtIndex(fromIndexPath.row)
@@ -173,14 +175,12 @@ class BoardsTableViewController: UITableViewController {
     }
     
 
-    
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the item to be re-orderable.
         return true
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if let board = boardsHolder.boardForRow(indexPath.row)
         {
@@ -188,16 +188,19 @@ class BoardsTableViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
         if let board = boardsHolder.boardForRow(indexPath.row)
         {
                 
             self.performSegueWithIdentifier("PresentBoardEditing", sender: BoardEditingHolder(boardType: BoardEditingType.EditCurrent(board: board))  )
         }
     }
+    
     //MARK: - 
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
+        
+        self.tableView.setEditing(editing, animated: animated)
         
         if editing
         {
@@ -288,7 +291,7 @@ class BoardsTableViewController: UITableViewController {
                     }
                 case "ShowTasksList":
                     if let boardForTasks = sender as? Board, tasksListVC = segue.destinationViewController as? TasksViewController {
-                        tasksListVC.tasksSource.board = boardForTasks
+                        tasksListVC.weakBoard = boardForTasks
                     }
                 default:
                     break

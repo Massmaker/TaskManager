@@ -9,9 +9,13 @@
 import UIKit
 import CloudKit
 
-class TasksViewController:UITableViewController {
+class TasksViewController:UIViewController {
     
+    @IBOutlet var tableView:UITableView!
+    weak var weakBoard:Board!
     lazy var tasksSource:TasksHolder = TasksHolder(tableView: self.tableView)
+    
+    var addButtonControl:FloatingButtonControl?
     
     private var userRecordId:CKRecordID?
     
@@ -19,6 +23,7 @@ class TasksViewController:UITableViewController {
         super.viewDidLoad()
         
         self.navigationItem.rightBarButtonItem = self.editButtonItem() //enable deleting of Take/Finish tasks, rearranging tasks
+        tasksSource.board = weakBoard
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -26,8 +31,22 @@ class TasksViewController:UITableViewController {
         super.viewWillAppear(animated)
   
         tasksSource.delegate = self
+    }
+    
+    override func viewDidLayoutSubviews() {
         
-        checkAddTaskButtonEnabled()
+        if checkAddTaskButtonEnabled()
+        {
+            if let _ = addButtonControl{
+                
+            }
+            else{
+                // add bottom right ADD button with shadow
+                createAndAddPlusButtonControl()
+            }
+        }
+        
+        super.viewDidLayoutSubviews()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -51,15 +70,16 @@ class TasksViewController:UITableViewController {
     }
     
     //MARK: - UITableVIewDataSource
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1 //2
     }
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section
         {
         case 0:
-            return 1
-        case 1:
+//            return 1
+//        case 1:
             return self.tasksSource.getTasks().count
         default:
             return 0
@@ -67,18 +87,18 @@ class TasksViewController:UITableViewController {
         
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch indexPath.section
         {
         case 0:
-            if let addTaskCell = tableView.dequeueReusableCellWithIdentifier("AddTaskCell", forIndexPath: indexPath) as? AddTaskTableViewCell
-            {
-                return addTaskCell
-            }
-            let defaultCell = UITableViewCell(style: .Value1, reuseIdentifier: "DummyCell")
-            defaultCell.detailTextLabel?.text = "Add Task"
-            return defaultCell
-        case 1:
+//            if let addTaskCell = tableView.dequeueReusableCellWithIdentifier("AddTaskCell", forIndexPath: indexPath) as? AddTaskTableViewCell
+//            {
+//                return addTaskCell
+//            }
+//            let defaultCell = UITableViewCell(style: .Value1, reuseIdentifier: "DummyCell")
+//            defaultCell.detailTextLabel?.text = "Add Task"
+//            return defaultCell
+//        case 1:
             
             let targetTask = self.tasksSource.taskForRow(indexPath.row)
             
@@ -105,6 +125,8 @@ class TasksViewController:UITableViewController {
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         
+        self.tableView.setEditing(editing, animated: animated)
+        
         if editing{
             
         }
@@ -114,78 +136,120 @@ class TasksViewController:UITableViewController {
             anAppDelegate()?.coreDatahandler?.startTasksDeletionToCloudKit()
         }
     }
+    //MARK: - ADD new task button
+    private func createAndAddPlusButtonControl()
+    {
+        let buttonControlSide = CGFloat(70.0)
+        var bottomRightPoint = CGPoint(x: CGRectGetMaxX(self.tableView.frame), y: CGRectGetMaxY(self.tableView.frame))
+        bottomRightPoint.x -=  (buttonControlSide)
+        bottomRightPoint.y -= (buttonControlSide)
+        let buttonHolderFrame = CGRectMake(bottomRightPoint.x,bottomRightPoint.y , buttonControlSide, buttonControlSide)
+        let floatControl = FloatingButtonControl(frame: buttonHolderFrame)
+    
+        floatControl.showsShadow = false
+        floatControl.addTarget(self, action: "startAddingNewTask", forControlEvents: .TouchUpInside)
+        //floatControl.buttonTintColor = UIColor.whiteColor()
+        floatControl.buttonImage = UIImage(named: "Plus_Icon")
+        floatControl.buttonColor = UIColor.clearColor()
+        
+        floatControl.autoresizingMask = [UIViewAutoresizing.FlexibleTopMargin, .FlexibleLeftMargin] //fix to bottom right corner when rotating
+        self.view.addSubview(floatControl)
+        self.addButtonControl = floatControl
+        
+          //add test button to navigation title
+        let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.5))
+        dispatch_after(timeout, dispatch_get_main_queue(), { () -> Void in
+          
+            let image = UIImage(named: "Plus_Icon")
+            let button = UIButton(type: .System)
+            button.frame = CGRectMake(0, 0, 40, 40)
+            button.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 5)
+            button.backgroundColor = UIColor.clearColor()
+            button.setImage(image, forState: .Normal)
+            button.addTarget(self, action: "startAddingNewTask", forControlEvents: .TouchUpInside)
+            
+            self.navigationItem.titleView = button
+        })
+        
+     
+    }
+    
+    func startAddingNewTask()
+    {
+        self.showTaskEditViewCntroller(nil)
+    }
     
     //MARK: - UITableViewDelegate
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch indexPath.section{
-        case 1:
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        switch indexPath.section{
+//        case 1:
             return 96.0
-        default:
-            return 44.0
-        }
+//        default:
+//            return 44.0
+//        }
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch indexPath.section{
-        case 1:
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        switch indexPath.section{
+//        case 1:
             return 96.0
-        default:
-            return 44.0
-        }
+//        default:
+//            return 44.0
+//        }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        switch indexPath.section
-        {
-        case 0:
-            if checkAddTaskButtonEnabled()
-            {
-                self.showTaskEditViewCntroller(nil) //start adding new task
-            }
-        case 1:
+//        switch indexPath.section
+//        {
+//        case 0:
+//            if checkAddTaskButtonEnabled()
+//            {
+//                self.showTaskEditViewCntroller(nil) //start adding new task
+//            }
+//        case 1:
             if let selectedTask = self.tasksSource.taskForRow(indexPath.row)
             {
                 self.showTaskEditViewCntroller(selectedTask)
             }
-        default:
-            break
-        }
+//        default:
+//            break
+//        }
     }
     
-    override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
         
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard section == 1 else
-        {
-            return nil
-        }
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        guard section == 1 else
+//        {
+//            return nil
+//        }
         return "Tasks"
     }
     
     //to disable editing or deleting the "AddTAskButton" cell
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if indexPath.section == 0
-        {
-            return false
-        }
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+//        if indexPath.section == 0
+//        {
+//            return false
+//        }
         return true
     }
     
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if indexPath.section == 0
-        {
-            return false
-        }
+    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+//        if indexPath.section == 0
+//        {
+//            return false
+//        }
         return true
     }
     
-    override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         
-        if sourceIndexPath.section == 1 && destinationIndexPath.section == 1
-        {
+//        if sourceIndexPath.section == 1 && destinationIndexPath.section == 1
+//        {
             print("Source path: \(sourceIndexPath.row)")
             print("Destination path: \(destinationIndexPath.row)")
             do{
@@ -200,20 +264,20 @@ class TasksViewController:UITableViewController {
             catch{
                 print(" Could not remove task at index: \(sourceIndexPath.row)")
             }
-        }
+//        }
         
     }
     
-    override func tableView(tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
-        // disallow user to move TASK cells into the first section (AddTaskButton  cell section)
-        if proposedDestinationIndexPath.section == 0
-        {
-            return NSIndexPath(forRow: 0, inSection: 1)
-        }
-        return proposedDestinationIndexPath
-    }
+//    func tableView(tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
+//        // disallow user to move TASK cells into the first section (AddTaskButton  cell section)
+//        if proposedDestinationIndexPath.section == 0
+//        {
+//            return NSIndexPath(forRow: 0, inSection: 1)
+//        }
+//        return proposedDestinationIndexPath
+//    }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         switch editingStyle{
         case .Insert:
             print(" Committing Insert")
@@ -240,6 +304,8 @@ class TasksViewController:UITableViewController {
         self.userRecordId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID
         return self.userRecordId != nil
     }
+    
+    
     
     private func showTaskEditViewCntroller(task:Task?)
     {

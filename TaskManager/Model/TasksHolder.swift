@@ -54,7 +54,7 @@ class TasksHolder:NSObject {
         
         currentTasks.removeAll(keepCapacity: false)
         currentTasks += tasks
-        self.table?.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Automatic)
+        self.table?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
         delegate?.tasksDidFinishUpdating()
     }
     
@@ -79,7 +79,7 @@ class TasksHolder:NSObject {
             task.toBeDeleted = true
             anAppDelegate()?.coreDatahandler?.saveMainContext()
             self.currentTasks.removeAtIndex(index)
-            self.table?.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
+            self.table?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
         }
     }
     
@@ -379,7 +379,7 @@ class TasksHolder:NSObject {
             self.delegate?.tasksWillStartUpdating()
         case DataSyncronizerDidStopSyncronyzingNotificationName:
             self.setTasks(board!.orderedTasks)
-            self.table?.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Automatic)
+            self.table?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
             self.delegate?.tasksDidFinishUpdating()
         default:
             break
