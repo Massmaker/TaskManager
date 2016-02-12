@@ -23,6 +23,7 @@ class NotificationsHandler{
                 if let recordID = notification.recordID
                 {
                     print(" - Should delete record: \(recordID.recordName)")
+                    startDeletingRecordById(recordID)
                 }
             case .RecordCreated:
                 print(" Record Created")
@@ -35,14 +36,23 @@ class NotificationsHandler{
                 {
                     if let recId = notification.recordID
                     {
-                        print("record changed: \(recId.recordName)")
+                        
+                        if #available(iOS 9.0, *) {
+                            print("SubscriotionId: \(notification.subscriptionID)")
+                            print("\n Notification record changed: \(recId.recordName)")
+                        } else {
+                            print("\n Notification record changed: \(recId.recordName)")
+                        }
+                        
+                        startUpdatingRecordById(recId)
                     }
                 }
                 else //pruned
                 {
                     if let recId = notification.recordID
                     {
-                        print("record changed (pruned): \(recId.recordName)")
+                        print("\n Notification record changed (pruned): \(recId.recordName)")
+                        startUpdatingRecordById(recId)
                     }
                 }
         }
@@ -90,6 +100,107 @@ class NotificationsHandler{
         print(" \(insertNotes.count) - toInsert")
     }
     
+    private func startUpdatingRecordById(recordId:CKRecordID){
+        anAppDelegate()?.cloudKitHandler.findRecordWithID(recordId) { (record, error) -> () in
+            if let recordFound = record{
+                dispatchMain(){
+                    if let foundBoard = anAppDelegate()?.coreDatahandler?.findBoardByRecordId(recordFound.recordID.recordName){
+                        let currentTaskIDs = foundBoard.taskIDsSet
+                       
+                        foundBoard.fillInfoFromRecord(recordFound)
+                        
+                        anAppDelegate()?.coreDatahandler?.saveMainContext()
+                        let freshTaskIDs = foundBoard.taskIDsSet
+                        
+                        //perform task loading or deleting
+                        if freshTaskIDs != currentTaskIDs {
+                            let toLoadFreshTasks = freshTaskIDs.subtract(currentTaskIDs)
+                            let toRemoveOldTasks = currentTaskIDs.subtract(freshTaskIDs)
+                            
+                            if !toRemoveOldTasks.isEmpty{
+                                anAppDelegate()?.coreDatahandler?.deleteTasksByIDs(Array(toRemoveOldTasks))
+                            }
+                            
+                            if !toLoadFreshTasks.isEmpty{
+                                
+                                var recordIDsToQuery = [CKRecordID]()
+                                
+                                for aString in toLoadFreshTasks{
+                                    recordIDsToQuery.append(CKRecordID(recordName: aString))
+                                }
+                                
+                                anAppDelegate()?.cloudKitHandler.findTasksByTaskIDs(recordIDsToQuery) { (tasks, error) -> () in
+                                    if !tasks.isEmpty{
+                                        dispatchMain(){
+                                            if let boardRefreshed = anAppDelegate()?.coreDatahandler?.findBoardByRecordId(recordId.recordName){
+                                                anAppDelegate()?.coreDatahandler?.insertTaskRecords(tasks, forBoard: boardRefreshed, saveImmediately: true)
+                                            }
+                                            postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: NotificationsHandler.sharedInstance)
+                                        }
+                                    }
+                                    else{
+                                        postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: NotificationsHandler.sharedInstance)
+                                    }
+                                }
+                            }
+                            else{
+                                postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: NotificationsHandler.sharedInstance)
+                            }
+                        }
+                        else{
+                            postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: NotificationsHandler.sharedInstance)
+                        }
+                        
+                    }
+                    else if let foundTask = anAppDelegate()?.coreDatahandler?.findTaskById(recordFound.recordID.recordName){
+                        foundTask.fillInfoFrom(recordFound)
+                        anAppDelegate()?.coreDatahandler?.saveMainContext()
+                        postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: NotificationsHandler.sharedInstance, userInfo: nil)
+                    }
+                    else{
+                        let recordType = recordFound.recordType
+                        switch recordType{
+                        case CloudRecordTypes.TaskBoard.rawValue:
+                            do{
+                                try anAppDelegate()?.coreDatahandler?.createBoardFromRecord(recordFound)
+                                // next 2 lines will not be executed if `try` line fails
+                                anAppDelegate()?.coreDatahandler?.saveMainContext()
+                                postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: NotificationsHandler.sharedInstance, userInfo: nil)
+
+                            }catch let insertError{
+                                
+                            }
+                        case CloudRecordTypes.Task.rawValue:
+                            print("Some trouble happened: We don`t expect refreshing tasks here")
+                        default:
+                            break
+                        }
+                    }
+                        
+                }
+            }
+        }
+    }
+    
+    func startDeletingRecordById(recordID:CKRecordID){
+        if let _ = anAppDelegate()?.coreDatahandler?.findBoardByRecordId(recordID.recordName){
+            do{
+                try anAppDelegate()?.coreDatahandler?.deleteBoardsByIDs([recordID.recordName])
+                postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: NotificationsHandler.sharedInstance, userInfo: nil)
+
+            }catch{
+                
+            }
+        }
+        else if let _ = anAppDelegate()?.coreDatahandler?.findTaskById(recordID.recordName){
+            anAppDelegate()?.coreDatahandler?.deleteTasksByIDs([recordID.recordName])
+            postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: NotificationsHandler.sharedInstance, userInfo: nil)
+
+        }
+        else{
+            print("\n _ Warning!:  Did not find local Task or Board to delete by remote notification recieved:  RecordID: (recordID.recordName) ")
+        }
+    }
     
     
 }

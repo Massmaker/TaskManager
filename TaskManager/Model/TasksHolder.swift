@@ -359,7 +359,6 @@ class TasksHolder:NSObject {
                     }
                 }
             }
-            
         }
         catch let error{
             print("\n - Error creating TaskRecord From current TASK:")

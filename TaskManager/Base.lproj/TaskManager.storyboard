@@ -46,7 +46,7 @@
         <!--Boards Table View Controller-->
         <scene sceneID="0ZW-Ju-u1p">
             <objects>
-                <viewController id="OcH-aI-oUQ" customClass="BoardsTableViewController" customModule="TaskManager" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="OcH-aI-oUQ" customClass="BoardsTableViewController" customModule="TaskManager" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="WrF-Yg-9ln"/>
                         <viewControllerLayoutGuide type="bottom" id="gpz-IK-UjL"/>
@@ -55,26 +55,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E98-48-Kmp">
-                                <rect key="frame" x="0.0" y="64" width="600" height="120"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fwX-iS-QOq">
-                                        <rect key="frame" x="8" y="8" width="80" height="80"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="80" id="loh-Hf-NsO"/>
-                                            <constraint firstAttribute="height" constant="80" id="w0w-fh-Jpu"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="fwX-iS-QOq" firstAttribute="top" secondItem="E98-48-Kmp" secondAttribute="top" constant="8" id="3JV-oj-SHc"/>
-                                    <constraint firstAttribute="height" constant="120" id="9Ff-RZ-1CM"/>
-                                    <constraint firstItem="fwX-iS-QOq" firstAttribute="leading" secondItem="E98-48-Kmp" secondAttribute="leading" constant="8" id="ZBC-O6-iiz"/>
-                                </constraints>
-                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="111" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="U6E-B4-LB6">
-                                <rect key="frame" x="0.0" y="192" width="600" height="359"/>
+                                <rect key="frame" x="0.0" y="184" width="600" height="367"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="AllBoardsCell" rowHeight="100" id="A2h-Gn-tif" customClass="BoardsTableViewCell" customModule="TaskManager" customModuleProvider="target">
@@ -149,6 +131,38 @@
                                     <outlet property="delegate" destination="OcH-aI-oUQ" id="k0J-pS-j2K"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E98-48-Kmp" customClass="BoardsHeaderView" customModule="TaskManager" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="600" height="120"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fwX-iS-QOq">
+                                        <rect key="frame" x="8" y="8" width="80" height="80"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="80" id="loh-Hf-NsO"/>
+                                            <constraint firstAttribute="height" constant="80" id="w0w-fh-Jpu"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No current task" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtk-bM-DHL">
+                                        <rect key="frame" x="96" y="8" width="496" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="fwX-iS-QOq" firstAttribute="top" secondItem="E98-48-Kmp" secondAttribute="top" constant="8" id="3JV-oj-SHc"/>
+                                    <constraint firstAttribute="height" constant="120" id="9Ff-RZ-1CM"/>
+                                    <constraint firstItem="dtk-bM-DHL" firstAttribute="leading" secondItem="fwX-iS-QOq" secondAttribute="trailing" constant="8" id="CQm-p9-PuC"/>
+                                    <constraint firstItem="dtk-bM-DHL" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="fwX-iS-QOq" secondAttribute="bottom" id="QZu-gp-yKh"/>
+                                    <constraint firstItem="fwX-iS-QOq" firstAttribute="leading" secondItem="E98-48-Kmp" secondAttribute="leading" constant="8" id="ZBC-O6-iiz"/>
+                                    <constraint firstItem="dtk-bM-DHL" firstAttribute="top" secondItem="E98-48-Kmp" secondAttribute="top" constant="8" id="fWE-cl-13B"/>
+                                    <constraint firstAttribute="trailing" secondItem="dtk-bM-DHL" secondAttribute="trailing" constant="8" id="t2U-hf-x6l"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="avatarImageView" destination="fwX-iS-QOq" id="FlU-6I-qJY"/>
+                                    <outlet property="taskTitleLabel" destination="dtk-bM-DHL" id="eRe-kN-i8c"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -157,7 +171,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="E98-48-Kmp" secondAttribute="trailing" constant="-20" id="Z2I-bP-GP6"/>
                             <constraint firstItem="U6E-B4-LB6" firstAttribute="leading" secondItem="c0R-3Y-7jg" secondAttribute="leadingMargin" constant="-20" id="c8W-nE-Vvy"/>
                             <constraint firstItem="E98-48-Kmp" firstAttribute="leading" secondItem="c0R-3Y-7jg" secondAttribute="leadingMargin" constant="-20" id="pRj-Xd-xRO"/>
-                            <constraint firstItem="U6E-B4-LB6" firstAttribute="top" secondItem="E98-48-Kmp" secondAttribute="bottom" constant="8" id="tdb-mW-OX7"/>
+                            <constraint firstItem="U6E-B4-LB6" firstAttribute="top" secondItem="E98-48-Kmp" secondAttribute="bottom" id="tdb-mW-OX7"/>
                             <constraint firstItem="gpz-IK-UjL" firstAttribute="top" secondItem="U6E-B4-LB6" secondAttribute="bottom" id="tmG-Qx-hpL"/>
                         </constraints>
                     </view>
@@ -169,6 +183,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="headerView" destination="E98-48-Kmp" id="EUL-Sc-mEY"/>
                         <outlet property="tableView" destination="U6E-B4-LB6" id="tPv-ls-KLA"/>
                         <segue destination="A8A-CM-WBB" kind="presentation" identifier="PresentBoardEditing" id="8DW-2m-3HO"/>
                         <segue destination="dHK-6f-Bhd" kind="show" identifier="ShowTasksList" id="FHe-z0-j3e"/>
@@ -176,7 +191,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Otu-uM-g9X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="964" y="-499"/>
+            <point key="canvasLocation" x="978" y="-495"/>
         </scene>
         <!--Board Edit Navigation Controller-->
         <scene sceneID="Mtr-PB-zp2">

@@ -10,6 +10,7 @@ import UIKit
 import CloudKit
 class BoardsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    @IBOutlet weak var headerView:BoardsHeaderView!
     @IBOutlet var tableView:UITableView!
      var refreshControl:UIRefreshControl?
     lazy var contactsHandler:ContactsHandler = ContactsHandler()
@@ -56,6 +57,12 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
             //DataSyncronizer.sharedSyncronizer.startSyncingBoards()
             SubscriptionsHandler.sharedInstance.subscriptForBoardsForMe()
         }
+        
+
+        guard let userId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else{
+            return
+        }
+        self.headerView.currentUserId = userId
     }
     
     override func viewDidAppear(animated: Bool) {

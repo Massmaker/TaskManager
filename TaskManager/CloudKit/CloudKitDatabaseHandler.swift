@@ -103,6 +103,7 @@ class CloudKitDatabaseHandler{
             }
         }
     }
+    
     //MARK: - Subscriptions
     func queryAllSubscriptions(completion:((subscriptions:[CKSubscription]?)->()))
     {
@@ -262,19 +263,20 @@ class CloudKitDatabaseHandler{
                     switch ckCode
                     {
                     case .PartialFailure:
-                        let info = error.userInfo[CKPartialErrorsByItemIDKey]
-                        if let dict = info as? [String:CKSubscription]
-                        {
-                            print("Failed subscriptions: \(dict)")
+                        if let info = error.userInfo[CKPartialErrorsByItemIDKey] as? [NSObject:AnyObject] {
+                            if let dict = info as? [String:AnyObject]{
+                                for (subscrID, value) in dict{
+                                    print("\n \(subscrID)  :  \(value)")
+                                }
+                            }
+                            else{
+                                print("Failed subscriptions:\n \(info)")
+                            }
                         }
-                        else
-                        {
-                              print("Failed subscriptions: \(info)")
-                        }
-                        
                     default:
                         break
                     }
+                    completion(succeeded: [CKSubscription](), failed: subscriptions, error: error)
                 default:
                     completion(succeeded: succeeded, failed: subscriptions, error: error)
                 }
@@ -786,9 +788,30 @@ class CloudKitDatabaseHandler{
         publicDB.addOperation(batchDeleteOp)
     }
     
-    func findBoardWithID(recordIDString:String, completion:((boardRecord:CKRecord?)->()))
+    /**
+     postpones an CKFetchRecordsOperation in public database
+     - parameter recordID: a record Id to fetch CKRecord object
+     - parameter qualityOfService: If this parameter is not set, - default value is NSQualityOfService.Background
+     - parameter completion: completion handler with found record or error
+     */
+    func findRecordWithID(recordID:CKRecordID, qualityOfService:NSQualityOfService = .Background, completion:((record:CKRecord?, error:NSError?)->()))
     {
+        let fetchSingleRecordOp = CKFetchRecordsOperation(recordIDs: [recordID])
+        fetchSingleRecordOp.qualityOfService = qualityOfService
         
+        
+        ///use here `perRecord` completion block instead of `fetchRecordsCompletionBlock` is because we fetch single record
+        fetchSingleRecordOp.perRecordCompletionBlock = { record, recordId, error in
+            if let record = record{
+                completion(record: record, error: nil)
+            }
+            else if let anError = error{
+                print("\n Error fetching single record by recordID: \n recordID: \(recordID)\n\(anError)")
+                completion(record: nil, error: anError)
+            }
+        }
+        
+        self.publicDB.addOperation(fetchSingleRecordOp)
     }
     
     private func saveBoard(board:CKRecord, completionHandler:((savedBoard:CKRecord?, saveError:NSError?)->()))
@@ -975,6 +998,37 @@ class CloudKitDatabaseHandler{
         self.privateOperationQueue.addOperation(bgQueueDeleteOperation)
         
         return true
+    }
+    
+    func findTasksByTaskIDs(taskIDs:[CKRecordID], qualityOfService:NSQualityOfService = .Background, completion:((tasks:[CKRecord], error:NSError?)->())){
+        guard !taskIDs.isEmpty else{
+            completion(tasks: [CKRecord](), error: nil)
+            return
+        }
+        
+        let fetchTaskRecordsOp = CKFetchRecordsOperation(recordIDs: taskIDs)
+        fetchTaskRecordsOp.qualityOfService = qualityOfService
+        
+        fetchTaskRecordsOp.fetchRecordsCompletionBlock = {recordsDict, error in
+            if let info = recordsDict{
+                if info.isEmpty{
+                    completion(tasks: [CKRecord](), error: nil)
+                    return
+                }
+                
+                var toReturn = [CKRecord]()
+                for ( _ , record) in info{
+                    toReturn.append(record)
+                }
+                
+                completion(tasks: toReturn, error: error)
+            }
+            else if let anError = error{
+                completion(tasks: [CKRecord](), error: anError)
+            }
+        }
+        
+        self.publicDB.addOperation(fetchTaskRecordsOp)
     }
     
 }//class end

@@ -15,6 +15,8 @@
 		F8067C4A1C60F9A800782E63 /* DisplayNameCapable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C491C60F9A800782E63 /* DisplayNameCapable.swift */; };
 		F8067C4C1C60FAF200782E63 /* TasksHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C4B1C60FAF200782E63 /* TasksHolderDelegate.swift */; };
 		F8067C4E1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C4D1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift */; };
+		F815B9A31C6DE6DF00FE3CE0 /* BoardsHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F815B9A21C6DE6DF00FE3CE0 /* BoardsHeaderView.xib */; };
+		F815B9A51C6DE70C00FE3CE0 /* BoardsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F815B9A41C6DE70C00FE3CE0 /* BoardsHeaderView.swift */; };
 		F81954D91C565669007D15E8 /* UserCloudPreferencesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81954D81C565669007D15E8 /* UserCloudPreferencesHandler.swift */; };
 		F82755CF1C58F804005A1964 /* Extensions+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82755CE1C58F804005A1964 /* Extensions+String.swift */; };
 		F8386A2D1C5B6A0B00C298A5 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8386A2C1C5B6A0B00C298A5 /* TaskTableViewCell.swift */; };
@@ -115,6 +117,8 @@
 		F8067C491C60F9A800782E63 /* DisplayNameCapable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayNameCapable.swift; sourceTree = "<group>"; };
 		F8067C4B1C60FAF200782E63 /* TasksHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksHolderDelegate.swift; sourceTree = "<group>"; };
 		F8067C4D1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksViewController+TasksHolderDelegate.swift"; sourceTree = "<group>"; };
+		F815B9A21C6DE6DF00FE3CE0 /* BoardsHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BoardsHeaderView.xib; sourceTree = "<group>"; };
+		F815B9A41C6DE70C00FE3CE0 /* BoardsHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsHeaderView.swift; sourceTree = "<group>"; };
 		F81954D81C565669007D15E8 /* UserCloudPreferencesHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCloudPreferencesHandler.swift; sourceTree = "<group>"; };
 		F82755CE1C58F804005A1964 /* Extensions+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+String.swift"; sourceTree = "<group>"; };
 		F8386A2C1C5B6A0B00C298A5 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
@@ -302,6 +306,8 @@
 				F84D686C1C4CEB2E00EF8A16 /* Assets.xcassets */,
 				F84D686E1C4CEB2E00EF8A16 /* LaunchScreen.storyboard */,
 				F84D68EF1C4CEDFB00EF8A16 /* TaskManager.storyboard */,
+				F815B9A21C6DE6DF00FE3CE0 /* BoardsHeaderView.xib */,
+				F815B9A41C6DE70C00FE3CE0 /* BoardsHeaderView.swift */,
 				F84CAD111C5628D400BC2ECC /* UserProfileHeader.xib */,
 				F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */,
 				F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */,
@@ -593,6 +599,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F815B9A31C6DE6DF00FE3CE0 /* BoardsHeaderView.xib in Resources */,
 				F84D68BF1C4CEB6900EF8A16 /* DigitsKitResources.bundle in Resources */,
 				F84D68701C4CEB2E00EF8A16 /* LaunchScreen.storyboard in Resources */,
 				F84D686D1C4CEB2E00EF8A16 /* Assets.xcassets in Resources */,
@@ -749,6 +756,7 @@
 				F8067C441C60F38300782E63 /* BoardsTableViewController+BoardsHolderDelegate.swift in Sources */,
 				F84D69011C4D2D0500EF8A16 /* AppDelegateError.swift in Sources */,
 				F8067C4A1C60F9A800782E63 /* DisplayNameCapable.swift in Sources */,
+				F815B9A51C6DE70C00FE3CE0 /* BoardsHeaderView.swift in Sources */,
 				F88669951C577A5200F56C0A /* BoardsTableViewCell.swift in Sources */,
 				F8832BC41C4FB64500D75FAE /* TaskErrors.swift in Sources */,
 				F84D68BC1C4CEB6900EF8A16 /* ErrorTaskBoard.swift in Sources */,

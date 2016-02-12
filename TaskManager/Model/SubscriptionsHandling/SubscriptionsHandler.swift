@@ -6,7 +6,7 @@
 //  Copyright © 2016 CloudCraft. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import CloudKit
 
 class SubscriptionsHandler {
@@ -237,16 +237,34 @@ class SubscriptionsHandler {
             return
         }
         
+        let recordType = CloudRecordTypes.TaskBoard.rawValue
         let predicate = NSPredicate(format: "%K CONTAINS %@", BoardParticipantsKey, currentUserId)
-        let querySub = CKSubscription(recordType: CloudRecordTypes.TaskBoard.rawValue, predicate: predicate, options: [CKSubscriptionOptions.FiresOnRecordUpdate, .FiresOnRecordDeletion])
         
-        anAppDelegate()?.cloudKitHandler.submitSubscription(querySub) {[weak self] (subscription, errorMessage) -> () in
-            
-            if let subscription = subscription {
-                print("SUCCESS: Subscription ID: \(subscription.subscriptionID)")
-                self?.subscriptions.append(subscription)
+        var subscriptions = [CKSubscription]()
+        
+        if let uuidString = UIDevice.currentDevice().identifierForVendor?.UUIDString {
+            let queryUpdateSub = CKSubscription(recordType: recordType, predicate: predicate, subscriptionID: uuidString+"-updateBoard", options: .FiresOnRecordUpdate)
+            let queryDeleteSub = CKSubscription(recordType: recordType, predicate: predicate, subscriptionID: uuidString+"-deleteBoard", options: .FiresOnRecordDeletion)
+            subscriptions.append(queryUpdateSub)
+            subscriptions.append(queryDeleteSub)
+        }
+        else{
+            let queryUpdateSub = CKSubscription(recordType: recordType, predicate: predicate, options: [CKSubscriptionOptions.FiresOnRecordUpdate])
+            let queryDeleteSub = CKSubscription(recordType: recordType, predicate: predicate, options: [CKSubscriptionOptions.FiresOnRecordDeletion])
+            subscriptions.append(queryUpdateSub)
+            subscriptions.append(queryDeleteSub)
+        }
+        
+        let sentSubscriptionsCount = subscriptions.count
+      
+        anAppDelegate()?.cloudKitHandler.submitManySubscriptions(subscriptions) {[weak self] (succeeded, failed, error) -> () in
+            if succeeded.count == sentSubscriptionsCount  {
+                for aSubscr in succeeded{
+                    print("SUCCESS: Subscription ID: \(aSubscr.subscriptionID)")
+                }
+                self?.subscriptions += succeeded
             }
-            else if let error = errorMessage{
+            else if let error = error{
                 print("\n  -  Error adding subscriptions: \(error)")
             }
         }

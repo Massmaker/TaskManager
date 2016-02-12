@@ -109,6 +109,13 @@ class Board: NSManagedObject {
         return tasks
     }
     
+    var taskIDsSet:Set<String>{
+        var toReturn = Set<String>()
+        if let taskIDs = self.taskIDs as? [String]{
+            toReturn = Set(taskIDs)
+        }
+        return toReturn
+    }
     func checkTaskIDsToBeEqualToTasks()
     {
         let currentTasks = self.orderedTasks

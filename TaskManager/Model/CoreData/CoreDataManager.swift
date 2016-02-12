@@ -794,7 +794,33 @@ class CoreDataManager
         return nil
     }
     
-    func deleteTasksByIDs(taskIDs:[String])
+    /// - Returns: at least one task in array  or nil
+    func findActiveTasksForUserById(string:String) -> [Task]? {
+        
+        var tasksToReturn:[Task]?
+        
+        let context = self.mainQueueManagedObjectContext
+        
+        let predicate = NSPredicate(format: "currentOwnerId = %@", string)
+        let fetchRequest = NSFetchRequest(entityName: "Task")
+        fetchRequest.predicate = predicate
+        
+        do{
+            if let tasks = try context.executeFetchRequest(fetchRequest) as? [Task] where !tasks.isEmpty{
+                tasksToReturn = tasks
+            }
+        }catch let fetchError{
+            print("\n - Error fetching active tasks by current user:")
+            print(fetchError)
+        }
+        
+        if tasksToReturn != nil{
+            return tasksToReturn!
+        }
+        return nil
+    }
+    
+    func deleteTasksByIDs(taskIDs:[String], saveImmediately:Bool = false)
     {
         for anId in taskIDs
         {
@@ -804,7 +830,9 @@ class CoreDataManager
             }
         }
         
-        self.saveMainContext()
+        if saveImmediately{
+            self.saveMainContext()
+        }
     }
     
     func cleanToBeDeletedTasks()

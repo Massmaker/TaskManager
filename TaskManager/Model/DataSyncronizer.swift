@@ -259,6 +259,10 @@ class DataSyncronizer {
             return
         }
         
+        guard !tasks.isEmpty else{
+            return
+        }
+        
         coreDataHandler.insertTaskRecords(tasks, forBoard: board, saveImmediately: false)
         coreDataHandler.saveMainContext()
     }

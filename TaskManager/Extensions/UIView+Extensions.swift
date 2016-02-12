@@ -71,4 +71,15 @@ extension UIView{
         
         self.layer.mask = layer
     }
+    
+    func maskToCircle(){
+        let bounds = self.bounds
+        //let minValue = min(bounds.size.height, bounds.size.width)
+        let path = UIBezierPath(ovalInRect: bounds)
+        
+        let layer = CAShapeLayer()
+        layer.frame = bounds
+        layer.path = path.CGPath
+        self.layer.mask = layer
+    }
 }
