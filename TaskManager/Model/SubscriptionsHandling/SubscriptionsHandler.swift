@@ -36,6 +36,7 @@ class SubscriptionsHandler {
             
             guard let result = subscriptions else
             {
+                print("\n - Did not load any subscriptions...\n")
                 self.syncing = false
                 return
             }
@@ -237,23 +238,42 @@ class SubscriptionsHandler {
             return
         }
         
+        guard let registeredContacts = anAppDelegate()?.coreDatahandler?.registeredContacts() else{
+            return
+        }
+        
+        guard !registeredContacts.isEmpty else{
+            return
+        }
+        
+        var regPhones = [String]()
+        for aContact in registeredContacts{
+            if let phone = aContact.phone{
+                regPhones.append(phone)
+            }
+        }
+        
+        if regPhones.isEmpty{
+            return
+        }
+        
         let recordType = CloudRecordTypes.TaskBoard.rawValue
-        let predicate = NSPredicate(format: "%K CONTAINS %@", BoardParticipantsKey, currentUserId)
+        let predicate = NSPredicate(format: "%K CONTAINS %@ AND %K IN %@", BoardParticipantsKey, currentUserId, BoardCreatorIDKey, regPhones)
         
         var subscriptions = [CKSubscription]()
         
-        if let uuidString = UIDevice.currentDevice().identifierForVendor?.UUIDString {
-            let queryUpdateSub = CKSubscription(recordType: recordType, predicate: predicate, subscriptionID: uuidString+"-updateBoard", options: .FiresOnRecordUpdate)
-            let queryDeleteSub = CKSubscription(recordType: recordType, predicate: predicate, subscriptionID: uuidString+"-deleteBoard", options: .FiresOnRecordDeletion)
-            subscriptions.append(queryUpdateSub)
-            subscriptions.append(queryDeleteSub)
-        }
-        else{
+//        if let uuidString = UIDevice.currentDevice().identifierForVendor?.UUIDString {
+//            let queryUpdateSub = CKSubscription(recordType: recordType, predicate: predicate, subscriptionID: uuidString+"-updateBoard", options: .FiresOnRecordUpdate)
+//            let queryDeleteSub = CKSubscription(recordType: recordType, predicate: predicate, subscriptionID: uuidString+"-deleteBoard", options: .FiresOnRecordDeletion)
+//            subscriptions.append(queryUpdateSub)
+//            subscriptions.append(queryDeleteSub)
+//        }
+//        else{
             let queryUpdateSub = CKSubscription(recordType: recordType, predicate: predicate, options: [CKSubscriptionOptions.FiresOnRecordUpdate])
             let queryDeleteSub = CKSubscription(recordType: recordType, predicate: predicate, options: [CKSubscriptionOptions.FiresOnRecordDeletion])
             subscriptions.append(queryUpdateSub)
             subscriptions.append(queryDeleteSub)
-        }
+//        }
         
         let sentSubscriptionsCount = subscriptions.count
       

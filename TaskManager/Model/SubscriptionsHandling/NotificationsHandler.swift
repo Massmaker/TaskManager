@@ -16,6 +16,7 @@ class NotificationsHandler{
     
     func handleNote(notification:CKQueryNotification)
     {
+        print("\n- Handling CloudKit Query Notification -\n")
         let reason = notification.queryNotificationReason
         switch reason
         {

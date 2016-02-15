@@ -148,8 +148,45 @@ class CloudKitDatabaseHandler{
         let allSubsOp = CKFetchSubscriptionsOperation.fetchAllSubscriptionsOperation()
         allSubsOp.qualityOfService = .Utility
         allSubsOp.fetchSubscriptionCompletionBlock = fetchCompletionBlock
-        
-        self.publicDB.addOperation(allSubsOp)
+        self.publicDB.fetchAllSubscriptionsWithCompletionHandler { (subs, error) in
+            let result = CloudKitErrorParser.handleCloudKitErrorAs(error)
+            switch result
+            {
+            case .Success:
+                if let subsiptions = subs where !subsiptions.isEmpty
+                {
+                    var toReturn = [CKSubscription]()
+                    for (value) in subsiptions
+                    {
+                        toReturn.append(value)
+                    }
+                    completion(subscriptions: toReturn)
+                }
+                else
+                {
+                    completion(subscriptions: nil)
+                }
+            case .Retry(let afterSeconds):
+                if afterSeconds < 5
+                {
+                    print("retrying to fetch all subscriptions")
+                    let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * afterSeconds))
+                    dispatch_after(timeout, dispatch_get_main_queue()){ () -> Void in
+                        self.queryAllSubscriptions(completion)
+                    }
+                }
+                else
+                {
+                    completion(subscriptions: nil)
+                }
+            case .RecoverableError:
+                completion(subscriptions: nil)
+            case .Fail(_):
+                completion(subscriptions: nil)
+            }
+
+        }
+        //self.publicDB.addOperation(allSubsOp)
     }
     
     func deleteSubscriptions(toDelete:[String], completion:((deletedIDs:[String]?)->()))
@@ -240,8 +277,8 @@ class CloudKitDatabaseHandler{
                 succeeded += new
             }
             
-            if let error = error
-            {
+            if let error = error{
+                
                 let result = CloudKitErrorParser.handleCloudKitErrorAs(error)
                 switch result
                 {
@@ -264,13 +301,12 @@ class CloudKitDatabaseHandler{
                     {
                     case .PartialFailure:
                         if let info = error.userInfo[CKPartialErrorsByItemIDKey] as? [NSObject:AnyObject] {
-                            if let dict = info as? [String:AnyObject]{
-                                for (subscrID, value) in dict{
-                                    print("\n \(subscrID)  :  \(value)")
-                                }
-                            }
-                            else{
-                                print("Failed subscriptions:\n \(info)")
+                            print("\n ---- Failed subscriptions:")
+                            for (key, value) in info{
+                                print("\n ----")
+                                print(key)
+                                print(value)
+                                
                             }
                         }
                     default:
@@ -281,7 +317,9 @@ class CloudKitDatabaseHandler{
                     completion(succeeded: succeeded, failed: subscriptions, error: error)
                 }
             }
-            
+            else{
+               completion(succeeded: succeeded, failed: failed, error: nil) //success
+            }
             networkingIndicator(false)
         }
         
@@ -291,6 +329,17 @@ class CloudKitDatabaseHandler{
         
         networkingIndicator(true)
         publicDB.addOperation(modifyToInsertOp)
+        
+        
+        //
+//        publicDB.saveSubscription(subscriptions.first!) { (saved, error) -> Void in
+//            if let subscription = saved{
+//                
+//            }
+//            else if let errorSubs = error{
+//                
+//            }
+//        }
     }
     
     //MARK: - Notifications
@@ -532,7 +581,7 @@ class CloudKitDatabaseHandler{
                         completion(foundNumbers: [String](), error: nil)
                     }                
                 default:
-                    print(errorResult)
+                    //print(errorResult)
                     completion(foundNumbers: [String()], error: error)
             }
         }
@@ -566,7 +615,7 @@ class CloudKitDatabaseHandler{
             return
         }
         
-        let predicate = NSPredicate(format: "boardCreator = %@", user.recordID.recordName)
+        let predicate = NSPredicate(format: "%K = %@", BoardCreatorIDKey, user.recordID.recordName)
         let publicQuery = CKQuery(recordType: CloudRecordTypes.TaskBoard.rawValue, predicate: predicate)
         publicQuery.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: true)]
         

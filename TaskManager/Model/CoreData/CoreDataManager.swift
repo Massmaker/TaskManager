@@ -131,7 +131,7 @@ class CoreDataManager
                 }
                 else
                 {
-                    print("Inserting User ...")
+                    //print("Inserting User ...")
                     guard let dbContact = NSEntityDescription.insertNewObjectForEntityForName("User", inManagedObjectContext: self.mainQueueManagedObjectContext) as? User else
                     {
                         failedUsers.append(aContact)

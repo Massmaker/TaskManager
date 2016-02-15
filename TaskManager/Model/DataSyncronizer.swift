@@ -70,34 +70,37 @@ class DataSyncronizer {
         NSNotificationCenter.defaultCenter().postNotificationName(DataSyncronizerDidStartSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
 
         
-        let dispatchGroupForBoards = dispatch_group_create()
-        
-        let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 1.0))
         
         var boardRecordsToSave = [CKRecord]()
         
-        dispatch_group_enter(dispatchGroupForBoards)
+       
+        let waiterGroup = dispatch_group_create()
+      
+        dispatch_group_enter(waiterGroup)
         anAppDelegate()?.cloudKitHandler.queryForBoardsByCurrentUser(){ (boards, error) -> () in
             if let boards = boards
             {
                 boardRecordsToSave += boards
             }
-            dispatch_group_leave(dispatchGroupForBoards)
+            
+            dispatch_group_leave(waiterGroup)
         }
         
-        dispatch_group_enter(dispatchGroupForBoards)
+        dispatch_group_enter(waiterGroup)
         anAppDelegate()?.cloudKitHandler.queryForBoardsSharedWithMe(){ (boards, fetchError) -> () in
-            if let sharedBoards = boards
-            {
+            if let sharedBoards = boards{
                 boardRecordsToSave += sharedBoards
             }
-            dispatch_group_leave(dispatchGroupForBoards)
+            
+            dispatch_group_leave(waiterGroup)
         }
         
         
         
-        dispatch_group_wait(dispatchGroupForBoards, timeout)
+        let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 40.0))
         
+        dispatch_group_wait(waiterGroup, timeout)
+       
         self.saveInMainThread(boardRecordsToSave){
             print("didLoad boards: \(boardRecordsToSave.count) ")
             

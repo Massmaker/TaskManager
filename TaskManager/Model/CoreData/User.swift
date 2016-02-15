@@ -64,7 +64,7 @@ class User: NSManagedObject {
             }
             else
             {
-                print(" - User is NOT registered")
+                //print(" - User is NOT registered")
             }
         }
     }

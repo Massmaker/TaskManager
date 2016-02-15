@@ -34,7 +34,7 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
         self.refreshControl = UIRefreshControl(frame: frame)
         
         self.refreshControl?.addTarget(self, action: "pullLatestBoardsFromCloud:", forControlEvents: .ValueChanged)
-        
+        self.tableView.addSubview(self.refreshControl!)
     }
 
     
@@ -53,8 +53,7 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
             
             didSubscribeForBoardsSyncNotification = true
             
-            //TODO: - handle changes by receiving notifications for boards Subscriptions
-            //DataSyncronizer.sharedSyncronizer.startSyncingBoards()
+          
             SubscriptionsHandler.sharedInstance.subscriptForBoardsForMe()
         }
         
