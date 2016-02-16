@@ -25,7 +25,7 @@ class Task: NSManagedObject {
         
         self.changeTag = record.recordChangeTag
         self.currentOwnerId = record[CurrentOwnerStringKey] as? String
-
+        
         if let dateCreated = record.creationDate
         {
             self.dateCreated = dateCreated.timeIntervalSinceReferenceDate

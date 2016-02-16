@@ -155,6 +155,14 @@ class Board: NSManagedObject {
         {
             self.dateCreated = date.timeIntervalSinceReferenceDate
         }
+        
+        if let modDate = record.modificationDate{
+            self.dateModified = modDate.timeIntervalSinceReferenceDate
+        }
+        else{
+            self.dateModified = 0.0
+        }
+        
         self.creatorId = record[BoardCreatorIDKey] as? String
         if let order = record[SortOrderIndexIntKey] as? NSNumber
         {

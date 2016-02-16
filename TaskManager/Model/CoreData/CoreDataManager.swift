@@ -257,7 +257,7 @@ class CoreDataManager
     func allBoards(includeDeleted:Bool = true) -> [Board]
     {
         let fetchRequest = NSFetchRequest(entityName: "Board")
-        let sort = NSSortDescriptor(key: "sortOrder", ascending: true)
+        let sort = NSSortDescriptor(key: "dateModified", ascending: true)
         fetchRequest.sortDescriptors = [sort]
         
         if !includeDeleted

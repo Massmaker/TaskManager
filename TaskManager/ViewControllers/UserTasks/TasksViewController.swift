@@ -19,6 +19,8 @@ class TasksViewController:UIViewController {
     
     private var userRecordId:CKRecordID?
     
+    private var editingDidHappen = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -33,19 +35,13 @@ class TasksViewController:UIViewController {
         tasksSource.delegate = self
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+    
+        displayAddButton(checkAddTaskButtonEnabled())
+    }
+    
     override func viewDidLayoutSubviews() {
-        
-        if checkAddTaskButtonEnabled()
-        {
-            if let _ = addButtonControl{
-                
-            }
-            else{
-                // add bottom right ADD button with shadow
-                createAndAddPlusButtonControl()
-            }
-        }
-        
         super.viewDidLayoutSubviews()
     }
     
@@ -127,39 +123,24 @@ class TasksViewController:UIViewController {
         
         self.tableView.setEditing(editing, animated: animated)
         
-        if editing{
+        if !editing{
             
-        }
-        else{
-            self.tasksSource.updateTasksSortIndexes()
-        
-            anAppDelegate()?.coreDatahandler?.startTasksDeletionToCloudKit()
+            if editingDidHappen{
+                editingDidHappen = false
+                
+                
+                self.tasksSource.updateTasksSortIndexes()
+                
+                anAppDelegate()?.coreDatahandler?.startTasksDeletionToCloudKit()
+            }
         }
     }
-    //MARK: - ADD new task button
-    private func createAndAddPlusButtonControl()
-    {
-        let buttonControlSide = CGFloat(70.0)
-        var bottomRightPoint = CGPoint(x: CGRectGetMaxX(self.tableView.frame), y: CGRectGetMaxY(self.tableView.frame))
-        bottomRightPoint.x -=  (buttonControlSide)
-        bottomRightPoint.y -= (buttonControlSide)
-        let buttonHolderFrame = CGRectMake(bottomRightPoint.x,bottomRightPoint.y , buttonControlSide, buttonControlSide)
-        let floatControl = FloatingButtonControl(frame: buttonHolderFrame)
-    
-        floatControl.showsShadow = false
-        floatControl.addTarget(self, action: "startAddingNewTask", forControlEvents: .TouchUpInside)
-        //floatControl.buttonTintColor = UIColor.whiteColor()
-        floatControl.buttonImage = UIImage(named: "Plus_Icon")
-        floatControl.buttonColor = UIColor.clearColor()
+ 
+    //MARK: - 
+    private func displayAddButton(display:Bool){
         
-        floatControl.autoresizingMask = [UIViewAutoresizing.FlexibleTopMargin, .FlexibleLeftMargin] //fix to bottom right corner when rotating
-        self.view.addSubview(floatControl)
-        self.addButtonControl = floatControl
-        
-          //add test button to navigation title
-        let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.5))
-        dispatch_after(timeout, dispatch_get_main_queue(), { () -> Void in
-          
+        if display{
+            
             let image = UIImage(named: "Plus_Icon")
             let button = UIButton(type: .System)
             button.frame = CGRectMake(0, 0, 40, 40)
@@ -169,9 +150,11 @@ class TasksViewController:UIViewController {
             button.addTarget(self, action: "startAddingNewTask", forControlEvents: .TouchUpInside)
             
             self.navigationItem.titleView = button
-        })
-        
-     
+        }
+        else{
+            
+            self.navigationItem.titleView = nil
+        }
     }
     
     func startAddingNewTask()
@@ -231,41 +214,46 @@ class TasksViewController:UIViewController {
     
     //to disable editing or deleting the "AddTAskButton" cell
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-//        if indexPath.section == 0
-//        {
-//            return false
-//        }
-        return true
+
+        if !self.editing{
+            return false
+        }
+        
+        guard let currentUserID = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else{
+            return false
+        }
+        
+        if self.editing{
+            if let task = tasksSource.taskForRow(indexPath.row){
+                return task.creator == currentUserID
+            }
+            
+        }
+        return false
     }
     
     func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-//        if indexPath.section == 0
-//        {
-//            return false
-//        }
         return true
     }
     
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         
-//        if sourceIndexPath.section == 1 && destinationIndexPath.section == 1
-//        {
-            print("Source path: \(sourceIndexPath.row)")
-            print("Destination path: \(destinationIndexPath.row)")
+        if !editingDidHappen{
+            editingDidHappen = true
+        }
+        
+        do{
+            let removed = try self.tasksSource.removeTaskAtIndex(sourceIndexPath.row)
             do{
-                let removed = try self.tasksSource.removeTaskAtIndex(sourceIndexPath.row)
-                do{
-                    try self.tasksSource.insertTask(removed, atIndex: destinationIndexPath.row)
-                }
-                catch{
-                    print(" Could not insert task at index: \(destinationIndexPath.row)")
-                }
+                try self.tasksSource.insertTask(removed, atIndex: destinationIndexPath.row)
             }
             catch{
-                print(" Could not remove task at index: \(sourceIndexPath.row)")
+                print(" Could not insert task at index: \(destinationIndexPath.row)")
             }
-//        }
-        
+        }
+        catch{
+            print(" Could not remove task at index: \(sourceIndexPath.row)")
+        }
     }
     
 //    func tableView(tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {

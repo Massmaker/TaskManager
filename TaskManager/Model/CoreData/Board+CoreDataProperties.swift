@@ -17,6 +17,7 @@ extension Board {
     @NSManaged var changeTag: String?
     @NSManaged var creatorId: String?
     @NSManaged var dateCreated: NSTimeInterval
+    @NSManaged var dateModified: NSTimeInterval
     @NSManaged var details: String?
     @NSManaged var recordId: String?
     @NSManaged var sortOrder: Int64

@@ -110,9 +110,6 @@ class DataSyncronizer {
             
             postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
         }
-        
-   
-        
     }
     
     func startSyncingTasksFor(board:Board)
@@ -211,8 +208,8 @@ class DataSyncronizer {
             
             let allBoards = coreDataHandler.allBoards(true)
             
-            if allBoards.count != records.count
-            {
+//            if allBoards.count != records.count
+//            {
                 //fill recordIDs recieved from CloudKit
                 var ckRecordIDs = Set<String>()
                 for aRecord in records
@@ -246,8 +243,7 @@ class DataSyncronizer {
                         assertionFailure("Could not perform boards cleanup after pulling from CloudKit: \nError:\n \(error)")
                     }
                 }
-                
-            }
+//            }
             
             coreDataHandler.saveMainContext()
             

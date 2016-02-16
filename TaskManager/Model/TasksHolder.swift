@@ -111,12 +111,52 @@ class TasksHolder:NSObject {
             return
         }
         
+        let notDeletedTasks = currentTasks.filter(){
+            return $0.toBeDeleted != true
+        }
+        
+        if notDeletedTasks.isEmpty{
+            return
+        }
+        
         var index:Int64 = 0
         
-        for aTask in currentTasks {
+        for aTask in notDeletedTasks {
             
             aTask.sortOrder = index
             index += 1
+        }
+        
+        
+        
+        var taskRecordsToModify = [CKRecord]()
+        for aTask in notDeletedTasks{
+            guard let recId = aTask.recordId else{
+                continue
+            }
+            
+            do{
+                let taskRec = try createTaskRecordFrom(aTask, recordID: recId)
+                print("New Sotr Order: \(taskRec[SortOrderIndexIntKey] as? NSNumber)")
+                taskRecordsToModify.append(taskRec)
+                
+            }catch{
+                
+            }
+        }
+        
+        if !taskRecordsToModify.isEmpty{
+            
+            anAppDelegate()?.cloudKitHandler.editManyTasks(taskRecordsToModify) { (edited, failed, error) -> () in
+                dispatchMain(){
+                    if edited.count != taskRecordsToModify.count{
+                        anAppDelegate()?.coreDatahandler?.undoChangesInContext()
+                    }
+                    else{
+                        anAppDelegate()?.coreDatahandler?.saveMainContext()
+                    }
+                }
+            }
         }
     }
     
@@ -251,6 +291,38 @@ class TasksHolder:NSObject {
         var toReturn = true
         
         do{
+            var tasksToCancel:[Task]?
+            if let tasksCurrentlyTaken = anAppDelegate()?.coreDatahandler?.findActiveTasksForUserById(userID) where !tasksCurrentlyTaken.isEmpty {
+                print("currently taken tasks:")
+                
+                tasksToCancel = [Task]()
+                
+                for aTask in tasksCurrentlyTaken{
+                    print(aTask.title!)
+                    aTask.dateTaken = 0.0
+                    aTask.currentOwnerId = nil
+                    tasksToCancel?.append(aTask)
+                }
+            }
+            
+            if let taskObjectsToCancel = tasksToCancel {
+                var cancelledTaskRecords = [CKRecord]()
+                for aTask in taskObjectsToCancel {
+                    do{
+                        guard let recId = aTask.recordId else{
+                            continue
+                        }
+                        let taskRec = try createTaskRecordFrom(aTask, recordID: recId)
+                        cancelledTaskRecords.append(taskRec)
+                    }
+                }
+                if !cancelledTaskRecords.isEmpty{
+                    print("\n - Starting cancelling tasks: \(cancelledTaskRecords.count)")
+                    anAppDelegate()?.cloudKitHandler.editManyTasks(cancelledTaskRecords, priority: .Default) { (edited, failed, error) -> () in
+                        
+                    }
+                }
+            }
             
             let taskRecord = try createTaskRecordFrom(task, recordID: recordID)
             

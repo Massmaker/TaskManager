@@ -4,6 +4,7 @@
         <attribute name="changeTag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creatorId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateModified" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="participants" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="recordId" optional="YES" attributeType="String" syncable="YES"/>
@@ -37,8 +38,8 @@
         <relationship name="currentTask" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="currentOwner" inverseEntity="Task" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Board" positionX="-297" positionY="-135" width="128" height="210"/>
-        <element name="Task" positionX="-65" positionY="50" width="128" height="240"/>
-        <element name="User" positionX="-468" positionY="78" width="128" height="135"/>
+        <element name="Board" positionX="-297" positionY="-135" width="128" height="223"/>
+        <element name="Task" positionX="-65" positionY="50" width="128" height="238"/>
+        <element name="User" positionX="-468" positionY="78" width="128" height="133"/>
     </elements>
 </model>

@@ -107,6 +107,11 @@ class CloudKitDatabaseHandler{
     //MARK: - Subscriptions
     func queryAllSubscriptions(completion:((subscriptions:[CKSubscription]?)->()))
     {
+        guard let _ = anAppDelegate()?.cloudKitHandler.publicCurrentUser else{
+            completion(subscriptions: nil)
+            return
+        }
+        
         let fetchCompletionBlock:(([String : CKSubscription]?, NSError?) -> Void) = {subscriptions, error in
             let result = CloudKitErrorParser.handleCloudKitErrorAs(error)
             switch result
@@ -187,6 +192,27 @@ class CloudKitDatabaseHandler{
 
         }
         //self.publicDB.addOperation(allSubsOp)
+    }
+    
+    
+    func querySubscriptionsByIDs(subscriptionIDs:[String], completion:( (subscriptions:[String:CKSubscription]?, errors:[String:NSError]?)->()) ){
+        
+        let op = CKFetchSubscriptionsOperation()
+        op.subscriptionIDs = subscriptionIDs
+        op.qualityOfService = .Utility
+        
+        op.fetchSubscriptionCompletionBlock = {(fetchedDict, error) in
+            if let errorFetching = error
+            {
+                
+            }
+            else
+            {
+                completion(subscriptions: fetchedDict!, errors: nil)
+            }
+        }
+        
+        self.publicDB.addOperation(op)
     }
     
     func deleteSubscriptions(toDelete:[String], completion:((deletedIDs:[String]?)->()))
@@ -1001,6 +1027,35 @@ class CloudKitDatabaseHandler{
         //{
            // completion(editedRecord: nil, editError: NSError(domain: "TaskEditing", code: -2, userInfo: [NSLocalizedFailureReasonErrorKey:"Task recordID was not found", NSLocalizedDescriptionKey:"Could not edit task. Internal error."]))
         //}
+    }
+    
+    
+    /**
+     - Parameter priority: default value is .Utility
+     */
+    func editManyTasks(records:[CKRecord], priority:NSQualityOfService = .Utility, completion:((edited:[CKRecord], failed:[CKRecordID]?, error:NSError?) -> () ) ){
+        
+        if records.isEmpty{
+            completion(edited: records, failed: nil, error: nil)
+           return
+        }
+        
+        var succeededRecords = [CKRecord]()
+        
+        let editOp = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
+        editOp.qualityOfService = priority
+        
+        editOp.perRecordCompletionBlock = {record, error in
+            if let _ = record{
+                succeededRecords.append(record!)
+            }
+        }
+        
+        editOp.modifyRecordsCompletionBlock = {records, errorIDs, error in
+            completion(edited: succeededRecords, failed: errorIDs, error: error)
+        }
+        
+        publicDB.addOperation(editOp)
     }
     
     func deleteTasks(recordIDs:[String], completion:((deletedIDs:[String]?, deletionError:NSError?)->())) -> Bool

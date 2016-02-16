@@ -99,6 +99,7 @@ class BoardsHolder : NSObject {
     func deleteFromDatabase(board:Board)
     {
         board.toBeDeleted = true
+        
         anAppDelegate()?.coreDatahandler?.saveMainContext()
     }
     
@@ -165,8 +166,12 @@ class BoardsHolder : NSObject {
     
     func updateBoardsSortIndexes()
     {
+        let actualizedBoards = self.currentBoards.filter { (board) -> Bool in
+            return board.toBeDeleted != true
+        }
+        
         var index:Int64 = 0
-        for aBoard in currentBoards
+        for aBoard in actualizedBoards
         {
             aBoard.sortOrder = index
             index += 1

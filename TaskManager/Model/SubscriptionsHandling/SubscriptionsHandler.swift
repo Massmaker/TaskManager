@@ -262,18 +262,11 @@ class SubscriptionsHandler {
         
         var subscriptions = [CKSubscription]()
         
-//        if let uuidString = UIDevice.currentDevice().identifierForVendor?.UUIDString {
-//            let queryUpdateSub = CKSubscription(recordType: recordType, predicate: predicate, subscriptionID: uuidString+"-updateBoard", options: .FiresOnRecordUpdate)
-//            let queryDeleteSub = CKSubscription(recordType: recordType, predicate: predicate, subscriptionID: uuidString+"-deleteBoard", options: .FiresOnRecordDeletion)
-//            subscriptions.append(queryUpdateSub)
-//            subscriptions.append(queryDeleteSub)
-//        }
-//        else{
-            let queryUpdateSub = CKSubscription(recordType: recordType, predicate: predicate, options: [CKSubscriptionOptions.FiresOnRecordUpdate])
-            let queryDeleteSub = CKSubscription(recordType: recordType, predicate: predicate, options: [CKSubscriptionOptions.FiresOnRecordDeletion])
+        let queryUpdateSub = CKSubscription(recordType: recordType, predicate: predicate, options: [CKSubscriptionOptions.FiresOnRecordUpdate])
+        let queryDeleteSub = CKSubscription(recordType: recordType, predicate: predicate, options: [CKSubscriptionOptions.FiresOnRecordDeletion])
             subscriptions.append(queryUpdateSub)
             subscriptions.append(queryDeleteSub)
-//        }
+
         
         let sentSubscriptionsCount = subscriptions.count
       
@@ -290,5 +283,15 @@ class SubscriptionsHandler {
         }
     }
     
+    
+    func refetchSubscriptionsByknownIDs(subscrIDs:[String]){
+        if subscrIDs.isEmpty{
+            return
+        }
+        
+        anAppDelegate()?.cloudKitHandler.querySubscriptionsByIDs(subscrIDs) { (subscriptions, errors) -> () in
+            
+        }
+    }
     
 }

@@ -18,6 +18,7 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
     lazy var boardsHolder:BoardsHolder = BoardsHolder()
     
     private var didSubscribeForBoardsSyncNotification = false
+    private var editingDidHappen = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,9 +104,9 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
             
             cell.accessoryType = .DetailButton
             
-            if let creator = board?.creatorId
+            if let creator = board?.creatorId, currentUserPhone = anAppDelegate()!.cloudKitHandler.publicCurrentUser?.recordID.recordName
             {
-                if creator == anAppDelegate()!.cloudKitHandler.publicCurrentUser!.recordID.recordName
+                if creator == currentUserPhone
                 {
                     cell.avatarView.image = anAppDelegate()?.cloudKitHandler.currentUserAvatar ?? testAvatarImage
                 }
@@ -134,13 +135,30 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
     
     // Override to support conditional editing of the table view.
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+
+        if self.editing == false{
+            return false
+        }
+        
+        guard let currentUserID = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else{
+            return false
+        }
+        
+        guard let board = boardsHolder.boardForRow(indexPath.row),
+        let creatorID = board.creatorId where creatorID == currentUserID else {
+            return false
+        }
+        
+        return self.editing
     }
     
     // Override to support editing the table view.
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
+            if !editingDidHappen{
+                editingDidHappen = true
+            }
+            
             do{
                 let deletedBoard = try boardsHolder.removeBoardAtIndex(indexPath.row)
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
@@ -161,13 +179,15 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
     // Override to support rearranging the table view.
     func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
 
+        if !editingDidHappen{
+            editingDidHappen = true
+        }
+        
         do{
             let movingBoard = try boardsHolder.removeBoardAtIndex(fromIndexPath.row)
             
             do{
                 try boardsHolder.insertBoard(movingBoard, atIndex: toIndexPath.row)
-                //start rearranging logic for TaskBoard "sortOrderIndex" inside the app and submit changes to iCloud
-                boardsHolder.updateBoardsSortIndexes()
             }
             catch
             {
@@ -208,13 +228,12 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
         
         self.tableView.setEditing(editing, animated: animated)
         
-        if editing
-        {
+        if !editing && editingDidHappen{
             
-        }
-        else
-        {
-            //delete boards if any present (toBeDeleted)
+            editingDidHappen = false
+            
+            boardsHolder.updateBoardsSortIndexes()
+            
             anAppDelegate()?.coreDatahandler?.startBoardsDeletionToCloudKit()
         }
         
