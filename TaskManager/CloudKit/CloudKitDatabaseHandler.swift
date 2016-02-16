@@ -23,7 +23,7 @@ class CloudKitDatabaseHandler{
     
     var currentUserPhoneNumber:String?{
         didSet{
-            print("new phone number is set in cloudKitDatabaseHandler : \n \(currentUserPhoneNumber!)")
+            print("new phone number is set in cloudKitDatabaseHandler : \n \(currentUserPhoneNumber)")
             print(currentUserPhoneNumber)
         }
     }

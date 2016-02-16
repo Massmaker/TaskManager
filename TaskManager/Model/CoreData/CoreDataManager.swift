@@ -470,21 +470,21 @@ class CoreDataManager
         
         let lvContext = self.mainQueueManagedObjectContext
         mainQueueManagedObjectContext.performBlockAndWait(){
-            if #available (iOS 9.0, *)
-            {
-                let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: allBoardsRequest )
-                
-                do
-                {
-                    try lvContext.executeRequest(batchDeleteRequest)
-                }
-                catch
-                {
-                   
-                }
-            }
-            else
-            {
+//            if #available (iOS 9.0, *)
+//            {
+//                let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: allBoardsRequest )
+//                
+//                do
+//                {
+//                    try lvContext.executeRequest(batchDeleteRequest)
+//                }
+//                catch
+//                {
+//                   
+//                }
+//            }
+//            else
+//            {
                 do{
                     if let result = try lvContext.executeFetchRequest(allBoardsRequest) as? [NSManagedObject]
                     {
@@ -497,7 +497,7 @@ class CoreDataManager
                 catch{
                     
                 }
-            }
+//            }
         }
 
     }
@@ -883,18 +883,18 @@ class CoreDataManager
         let context = self.mainQueueManagedObjectContext
         
         context.performBlock(){
-            if #available (iOS 9.0, *)
-            {
-                let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-                do{
-                    try context.executeRequest(batchDeleteRequest)
-                }
-                catch{
-                    
-                }
-            }
-            else
-            {
+//            if #available (iOS 9.0, *)
+//            {
+//                let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+//                do{
+//                    try context.executeRequest(batchDeleteRequest)
+//                }
+//                catch{
+//                    
+//                }
+//            }
+//            else
+//            {
                 fetchRequest.resultType = .ManagedObjectResultType
                 do{
                     if let tasksToDelete = try context.executeFetchRequest(fetchRequest) as? [NSManagedObject] where !tasksToDelete.isEmpty
@@ -908,7 +908,7 @@ class CoreDataManager
                 catch{
                     
                 }
-            }
+//            }
             
             self.saveMainContext()
         }

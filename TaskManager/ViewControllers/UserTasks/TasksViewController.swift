@@ -100,7 +100,7 @@ class TasksViewController:UIViewController {
             
             if let taskCell = tableView.dequeueReusableCellWithIdentifier("TaskTableCell", forIndexPath: indexPath) as? TaskTableViewCell
             {                
-                taskCell.setCurrentTask(targetTask!)
+                taskCell.setCurrentTask(targetTask)
                 return taskCell
             }
             let defaultTaskCell = tableView.dequeueReusableCellWithIdentifier("TaskCell", forIndexPath: indexPath)
@@ -214,22 +214,23 @@ class TasksViewController:UIViewController {
     
     //to disable editing or deleting the "AddTAskButton" cell
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-
-        if !self.editing{
-            return false
-        }
-        
-        guard let currentUserID = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else{
-            return false
-        }
-        
-        if self.editing{
-            if let task = tasksSource.taskForRow(indexPath.row){
-                return task.creator == currentUserID
-            }
-            
-        }
-        return false
+        return self.editing
+//        
+//        if !self.editing{
+//            return false
+//        }
+//        
+//        guard let currentUserID = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else{
+//            return false
+//        }
+//        
+//        if self.editing{
+//            if let task = tasksSource.taskForRow(indexPath.row){
+//                return task.creator == currentUserID
+//            }
+//            
+//        }
+//        return false
     }
     
     func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
