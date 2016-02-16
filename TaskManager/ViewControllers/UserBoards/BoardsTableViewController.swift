@@ -8,7 +8,7 @@
 
 import UIKit
 import CloudKit
-class BoardsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class BoardsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate , UINavigationControllerDelegate{
 
     @IBOutlet weak var headerView:BoardsHeaderView!
     @IBOutlet var tableView:UITableView!
@@ -19,7 +19,7 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
     
     private var didSubscribeForBoardsSyncNotification = false
     private var editingDidHappen = false
-    
+    var taskToEdit:Task?
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,6 +27,9 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        ///----
+        headerView.delegate = self
         
         ///----
         boardsHolder.delegate = self
@@ -321,6 +324,24 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
                 default:
                     break
             }
+        }
+    }
+    
+    func presentTaskEditingVCFor(taskToEdit:Task){
+        if let board = taskToEdit.board{
+            self.navigationController?.delegate = self
+            self.taskToEdit = taskToEdit
+            self.performSegueWithIdentifier("ShowTasksList", sender: board)
+            
+        }
+    }
+    
+    func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
+        navigationController.delegate = nil
+        if let tasksVC = viewController as? TasksViewController{
+            tasksVC.showTaskEditViewCntroller(self.taskToEdit)
+            
+            self.taskToEdit = nil
         }
     }
     

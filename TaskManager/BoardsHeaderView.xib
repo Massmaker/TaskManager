@@ -9,15 +9,28 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="BoardsHeaderView" customModule="TaskManager" customModuleProvider="target">
+        <view contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" id="iN0-l3-epB" customClass="BoardsHeaderView" customModule="TaskManager" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="336" height="148"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="toK-he-AQh">
-                    <rect key="frame" x="8" y="8" width="104" height="104"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ox-yi-v5x">
+                    <rect key="frame" x="157" y="8" width="23" height="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="mlU-vq-bxf">
+                    <rect key="frame" x="8" y="32" width="201" height="98"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="toK-he-AQh">
+                    <rect key="frame" x="217" y="8" width="111" height="111"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="toK-he-AQh" secondAttribute="height" multiplier="0.7" id="Hde-JH-GGl"/>
-                        <constraint firstAttribute="width" secondItem="toK-he-AQh" secondAttribute="height" multiplier="1:1" id="SOh-yS-FOv"/>
+                        <constraint firstAttribute="width" secondItem="toK-he-AQh" secondAttribute="height" multiplier="1:1" id="iYu-NF-Ers"/>
                     </constraints>
                     <variation key="default">
                         <mask key="constraints">
@@ -25,29 +38,26 @@
                         </mask>
                     </variation>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ox-yi-v5x">
-                    <rect key="frame" x="120" y="8" width="208" height="20"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="toK-he-AQh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="KWy-iJ-oOd"/>
-                <constraint firstItem="3Ox-yi-v5x" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="toK-he-AQh" secondAttribute="bottom" id="N49-Ec-2aj"/>
-                <constraint firstItem="toK-he-AQh" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.7" id="NhY-zA-WjH"/>
-                <constraint firstItem="toK-he-AQh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="QSk-cJ-N5g"/>
-                <constraint firstAttribute="trailing" secondItem="3Ox-yi-v5x" secondAttribute="trailing" constant="8" id="UWm-NA-yqy"/>
-                <constraint firstItem="3Ox-yi-v5x" firstAttribute="leading" secondItem="toK-he-AQh" secondAttribute="trailing" constant="8" id="WLs-ob-Q9c"/>
-                <constraint firstItem="3Ox-yi-v5x" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="Wud-bv-Had"/>
+                <constraint firstAttribute="bottom" secondItem="mlU-vq-bxf" secondAttribute="bottom" constant="18" id="4nj-AL-bWE"/>
+                <constraint firstItem="toK-he-AQh" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.75" id="KTi-O3-UmN"/>
+                <constraint firstAttribute="trailing" secondItem="toK-he-AQh" secondAttribute="trailing" constant="8" id="P0R-Oz-yf4"/>
+                <constraint firstItem="mlU-vq-bxf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="P1I-xE-0zh"/>
+                <constraint firstItem="3Ox-yi-v5x" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="TCy-bQ-Hsd"/>
+                <constraint firstItem="toK-he-AQh" firstAttribute="leading" secondItem="mlU-vq-bxf" secondAttribute="trailing" constant="8" id="eQJ-dl-vLt"/>
+                <constraint firstItem="3Ox-yi-v5x" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="f0n-tK-h6C"/>
+                <constraint firstItem="mlU-vq-bxf" firstAttribute="top" secondItem="3Ox-yi-v5x" secondAttribute="bottom" constant="8" id="xL5-Bq-eIU"/>
+                <constraint firstItem="toK-he-AQh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="zeq-qg-V7v"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="avatarImageView" destination="toK-he-AQh" id="cgx-XE-sEf"/>
-                <outlet property="taskTitleLabel" destination="3Ox-yi-v5x" id="jme-Jy-CzL"/>
+                <outlet property="textView" destination="mlU-vq-bxf" id="m5o-OJ-VxK"/>
+                <outlet property="titleLabel" destination="3Ox-yi-v5x" id="RCp-zb-rfb"/>
             </connections>
-            <point key="canvasLocation" x="311" y="448"/>
+            <point key="canvasLocation" x="273" y="454"/>
         </view>
     </objects>
 </document>

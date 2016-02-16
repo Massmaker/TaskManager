@@ -295,7 +295,7 @@ class TasksViewController:UIViewController {
     
     
     
-    private func showTaskEditViewCntroller(task:Task?)
+    func showTaskEditViewCntroller(task:Task?)
     {
         if let taskToEdit = task
         {

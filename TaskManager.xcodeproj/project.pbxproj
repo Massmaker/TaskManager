@@ -104,6 +104,8 @@
 		F8DD675E1C5A15C500258E44 /* BoardDetailsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */; };
 		F8DD67601C5A15ED00258E44 /* BoardDetailsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */; };
 		F8E4DFE51C649CBD008E4F49 /* TempTaskInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E4DFE41C649CBD008E4F49 /* TempTaskInfo.swift */; };
+		F8FA973C1C733F5700727282 /* BoardsHeaderViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FA973B1C733F5700727282 /* BoardsHeaderViewDelegate.swift */; };
+		F8FA973E1C733F8900727282 /* BoardsTableViewController+BoardsHeaderViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FA973D1C733F8900727282 /* BoardsTableViewController+BoardsHeaderViewDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -209,6 +211,8 @@
 		F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardDetailsHeader.swift; sourceTree = "<group>"; };
 		F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BoardDetailsHeader.xib; sourceTree = "<group>"; };
 		F8E4DFE41C649CBD008E4F49 /* TempTaskInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempTaskInfo.swift; sourceTree = "<group>"; };
+		F8FA973B1C733F5700727282 /* BoardsHeaderViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsHeaderViewDelegate.swift; sourceTree = "<group>"; };
+		F8FA973D1C733F8900727282 /* BoardsTableViewController+BoardsHeaderViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BoardsTableViewController+BoardsHeaderViewDelegate.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -441,6 +445,7 @@
 				F84D68FE1C4D230600EF8A16 /* PublicUserRecordHandling.swift */,
 				F84D68A21C4CEB6900EF8A16 /* UserAuthenticatorDelegates.swift */,
 				F884BC471C60DDF90057539E /* RecordIDStringIndexable.swift */,
+				F8FA973B1C733F5700727282 /* BoardsHeaderViewDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -476,6 +481,7 @@
 				F84D68B41C4CEB6900EF8A16 /* BoardsTableViewController.swift */,
 				F884BC451C60CB960057539E /* BoardsTableViewController+ContactsHandlerDelegate.swift */,
 				F8067C431C60F38300782E63 /* BoardsTableViewController+BoardsHolderDelegate.swift */,
+				F8FA973D1C733F8900727282 /* BoardsTableViewController+BoardsHeaderViewDelegate.swift */,
 				F88669941C577A5200F56C0A /* BoardsTableViewCell.swift */,
 			);
 			path = UserBoards;
@@ -716,10 +722,12 @@
 				F84D68D71C4CEB6900EF8A16 /* UserAuthenticatorDelegates.swift in Sources */,
 				F895CD521C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift in Sources */,
 				F895CD541C5F8B7F00D08EE9 /* NotificationsHandler.swift in Sources */,
+				F8FA973C1C733F5700727282 /* BoardsHeaderViewDelegate.swift in Sources */,
 				F84D68CB1C4CEB6900EF8A16 /* ContactsHandler.swift in Sources */,
 				F8E4DFE51C649CBD008E4F49 /* TempTaskInfo.swift in Sources */,
 				F84D68C21C4CEB6900EF8A16 /* Board+CoreDataProperties.swift in Sources */,
 				F83B7D2C1C6CBAD000A24A56 /* UIView+Extensions.swift in Sources */,
+				F8FA973E1C733F8900727282 /* BoardsTableViewController+BoardsHeaderViewDelegate.swift in Sources */,
 				F84D68E81C4CEBA100EF8A16 /* LoginViewController.swift in Sources */,
 				F84B4D651C4E66C70013D7F1 /* TasksViewController.swift in Sources */,
 				F84D68CA1C4CEB6900EF8A16 /* ContactsFetcherPreIOS9.swift in Sources */,
