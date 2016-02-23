@@ -802,8 +802,10 @@ class CoreDataManager
         let context = self.mainQueueManagedObjectContext
         
         let predicate = NSPredicate(format: "currentOwnerId = %@", string)
+        let datesPredicate = NSPredicate(format: "dateTaken.floatValue > %f AND dateFinished.floatValue = %f", 0.0, 0.0)
+        let compound = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, datesPredicate])
         let fetchRequest = NSFetchRequest(entityName: "Task")
-        fetchRequest.predicate = predicate
+        fetchRequest.predicate = compound
         
         do{
             if let tasks = try context.executeFetchRequest(fetchRequest) as? [Task] where !tasks.isEmpty{

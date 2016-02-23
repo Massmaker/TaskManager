@@ -10,6 +10,9 @@ import UIKit
 
 let testAvatarImage = UIImage(named: "No_Avatar")
 let checkboxImage = UIImage(named: "CheckBox_1")
+let finishedTaskStatusBackground = UIImage(named: "icon_task_finished")
+let defaultTaskStatusBackground = UIImage(named: "button_task_take")
+
 extension UIImage{
 
     var hasAlpha:Bool{

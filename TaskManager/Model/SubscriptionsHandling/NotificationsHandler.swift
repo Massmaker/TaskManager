@@ -102,6 +102,16 @@ class NotificationsHandler{
     }
     
     private func startUpdatingRecordById(recordId:CKRecordID){
+        //visualize some stuff
+        let localNote = UILocalNotification()
+        localNote.fireDate = NSDate().dateByAddingTimeInterval(5.0)
+         localNote.alertTitle = "test local alert"
+        localNote.alertBody = "Updating info for board"
+        localNote.soundName = UILocalNotificationDefaultSoundName
+        
+        UIApplication.sharedApplication().scheduleLocalNotification(localNote)
+        
+        //preform actual work
         anAppDelegate()?.cloudKitHandler.findRecordWithID(recordId) { (record, error) -> () in
             if let recordFound = record{
                 dispatchMain(){

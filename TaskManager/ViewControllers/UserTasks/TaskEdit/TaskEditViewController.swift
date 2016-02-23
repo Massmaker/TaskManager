@@ -159,10 +159,27 @@ class TaskEditViewController: FormViewController {
        
          // 0 - Task title, 1 - Task details, 2 - Task actions(Take or Finish+Cancel)
         
-        if let taskOwnerId = currentTask?.currentOwnerId where taskOwnerId == currentLoggedUserID {
-            
+        if currentTask?.dateFinished > 0 && currentTask?.dateTaken > 0{
             form[2] = actionsSection
-            setupFinishCancelButtons(actionsSection)
+            setupTakeSection(actionsSection)
+            return
+        }
+        
+        if let taskOwnerId = currentTask?.currentOwnerId where taskOwnerId == currentLoggedUserID {
+            if currentTask?.dateFinished == 0{
+                if currentTask?.dateTaken == 0{
+                    form[2] = actionsSection
+                    setupTakeSection(actionsSection)
+                }
+                else{
+                    form[2] = actionsSection
+                    setupFinishCancelButtons(actionsSection)
+                }
+            }
+            else{
+                form[2] = actionsSection
+                setupTakeSection(actionsSection)
+            }
         }
         else {
             

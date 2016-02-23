@@ -11,6 +11,7 @@ import UIKit
 class TaskTableViewCell: UITableViewCell {
     
     @IBOutlet weak var avatarView:UIImageView!
+    @IBOutlet weak var taskStatusImageView:UIImageView!
     @IBOutlet weak var startDateLabel:UILabel!
     @IBOutlet weak var finishDateLabel:UILabel!
     //@IBOutlet weak var indicatorView:UIView!
@@ -28,13 +29,14 @@ class TaskTableViewCell: UITableViewCell {
         {
             if task.takenDate != nil && task.finishedDate == nil
             {
+                self.taskStatusImageView.image = defaultTaskStatusBackground
+                
                 if let currentOwner = task.currentOwner
                 {
                     avatarView.image = currentOwner.avatarImage ?? testAvatarImage
                 }
                 else if let currentTaskOwnerID = task.currentOwnerId
                 {
-                    
                     if currentTaskOwnerID == anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName
                     {
                         avatarView.image = anAppDelegate()?.cloudKitHandler.currentUserAvatar ?? testAvatarImage
@@ -52,11 +54,33 @@ class TaskTableViewCell: UITableViewCell {
             else if task.finishedDate != nil && task.takenDate != nil
             {
                 //task is finished
-                self.avatarView?.image = checkboxImage
+                
+                self.taskStatusImageView.image = finishedTaskStatusBackground
+                
+                if let currentOwner = task.currentOwner
+                {
+                    avatarView.image = currentOwner.avatarImage ?? testAvatarImage
+                }
+                else if let currentTaskOwnerID = task.currentOwnerId
+                {
+                    if currentTaskOwnerID == anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName
+                    {
+                        avatarView.image = anAppDelegate()?.cloudKitHandler.currentUserAvatar ?? testAvatarImage
+                    }
+                    else if let foundContact = anAppDelegate()?.coreDatahandler?.findContactByPhone(currentTaskOwnerID)
+                    {
+                        avatarView.image = foundContact.avatarImage ?? testAvatarImage
+                    }
+                    else
+                    {
+                        avatarView.image = testAvatarImage
+                    }
+                }
             }
             else
             {
-                self.avatarView?.image = nil
+                self.taskStatusImageView?.image = defaultTaskStatusBackground
+                avatarView.image = nil
             }
             
             finishDateLabel.text = task.finishedDate?.dateTimeCustomString()
@@ -68,6 +92,7 @@ class TaskTableViewCell: UITableViewCell {
         }
         else
         {
+            self.taskStatusImageView.image = defaultTaskStatusBackground
             finishDateLabel.text = nil
             startDateLabel.text = nil
             //indicatorView.backgroundColor = UIColor.whiteColor()

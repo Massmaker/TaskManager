@@ -300,7 +300,8 @@ class TasksHolder:NSObject {
                 for aTask in tasksCurrentlyTaken{
                     print(aTask.title!)
                     aTask.dateTaken = 0.0
-                    aTask.currentOwnerId = nil
+                    aTask.dateFinished = 0.0
+                    
                     tasksToCancel?.append(aTask)
                 }
             }
@@ -313,6 +314,9 @@ class TasksHolder:NSObject {
                             continue
                         }
                         let taskRec = try createTaskRecordFrom(aTask, recordID: recId)
+                        if let currentResponsible = aTask.currentOwnerId{
+                            taskRec[CurrentOwnerStringKey] = currentResponsible
+                        }
                         cancelledTaskRecords.append(taskRec)
                     }
                 }
@@ -417,7 +421,7 @@ class TasksHolder:NSObject {
             let bgQueue = dispatch_queue_create("Task_Finishing_queue", DISPATCH_QUEUE_SERIAL)
             dispatch_async(bgQueue){
                 taskRecord[DateFinishedDateKey] = NSDate()
-                taskRecord[CurrentOwnerStringKey] = nil
+                taskRecord[CurrentOwnerStringKey] = userID
                 
                 anAppDelegate()?.cloudKitHandler.editTask(taskRecord) {[weak self] (editedRecord, editError) -> () in
                     if let edited = editedRecord
