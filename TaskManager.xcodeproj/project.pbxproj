@@ -23,6 +23,8 @@
 		F83B7D2A1C6CB67600A24A56 /* FloatingButtonHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B7D291C6CB67600A24A56 /* FloatingButtonHolder.swift */; };
 		F83B7D2C1C6CBAD000A24A56 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B7D2B1C6CBAD000A24A56 /* UIView+Extensions.swift */; };
 		F83D16031C4F825100E46E43 /* UserErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83D16021C4F825100E46E43 /* UserErrors.swift */; };
+		F83D666A1C7B4D72007E67E7 /* ActionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83D66681C7B4D72007E67E7 /* ActionController.swift */; };
+		F83D666B1C7B4D72007E67E7 /* ActionController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F83D66691C7B4D72007E67E7 /* ActionController.xib */; };
 		F84B4D651C4E66C70013D7F1 /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D641C4E66C70013D7F1 /* TasksViewController.swift */; };
 		F84B4D691C4E69240013D7F1 /* TasksHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D681C4E69240013D7F1 /* TasksHolder.swift */; };
 		F84B4D721C4E71C60013D7F1 /* TaskEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D711C4E71C60013D7F1 /* TaskEditViewController.swift */; };
@@ -127,6 +129,8 @@
 		F83B7D291C6CB67600A24A56 /* FloatingButtonHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingButtonHolder.swift; sourceTree = "<group>"; };
 		F83B7D2B1C6CBAD000A24A56 /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		F83D16021C4F825100E46E43 /* UserErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserErrors.swift; sourceTree = "<group>"; };
+		F83D66681C7B4D72007E67E7 /* ActionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionController.swift; sourceTree = "<group>"; };
+		F83D66691C7B4D72007E67E7 /* ActionController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionController.xib; sourceTree = "<group>"; };
 		F84B4D641C4E66C70013D7F1 /* TasksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksViewController.swift; sourceTree = "<group>"; };
 		F84B4D681C4E69240013D7F1 /* TasksHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksHolder.swift; sourceTree = "<group>"; };
 		F84B4D711C4E71C60013D7F1 /* TaskEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskEditViewController.swift; sourceTree = "<group>"; };
@@ -252,6 +256,8 @@
 			isa = PBXGroup;
 			children = (
 				F83B7D291C6CB67600A24A56 /* FloatingButtonHolder.swift */,
+				F83D66681C7B4D72007E67E7 /* ActionController.swift */,
+				F83D66691C7B4D72007E67E7 /* ActionController.xib */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -612,6 +618,7 @@
 				F84CAD121C5628D400BC2ECC /* UserProfileHeader.xib in Resources */,
 				F8DD67601C5A15ED00258E44 /* BoardDetailsHeader.xib in Resources */,
 				F84D68F11C4CEDFB00EF8A16 /* TaskManager.storyboard in Resources */,
+				F83D666B1C7B4D72007E67E7 /* ActionController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -694,6 +701,7 @@
 				F84D68CF1C4CEB6900EF8A16 /* DeviceContactReading.swift in Sources */,
 				F84D68CE1C4CEB6900EF8A16 /* DeviceContact.swift in Sources */,
 				F81954D91C565669007D15E8 /* UserCloudPreferencesHandler.swift in Sources */,
+				F83D666A1C7B4D72007E67E7 /* ActionController.swift in Sources */,
 				F84B4D691C4E69240013D7F1 /* TasksHolder.swift in Sources */,
 				F80191C01C50F94D0007D2AF /* RecordIdIndexable.swift in Sources */,
 				F84D68DF1C4CEB6900EF8A16 /* TabBarViewController.swift in Sources */,

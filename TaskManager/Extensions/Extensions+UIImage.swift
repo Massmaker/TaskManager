@@ -85,7 +85,7 @@ extension UIImage{
         
     }
     
-    func roundedCornerImageWith(corner:Int, borderSize:Int) -> UIImage {
+    func roundedCornerImageWith(corner:UInt, borderSize:UInt) -> UIImage {
         // If the image does not have an alpha layer, add one
         guard let image = self.imageWithAlpha() else{
             return self
@@ -143,34 +143,95 @@ extension UIImage{
             return self
         }
         
-        CGImageCreateWithImageInRect(imageRef, bounds)
-        let croppedImage = UIImage(CGImage: imageRef)
+        guard let cropped = CGImageCreateWithImageInRect(imageRef, bounds) else{
+            return self
+        }
+        let croppedImage = UIImage(CGImage: cropped)
         return croppedImage
     }
     /**
       - Returns: a copy of this image that is squared to the thumbnail size.
       - If transparentBorder is non-zero, a transparent border of the given size will be added around the edges of the thumbnail. (Adding a transparent border of at least one pixel in size has the side-effect of antialiasing the edges of the image when rotating it using Core Animation.
      */
-    func thumbnailImageSize(size:Int, transparentBorder:UInt, cornerRadius:UInt, interPolationQuality:CGInterpolationQuality) -> UIImage? {
+    func thumbnailImageSize(size:Int, transparentBorder:UInt, cornerRadius:UInt, interpolationQuality:CGInterpolationQuality) -> UIImage? {
         // Crop out any part of the image that's larger than the thumbnail size
         // The cropped rect must be centered on the resized image
         // Round the origin points so that the size isn't altered when CGRectIntegral is later invoked
         
-        return nil
-        //TODO: - finish method implementation
-        /*
-        CGRect cropRect = CGRectMake(round((resizedImage.size.width - thumbnailSize) / 2),
-        round((resizedImage.size.height - thumbnailSize) / 2),
-        thumbnailSize,
-        thumbnailSize);
-        UIImage *croppedImage = [resizedImage croppedImage:cropRect];
+        guard let resizedImage = self.resizedImageWithContentMode(.ScaleAspectFill, bounds: CGSizeMake(CGFloat(size), CGFloat(size)), interpolationQuality: interpolationQuality) else {
+            return nil
+        }
         
-        UIImage *transparentBorderImage = borderSize ? [croppedImage transparentBorderImage:borderSize] : croppedImage;
+        let thumbSize = CGFloat(size)
         
-        return [transparentBorderImage roundedCornerImage:cornerRadius borderSize:borderSize]
-        */
+        let x = round((resizedImage.size.width - thumbSize) / 2.0)
+        let y = round((resizedImage.size.height - thumbSize) / 2.0)
+        
+        let cropRect = CGRectMake(x, y, thumbSize, thumbSize)
+        let croppedImage = resizedImage.croppedToBounds(cropRect)
+        let transparentBorderImage = transparentBorder > 0 ? croppedImage.transparentBorderImage(transparentBorder) : croppedImage
+        
+        return transparentBorderImage?.roundedCornerImageWith(cornerRadius, borderSize: transparentBorder)
     }
     
+    func sqaureThumbnailImageWithSide(thumbSide:CGFloat, interpolationQuality:CGInterpolationQuality) -> UIImage? {
+        let minimumSide = min(self.size.width, self.size.height)
+        
+        //one of X or Y should be equal to zero
+        let originX = (self.size.width - minimumSide) / 2.0
+        let originY = (self.size.height - minimumSide) / 2.0
+        
+        if !(originX == 0 || originY == 0){
+            return nil
+        }
+        
+        let squareFrame = CGRectMake(originX, originY, minimumSide, minimumSide)
+        
+        let croppedBig = self.croppedToBounds(squareFrame)
+        
+        let thumbnail = croppedBig.thumbnailImageSize(Int(thumbSide), transparentBorder: 0, cornerRadius: 0, interpolationQuality: .High)
+        
+        return thumbnail
+    }
+    
+    /// Resizes the image according to the given content mode, taking into account the image's orientation
+    /// - Returns: **nil** if Content mode is not **ScaleAspectFill** or **ScaleAspectFill**
+    func resizedImageWithContentMode(contentMode:UIViewContentMode, bounds:CGSize, interpolationQuality:CGInterpolationQuality) -> UIImage?{
+        
+        let horizRatio = bounds.width / self.size.width
+        let vertRatio = bounds.height / self.size.height
+        
+        var ratio:CGFloat = 0.0
+        
+        switch contentMode{
+        case .ScaleAspectFill:
+            ratio = max(horizRatio, vertRatio)
+        case UIViewContentMode.ScaleAspectFit:
+            ratio = min(horizRatio, vertRatio)
+        default:
+            return nil
+        }
+        
+        let newSize = CGSizeMake(self.size.width * ratio, self.size.height * ratio)
+        
+        return self.resizedImageToSize(newSize, interpolationQuality: interpolationQuality)
+    }
+    
+    /// Returns a rescaled copy of the image, taking into account its orientation
+    /// The image will be scaled disproportionately if necessary to fit the bounds specified by the parameter
+    func resizedImageToSize(size:CGSize, interpolationQuality:CGInterpolationQuality) -> UIImage?{
+        
+        var transposed = false
+        
+        switch self.imageOrientation{
+        case .Left, .LeftMirrored, .Right, .RightMirrored:
+            transposed = true
+        default:
+            transposed = false
+        }
+        
+        return self.resizedImageWithSize(size, transform: self.transformFromOrientationWithSize(size), drawTransposed: transposed, interpolationQuality: interpolationQuality)
+    }
     
     //MARK: - helpers, not to use directly
     func newBorderMask(border:UInt, size:CGSize) -> CGImageRef?{

@@ -12,8 +12,14 @@ extension UserProfileViewController : UIImagePickerControllerDelegate, UINavigat
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
        // print("user info: \(info.description)")
         
-        guard let editedImage = info[UIImagePickerControllerEditedImage] as? UIImage else
+        guard let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage else
         {
+            picker.dismissViewControllerAnimated(true, completion: nil)
+            return
+        }
+        
+        guard let avatarThumbnail = originalImage.thumbnailImageSize(320, transparentBorder: 0, cornerRadius: 0, interpolationQuality: CGInterpolationQuality.High) else {
+            
             picker.dismissViewControllerAnimated(true, completion: nil)
             return
         }
@@ -24,10 +30,10 @@ extension UserProfileViewController : UIImagePickerControllerDelegate, UINavigat
             return
         }
         
-        self.currentProfileInfo?.avatarImage = editedImage
+        self.currentProfileInfo?.avatarImage = avatarThumbnail
         picker.dismissViewControllerAnimated(true, completion: {[unowned self] in
             
-            self.documentsFileHandler.saveAvatarImageToDocuments(editedImage, forUserId: userPhone)
+            self.documentsFileHandler.saveAvatarImageToDocuments(avatarThumbnail, forUserId: userPhone)
         })
         
         

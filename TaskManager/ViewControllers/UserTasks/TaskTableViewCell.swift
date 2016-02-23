@@ -61,9 +61,7 @@ class TaskTableViewCell: UITableViewCell {
             
             finishDateLabel.text = task.finishedDate?.dateTimeCustomString()
             
-            
             startDateLabel.text = task.takenDate?.dateTimeCustomString()
-            
             
             titleLabel.text = task.title
             detailsLabel.text = task.details

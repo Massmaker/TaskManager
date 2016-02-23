@@ -160,12 +160,7 @@ class CloudKitDatabaseHandler{
             case .Success:
                 if let subsiptions = subs where !subsiptions.isEmpty
                 {
-                    var toReturn = [CKSubscription]()
-                    for (value) in subsiptions
-                    {
-                        toReturn.append(value)
-                    }
-                    completion(subscriptions: toReturn)
+                    completion(subscriptions: subsiptions)
                 }
                 else
                 {
@@ -240,7 +235,7 @@ class CloudKitDatabaseHandler{
         self.publicDB.addOperation(modifyToDeleteOp)
     }
     
-    func submitSubscription(subscription:CKSubscription, completion:((subscription:CKSubscription?, errorMessage:String?)->()) )
+    func submitSubscription(subscription:CKSubscription, completion:((subscription:CKSubscription?, errorMessage:String?, error:NSError?)->()) )
     {
         networkingIndicator(true)
         
@@ -250,15 +245,15 @@ class CloudKitDatabaseHandler{
             case .Success:
                 if let savedSubscriptions = newSubscriptions where !savedSubscriptions.isEmpty
                 {
-                    completion(subscription:savedSubscriptions.first!, errorMessage:nil)
+                    completion(subscription:savedSubscriptions.first!, errorMessage:nil , error:error)
                 }
                 else
                 {
-                    completion(subscription: nil, errorMessage: "Empty succeeded subscriptions")
+                    completion(subscription: nil, errorMessage: "Empty succeeded subscriptions", error:error)
                 }
             
             case .Fail(let message):
-                completion(subscription: nil, errorMessage: message)
+                completion(subscription: nil, errorMessage: message, error:error)
             
             case .Retry(let afterSeconds):
              
@@ -271,11 +266,11 @@ class CloudKitDatabaseHandler{
                 }
                 else
                 {
-                    completion(subscription: nil, errorMessage: "failed to subscript after timeout")
+                    completion(subscription: nil, errorMessage: "failed to subscript after timeout", error: error)
                 }
             
             case .RecoverableError:
-                completion(subscription: nil, errorMessage: "Try later")
+                completion(subscription: nil, errorMessage: "Try later", error: error)
             }
             
             networkingIndicator(false)
@@ -504,6 +499,14 @@ class CloudKitDatabaseHandler{
                 case .Retry(let afterSeconds):
                     print("Retrying to query existing user by phone number ID...")
                     print("Retry interval: \(afterSeconds) \n")
+                    if afterSeconds > 0 && afterSeconds < 20.0 {
+                        let timeout:dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * afterSeconds))
+                        let semaphore = dispatch_semaphore_create(0)
+                        dispatch_semaphore_wait(semaphore, timeout)
+                        self?.queryForLoggedUserByPhoneNumber(phoneNumber, completion: completion)
+                    }else{
+                        completion(currentUserRecord: nil, error: nil)
+                }
                 case .Fail(let message):
                     if let _ = message
                     {

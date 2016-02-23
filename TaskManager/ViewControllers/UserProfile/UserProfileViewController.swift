@@ -49,7 +49,7 @@ class UserProfileViewController: FormViewController {
     {
         imagePickerController.delegate = self
         imagePickerController.sourceType = .PhotoLibrary
-        imagePickerController.allowsEditing = true
+        //imagePickerController.allowsEditing = true
         
         self.presentViewController(imagePickerController, animated: true, completion: nil)
     }

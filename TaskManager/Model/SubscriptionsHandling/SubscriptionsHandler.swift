@@ -15,7 +15,7 @@ class SubscriptionsHandler {
     
     private var syncing:Bool = false
     private lazy var subscriptions = [CKSubscription]()
-     //MARK: - SubscriptionsHandling
+    //MARK: - SubscriptionsHandling
     
     var isSyncing:Bool {
         return syncing
@@ -102,7 +102,7 @@ class SubscriptionsHandler {
                 toReturn.append(aSubscription)
             }
         }
-     
+        
         return toReturn
     }
     
@@ -182,7 +182,7 @@ class SubscriptionsHandler {
             self.subscriptions = filtered
             
         }
-        while !subscriptionIDs.isEmpty
+            while !subscriptionIDs.isEmpty
     }
     
     
@@ -215,7 +215,7 @@ class SubscriptionsHandler {
         
         
         syncing = true
-        anAppDelegate()!.cloudKitHandler.submitSubscription(aSubscription) { [unowned self] (subscription, errorMessage) -> () in
+        anAppDelegate()!.cloudKitHandler.submitSubscription(aSubscription) { [unowned self] (subscription, errorMessage, error) -> () in
             if let successSubscription = subscription
             {
                 self.subscriptions.append(successSubscription)
@@ -223,6 +223,7 @@ class SubscriptionsHandler {
             else if let errorMsg = errorMessage
             {
                 print("\n - Could not submit new subscription: \(errorMsg) \n")
+                print("OriginalError: \(error)")
             }
             self.syncing = false
         }
@@ -258,27 +259,66 @@ class SubscriptionsHandler {
         }
         
         let recordType = CloudRecordTypes.TaskBoard.rawValue
-        let predicate = NSPredicate(format: "%K CONTAINS %@ AND %K IN %@", BoardParticipantsKey, currentUserId, BoardCreatorIDKey, regPhones)
+        let predicate = NSPredicate(format: "%K CONTAINS %@", BoardParticipantsKey, currentUserId)
         
+        //let truePredicate = NSPredicate(value: true)
         var subscriptions = [CKSubscription]()
         
-        let queryUpdateSub = CKSubscription(recordType: recordType, predicate: predicate, options: [CKSubscriptionOptions.FiresOnRecordUpdate])
-        let queryDeleteSub = CKSubscription(recordType: recordType, predicate: predicate, options: [CKSubscriptionOptions.FiresOnRecordDeletion])
-            subscriptions.append(queryUpdateSub)
-            subscriptions.append(queryDeleteSub)
-
+        let userIDSub = CKSubscription(recordType: recordType, predicate: predicate, subscriptionID: "Deleted-\(currentUserId)", options: .FiresOnRecordDeletion)
+        let updatedBoardsSub = CKSubscription(recordType: recordType, predicate: predicate, subscriptionID: "Updated-\(currentUserId)", options: .FiresOnRecordUpdate)
+        subscriptions.append(userIDSub)
+        subscriptions.append(updatedBoardsSub)
+        
+        //
+        //        let queryUpdateSub = CKSubscription(recordType: recordType, predicate: truePredicate, options: [CKSubscriptionOptions.FiresOnRecordUpdate])
+        //        let queryDeleteSub = CKSubscription(recordType: recordType, predicate: truePredicate, options: [CKSubscriptionOptions.FiresOnRecordDeletion])
+        //        let queryCreateSub = CKSubscription(recordType: recordType, predicate: truePredicate, options: .FiresOnRecordCreation)
+        //            subscriptions.append(queryUpdateSub)
+        //            subscriptions.append(queryDeleteSub)
+        //            subscriptions.append(queryCreateSub)
+        
         
         let sentSubscriptionsCount = subscriptions.count
-      
+        
+//        anAppDelegate()?.cloudKitHandler.submitSubscription(subscriptions.first!) {[unowned self] (subscription, errorMessage, error)  in
+//            if let errorText = errorMessage{
+//                print("Subscription adding failure:")
+//                print(errorText)
+//                print("Original error:")
+//                print(error)
+//            }
+//            
+//            if let successfullyAdded = subscription{
+//                self.subscriptions.append(successfullyAdded)
+//            }
+//        }
         anAppDelegate()?.cloudKitHandler.submitManySubscriptions(subscriptions) {[weak self] (succeeded, failed, error) -> () in
             if succeeded.count == sentSubscriptionsCount  {
+                var ids = [String]()
                 for aSubscr in succeeded{
+                    ids.append(aSubscr.subscriptionID)
                     print("SUCCESS: Subscription ID: \(aSubscr.subscriptionID)")
                 }
-                self?.subscriptions += succeeded
+                
+                anAppDelegate()?.cloudKitHandler.querySubscriptionsByIDs(ids) { (subscriptions, errors) -> () in
+                    if subscriptions != nil{
+                        for (_, value) in subscriptions!{
+                            self?.subscriptions.append(value)
+                        }
+                    }
+                    else if let _ = errors{
+                        for (keyID, anError) in errors!{
+                            print("\(keyID) - ERROR: \n\(anError) \n")
+                        }
+                    }
+                }
             }
             else if let error = error{
                 print("\n  -  Error adding subscriptions: \(error)")
+//                anAppDelegate()?.cloudKitHandler.submitSubscription(subscriptions.first!) { (subscription, errorMessage) -> () in
+//                    
+//                }
+                
             }
         }
     }

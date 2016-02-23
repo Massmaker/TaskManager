@@ -30,7 +30,7 @@
         <scene sceneID="pVO-Th-ZwI">
             <objects>
                 <navigationController id="4PM-7w-EsM" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Boards" id="giW-GE-B7V"/>
+                    <tabBarItem key="tabBarItem" title="Boards" image="tab_boards" id="giW-GE-B7V"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="GsU-My-pOv">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -347,7 +347,7 @@
         <scene sceneID="JT9-5K-9Lv">
             <objects>
                 <navigationController storyboardIdentifier="ContactsNavController" automaticallyAdjustsScrollViewInsets="NO" id="gUt-Lb-g11" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Contacts" id="LvI-Yv-KUr"/>
+                    <tabBarItem key="tabBarItem" title="Contacts" image="tab_contacts" id="LvI-Yv-KUr"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="qRL-7a-NGK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -653,7 +653,7 @@
         <scene sceneID="GV6-aG-xyO">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lCn-nZ-H6z" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" id="efy-vP-oOL"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="tab_profile" id="efy-vP-oOL"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="JhK-uS-bhB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -669,4 +669,9 @@
             <point key="canvasLocation" x="264" y="1080"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="tab_boards" width="25" height="25"/>
+        <image name="tab_contacts" width="25" height="25"/>
+        <image name="tab_profile" width="25" height="25"/>
+    </resources>
 </document>
