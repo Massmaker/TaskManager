@@ -313,11 +313,19 @@ class TaskEditViewController: FormViewController {
     //MARK: - Action buttons methods
     func deleteTaskPressed()
     {
-        guard let task = currentTask, _ = anAppDelegate()?.cloudKitHandler.publicCurrentUser else
-        {
-            return
+        let action:AlertActionHandler = {[weak self] in
+            guard let task = self?.currentTask, _ = anAppDelegate()?.cloudKitHandler.publicCurrentUser else
+            {
+                return
+            }
+            
+            self?.weakTasksHolder?.deleteTask(task)
+            self?.dismissViewControllerAnimated(true, completion: nil)
         }
-        self.weakTasksHolder?.deleteTask(task)
+        
+        let alert = ActionController.alertWith("DELETE", actionButtonInfos: ["Delete" : action], dismissButtonTitle: "Cancel", hostViewController: self)
+        
+        alert.show()     
     }
     
     func takeTaskPressed()

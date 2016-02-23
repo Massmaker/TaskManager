@@ -20,7 +20,7 @@ class ActionController: UIViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.modalTransitionStyle = .CrossDissolve
-        self.modalPresentationStyle = .FullScreen
+        self.modalPresentationStyle = .OverFullScreen
     }
     
     //MARK: - Convenience stuff
@@ -74,7 +74,7 @@ class ActionController: UIViewController {
     private var showsSingleCloseButton = false
     
     private weak var hostController:UIViewController?
-    
+    lazy var actionButtons = [UIButton]()
     //MARK: - IBOutlets
     @IBOutlet weak var titleLabel:UILabel!
     @IBOutlet weak var actionButtonsContainerView:UIView!
@@ -89,9 +89,23 @@ class ActionController: UIViewController {
         
         self.titleLabel.text = self.alertTitle
         self.addButtonsForHandlers(self.alertActions)
-        self.addCancelButton(self.dismissButtonTitle)
+        
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.actionButtonsContainerView.setNeedsLayout()
+        
+        self.addCancelButton(self.dismissButtonTitle)
+        
+        if !actionButtons.isEmpty{
+            for aButton in actionButtons{
+                self.actionButtonsContainerView.addSubview(aButton)
+            }
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -106,8 +120,20 @@ class ActionController: UIViewController {
             }
         }
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        let bounds = self.actionButtonsContainerView.bounds
         
+        let width = bounds.size.width
+            
+        let cancelButtonFrame = CGRectMake(width - 90.0, 0, 72.0, 50.0)
+        let cancelButton = UIButton(type: .System)
+        cancelButton.frame = cancelButtonFrame
+        let attributes = [NSForegroundColorAttributeName :UIColor.redColor(), NSFontAttributeName:UIFont.systemFontOfSize(20.0, weight: UIFontWeightBold)]
+        let attributedString = NSAttributedString(string:title, attributes: attributes)
+        cancelButton.setAttributedTitle(attributedString, forState: .Normal)
+        
+        cancelButton.addTarget(self, action: "cancelButtonTap:", forControlEvents: .TouchUpInside)
+        cancelButton.autoresizingMask = [.FlexibleLeftMargin, .FlexibleTopMargin, .FlexibleBottomMargin] //align to left edge
+        self.actionButtons.append(cancelButton)
     }
     
     private func addButtonsForHandlers(info:[String:AlertActionHandler]){
@@ -115,20 +141,18 @@ class ActionController: UIViewController {
             print("\n - Warning! -> AlertController Will show only 2 action buttons before CANCEL button")
         }
         
-        var actionButtons = [UIButton]()
-        
         var leadingOffset = CGFloat(8.0)
         
-        let attributes = [NSFontAttributeName:UIFont(name: "Helvetica-bold", size: 20.0)!, NSForegroundColorAttributeName : UIColor.blueColor()]
+        let attributesForActions = [NSFontAttributeName:UIFont.systemFontOfSize(20.0, weight: UIFontWeightRegular), NSForegroundColorAttributeName:UIColor.blueColor()]
         
         for (title, _) in info {
             
             if actionButtons.count < 2 {
                 
                 let aButton = UIButton(type: .System)
-                aButton.frame = CGRectMake(leadingOffset, 0, 80, 50.0)
-                aButton.titleLabel?.font = UIFont.systemFontOfSize(20.0)
-                let attributedString = NSAttributedString(string: title, attributes: attributes)
+                aButton.frame = CGRectMake(leadingOffset, 0, 72 , 50.0)
+               
+                let attributedString = NSAttributedString(string: title, attributes: attributesForActions)
                 aButton.setAttributedTitle(attributedString, forState: .Normal)
                 aButton.tintColor = UIColor.blueColor()
                 
@@ -142,8 +166,9 @@ class ActionController: UIViewController {
             else{
                 break
             }
-            
         }
+        
+        
     }
     
     func actionButtonTap(sender:UIButton){
@@ -155,7 +180,14 @@ class ActionController: UIViewController {
             return
         }
         
-        actionHandler()
+        
+        self.dismissViewControllerAnimated(true) {
+            actionHandler()
+        }
+    }
+    
+    func cancelButtonTap(sender:UIButton){
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 
 }
