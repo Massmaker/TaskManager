@@ -9,7 +9,7 @@
 import UIKit
 import CloudKit
 
-class TasksViewController:UIViewController {
+class TasksViewController:UIViewController, UITableViewDelegate {
     
     @IBOutlet var tableView:UITableView!
     weak var weakBoard:Board!
@@ -23,6 +23,9 @@ class TasksViewController:UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.estimatedRowHeight = 108.0
+        tableView.rowHeight = UITableViewAutomaticDimension
         
         self.navigationItem.rightBarButtonItem = self.editButtonItem() //enable deleting of Take/Finish tasks, rearranging tasks
         tasksSource.board = weakBoard
@@ -163,23 +166,23 @@ class TasksViewController:UIViewController {
     }
     
     //MARK: - UITableViewDelegate
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        switch indexPath.section{
-//        case 1:
-            return 96.0
-//        default:
-//            return 44.0
-//        }
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        switch indexPath.section{
-//        case 1:
-            return 96.0
-//        default:
-//            return 44.0
-//        }
-    }
+//    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+////        switch indexPath.section{
+////        case 1:
+//            return 96.0
+////        default:
+////            return 44.0
+////        }
+//    }
+//    
+//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+////        switch indexPath.section{
+////        case 1:
+//            return 96.0
+////        default:
+////            return 44.0
+////        }
+//    }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -204,12 +207,33 @@ class TasksViewController:UIViewController {
         
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        guard section == 1 else
-//        {
-//            return nil
-//        }
-        return "Tasks"
+//    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+////        guard section == 1 else
+////        {
+////            return nil
+////        }
+//        return "Tasks"
+//    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0{
+            let holderView = UIView(frame: CGRectMake(0.0, 0.0, 80.0, 25.0))
+            holderView.opaque = true
+            holderView.backgroundColor = UIColor.whiteColor()
+            
+            let titleSectionLabel = UILabel(frame: CGRectMake(10,3,60.0, 20.0))
+            titleSectionLabel.opaque = true
+            titleSectionLabel.backgroundColor = UIColor.clearColor()
+            titleSectionLabel.text = "Tasks"
+            titleSectionLabel.font = UIFont(name: "Verdana", size: 17.0)
+            titleSectionLabel.textColor = UIColor.appThemeColorBlue
+            titleSectionLabel.sizeToFit()
+            
+            holderView.addSubview(titleSectionLabel)
+            
+            return holderView
+        }
+        return nil
     }
     
     //to disable editing or deleting the "AddTAskButton" cell

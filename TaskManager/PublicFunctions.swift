@@ -156,3 +156,21 @@ func postNotificationInMainThread(name:String, object:AnyObject? = nil, userInfo
     }
 }
 
+
+func spaceConcatenatedStrings(var stringsToConcat:[String]) -> String{
+    var toReturn = ""
+    
+    if !stringsToConcat.isEmpty {
+        
+        repeat{
+            let first = stringsToConcat.removeFirst()
+            if first.characters.count > 0{
+                toReturn += " "
+                toReturn += first
+            }
+        }while !stringsToConcat.isEmpty
+        
+        toReturn = toReturn.substringFromIndex(toReturn.startIndex.advancedBy(1))
+    }
+    return toReturn
+}

@@ -14,10 +14,11 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet weak var taskStatusImageView:UIImageView!
     @IBOutlet weak var startDateLabel:UILabel!
     @IBOutlet weak var finishDateLabel:UILabel!
-    //@IBOutlet weak var indicatorView:UIView!
     @IBOutlet weak var titleLabel:UILabel!
     @IBOutlet weak var detailsLabel:UILabel!
-    //@IBOutlet weak var imageViewWidthConstraint:NSLayoutConstraint!
+    @IBOutlet weak var startTaskImageView:UIImageView!
+    @IBOutlet weak var finishTaskImageView:UIImageView!
+    
     
     override func awakeFromNib() {
         avatarView.layer.masksToBounds = true
@@ -29,6 +30,8 @@ class TaskTableViewCell: UITableViewCell {
         {
             if task.takenDate != nil && task.finishedDate == nil
             {
+                finishTaskImageView.hidden = true
+                startTaskImageView.hidden = false
                 self.taskStatusImageView.image = defaultTaskStatusBackground
                 
                 if let currentOwner = task.currentOwner
@@ -54,7 +57,8 @@ class TaskTableViewCell: UITableViewCell {
             else if task.finishedDate != nil && task.takenDate != nil
             {
                 //task is finished
-                
+                finishTaskImageView.hidden = false
+                startTaskImageView.hidden = false
                 self.taskStatusImageView.image = finishedTaskStatusBackground
                 
                 if let currentOwner = task.currentOwner
@@ -99,6 +103,8 @@ class TaskTableViewCell: UITableViewCell {
             titleLabel.text = nil
             detailsLabel.text = nil
             avatarView.image = testAvatarImage
+            finishTaskImageView.hidden = true
+            startTaskImageView.hidden = true
         }
     }
     

@@ -39,7 +39,7 @@ extension BoardsTableViewController : BoardsHolderDelegate{
 //            }
 //            else
 //            {
-                self?.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+                self?.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Automatic)
 //            }
             
             self?.tableView.scrollEnabled = true

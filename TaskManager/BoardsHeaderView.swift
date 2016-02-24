@@ -27,6 +27,8 @@ class BoardsHeaderView: UIView, UITextViewDelegate {
         self.layer.shadowOffset = CGSizeMake(0, 3)
         super.layoutSubviews()
         
+        textView.tintColor = UIColor.appThemeColorBlue
+        
     }
     
     private func refreshUserData(){

@@ -10,7 +10,7 @@ import UIKit
 import CloudKit
 class BoardsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate , UINavigationControllerDelegate{
 
-    @IBOutlet weak var headerView:BoardsHeaderView!
+    //@IBOutlet weak var headerView:BoardsHeaderView!
     @IBOutlet var tableView:UITableView!
      var refreshControl:UIRefreshControl?
     lazy var contactsHandler:ContactsHandler = ContactsHandler()
@@ -20,16 +20,21 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
     private var didSubscribeForBoardsSyncNotification = false
     private var editingDidHappen = false
     var taskToEdit:Task?
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
 
-        self.tableView.estimatedRowHeight = 69
-
+        self.tableView.estimatedRowHeight = 82
+        
+        let headerNib = UINib(nibName: "BoardsAnimatedHeader", bundle: nil)
+        self.tableView.registerNib(headerNib, forHeaderFooterViewReuseIdentifier: "BoardsAnimatedHeader")
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
         ///----
-        headerView.delegate = self
+        //headerView.delegate = self
         
         ///----
         boardsHolder.delegate = self
@@ -62,15 +67,18 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
         }
         
 
-        guard let userId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else{
-            return
-        }
-        self.headerView.currentUserId = userId
+//        guard let userId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else{
+//            return
+//        }
+//        self.headerView.currentUserId = userId
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         ContactsHandler.sharedInstance.delegate = self
+        
+        //reload header
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
     }
 
     //MARK: -
@@ -89,10 +97,13 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - Table view data source
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0{
+            return 0
+        }
         return boardsHolder.boardsCount
     }
 
@@ -100,10 +111,24 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
         if let cell = tableView.dequeueReusableCellWithIdentifier("AllBoardsCell", forIndexPath: indexPath) as? BoardsTableViewCell
         {
             let board = boardsHolder.boardForRow(indexPath.row)
-            cell.boartTitlelabel?.text = board?.title
-            cell.boardDetailsLabel?.text = board?.details
+            let dateString = NSAttributedString(string: board!.createDate.todayTimeOrDateStringRepresentation(), attributes: [NSForegroundColorAttributeName:UIColor.appThemeColorBlue, NSFontAttributeName:UIFont.systemFontOfSize(13)])
             
-            cell.dateLabel.text = board?.shortDateString
+            let attributedDetails = NSMutableAttributedString(attributedString: dateString)
+            
+            if let details = board?.details{
+                
+                let attributedSpace = NSAttributedString(string: " ", attributes:[NSFontAttributeName:UIFont.systemFontOfSize(14)])
+                
+                let attributed = NSAttributedString(string: details, attributes: [NSForegroundColorAttributeName:UIColor.lightGrayColor(), NSFontAttributeName:UIFont.systemFontOfSize(13)])
+                attributedDetails.appendAttributedString(attributedSpace)
+                attributedDetails.appendAttributedString(attributed)
+            }
+            
+            cell.boartTitlelabel?.text = board?.title
+            
+            cell.boardDetailsLabel?.attributedText = attributedDetails
+            
+            //cell.dateLabel.text = board?.shortDateString
             
             cell.accessoryType = .DetailButton
             
@@ -127,6 +152,10 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
                 cell.avatarView?.image = testAvatarImage
             }
 
+            let bgView = UIView(frame: CGRectMake(0,0,300,80))
+            bgView.opaque = true
+            bgView.backgroundColor = UIColor.appThemeColorBlue
+            cell.selectedBackgroundView = bgView
         
             return cell
         }
@@ -225,7 +254,55 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
-    //MARK: - 
+    //MARK: - UITableViewDelegate
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0{
+            return 160.0
+        }
+        return 20.0
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0{
+            
+            guard let headerAnimatedView = UIView.loadFromNibNamed("BoardsAnimatedHeader") as? BoardsAnimatedHeader else{
+                return nil
+            }
+            
+            let width = self.tableView.bounds.size.width
+            let height = CGFloat(160.0)
+            let frame = CGRectMake(0, 0, width, height)
+            headerAnimatedView.frame = frame
+            headerAnimatedView.delegate = self
+            
+            //start assigning data to view
+            headerAnimatedView.currentUserId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName
+            
+            return headerAnimatedView
+        }
+        
+        let holderView = UIView(frame: CGRectMake(0.0, 0.0, 80.0, 20.0))
+        holderView.opaque = true
+        holderView.backgroundColor = UIColor.whiteColor()
+        
+        let titleSectionLabel = UILabel(frame: CGRectMake(20,0,60.0, 20.0))
+        titleSectionLabel.opaque = true
+        titleSectionLabel.backgroundColor = UIColor.clearColor()
+        titleSectionLabel.text = "Boards"
+        titleSectionLabel.font = UIFont(name: "Verdana", size: 17.0)
+        titleSectionLabel.textColor = UIColor.appThemeColorBlue
+        titleSectionLabel.sizeToFit()
+        
+        holderView.addSubview(titleSectionLabel)
+        
+        return holderView
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 82.0
+    }
+    
+    //MARK: -
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         
@@ -266,7 +343,7 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
         
         boardsHolder.fetchBoardsFromCoreData()
         
-        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+        self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Automatic)
       
         
         if let control = self.refreshControl

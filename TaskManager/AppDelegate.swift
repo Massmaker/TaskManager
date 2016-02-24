@@ -25,6 +25,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
+        let appThemeColor = UIColor.appThemeColorBlue
+        let whiteColor = UIColor.whiteColor()
+        UINavigationBar.appearance().tintColor = appThemeColor
+        UINavigationBar.appearance().translucent = false
+        UINavigationBar.appearance().barTintColor = whiteColor
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UITabBar.appearance().tintColor = appThemeColor
+        UITabBar.appearance().translucent = false
+        UITabBar.appearance().barTintColor = whiteColor
+        UITabBar.appearance().shadowImage = UIImage()
+        UITabBar.appearance().backgroundImage = UIImage()
+        
         Fabric.with([Digits.self])
         
         let lastSyncedInfo = keyValueCloudStore.userDataFromUbuquity()

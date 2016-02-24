@@ -16,4 +16,24 @@ extension NSDate {
         let string = formatter.stringFromDate(self)
         return string
     }
+    
+    func todayTimeOrDateStringRepresentation() -> String {
+        
+        let calendar = NSCalendar.currentCalendar()
+
+        let isToday = calendar.isDate(self, inSameDayAsDate: NSDate())
+        
+        let formatter = NSDateFormatter()
+        
+        if isToday{
+            formatter.dateFormat = "HH:MM"
+        }
+        else{
+            formatter.dateFormat = "dd.MM.YY"
+        }
+        
+        let dateString = formatter.stringFromDate(self)
+        
+        return dateString
+    }
 }

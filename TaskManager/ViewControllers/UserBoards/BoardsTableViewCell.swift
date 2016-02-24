@@ -13,7 +13,7 @@ class BoardsTableViewCell: UITableViewCell {
     @IBOutlet weak var avatarView:UIImageView!
     @IBOutlet weak var boartTitlelabel:UILabel!
     @IBOutlet weak var boardDetailsLabel:UILabel!
-    @IBOutlet weak var dateLabel:UILabel!
+    //@IBOutlet weak var dateLabel:UILabel!
     
     
 //    override func awakeFromNib() {

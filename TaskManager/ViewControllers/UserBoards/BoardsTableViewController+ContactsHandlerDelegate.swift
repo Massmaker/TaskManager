@@ -15,7 +15,7 @@ extension BoardsTableViewController:ContactsHandlerDelegate{
     }
     
     func contactsDidUpdate() {
-        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+        self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Automatic)
     }
     
     func contactshandlerWillStartFetchingContacts() {
@@ -34,7 +34,7 @@ extension BoardsTableViewController:ContactsHandlerDelegate{
         }
         else
         {
-            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+            self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Automatic)
         }
     }
 }

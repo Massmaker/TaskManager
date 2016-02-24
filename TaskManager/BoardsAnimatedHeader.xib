@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="BoardsAnimatedHeader" customModule="TaskManager" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="160"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My task" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPT-DJ-dtt">
+                    <rect key="frame" x="20" y="18" width="67" height="23"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                    <color key="textColor" red="0.23529411759999999" green="0.52549019610000003" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="No_Avatar" translatesAutoresizingMaskIntoConstraints="NO" id="Eu7-dd-nrS">
+                    <rect key="frame" x="282" y="45" width="60" height="60"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="NBn-pe-I0v"/>
+                        <constraint firstAttribute="width" constant="60" id="hNC-el-2NK"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_task_arrow_start" translatesAutoresizingMaskIntoConstraints="NO" id="rBA-UW-qlJ">
+                    <rect key="frame" x="101" y="103" width="26" height="26"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="rBA-UW-qlJ" secondAttribute="height" multiplier="1:1" id="3AG-vm-ihm"/>
+                        <constraint firstAttribute="width" constant="26" id="VgS-lj-DZf"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="19.02.16   20:05" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r7e-tH-mvy">
+                    <rect key="frame" x="133" y="107" width="110" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task title goes here" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aiH-P5-r1k">
+                    <rect key="frame" x="75" y="68" width="199" height="35"/>
+                    <gestureRecognizers/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="29"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="TwE-WU-FrC" appends="YES" id="5fE-Jz-afN"/>
+                    </connections>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Firstname Lastname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cwu-3R-RWc">
+                    <rect key="frame" x="47" y="45" width="227" height="23"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                    <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="rBA-UW-qlJ" firstAttribute="top" secondItem="aiH-P5-r1k" secondAttribute="bottom" id="4rR-p9-lf3"/>
+                <constraint firstItem="r7e-tH-mvy" firstAttribute="leading" secondItem="rBA-UW-qlJ" secondAttribute="trailing" constant="6" id="5Nx-79-6zI"/>
+                <constraint firstItem="rBA-UW-qlJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="101" id="9c0-lM-y5t"/>
+                <constraint firstItem="fPT-DJ-dtt" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="G5L-L4-p8p"/>
+                <constraint firstItem="r7e-tH-mvy" firstAttribute="centerY" secondItem="rBA-UW-qlJ" secondAttribute="centerY" id="GSj-0d-9vM"/>
+                <constraint firstItem="cwu-3R-RWc" firstAttribute="top" secondItem="fPT-DJ-dtt" secondAttribute="bottom" constant="4" id="KoD-xM-RPZ"/>
+                <constraint firstItem="Eu7-dd-nrS" firstAttribute="top" secondItem="cwu-3R-RWc" secondAttribute="top" id="Vvq-WS-D02"/>
+                <constraint firstItem="cwu-3R-RWc" firstAttribute="leading" secondItem="fPT-DJ-dtt" secondAttribute="leading" constant="27" id="atz-r4-FbD"/>
+                <constraint firstItem="fPT-DJ-dtt" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="18" id="bZr-az-K3l"/>
+                <constraint firstItem="Eu7-dd-nrS" firstAttribute="leading" secondItem="aiH-P5-r1k" secondAttribute="trailing" constant="8" id="cT8-pR-FEC"/>
+                <constraint firstItem="aiH-P5-r1k" firstAttribute="top" secondItem="cwu-3R-RWc" secondAttribute="bottom" id="gLh-L0-dbE"/>
+                <constraint firstAttribute="trailing" secondItem="Eu7-dd-nrS" secondAttribute="trailing" constant="33" id="gcX-ko-Jae"/>
+                <constraint firstItem="cwu-3R-RWc" firstAttribute="trailing" secondItem="aiH-P5-r1k" secondAttribute="trailing" id="kxe-6V-Uey"/>
+                <constraint firstItem="aiH-P5-r1k" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="75" id="yBY-Us-Bh7"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="headerLocalizedTitleLabel" destination="fPT-DJ-dtt" id="w1f-VR-eT2"/>
+                <outlet property="startTaskDateTimeLabel" destination="r7e-tH-mvy" id="71H-1k-9de"/>
+                <outlet property="startTaskIconImageView" destination="rBA-UW-qlJ" id="m0x-Q2-pn7"/>
+                <outlet property="taskTitleLabel" destination="aiH-P5-r1k" id="QyI-Rq-d8B"/>
+                <outlet property="titleLabelTapRecognizer" destination="TwE-WU-FrC" id="wZY-Dm-Cex"/>
+                <outlet property="userAvatarImageView" destination="Eu7-dd-nrS" id="gl9-hV-lf8"/>
+                <outlet property="userNameLabel" destination="cwu-3R-RWc" id="Dg8-a3-Ygc"/>
+            </connections>
+            <point key="canvasLocation" x="279" y="237"/>
+        </view>
+        <tapGestureRecognizer id="TwE-WU-FrC">
+            <connections>
+                <action selector="titleTapRecognised:" destination="iN0-l3-epB" id="Pb3-ee-rWU"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="No_Avatar" width="256" height="256"/>
+        <image name="icon_task_arrow_start" width="25" height="25"/>
+    </resources>
+</document>

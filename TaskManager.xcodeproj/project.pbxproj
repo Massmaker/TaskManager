@@ -106,6 +106,9 @@
 		F8DD675E1C5A15C500258E44 /* BoardDetailsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */; };
 		F8DD67601C5A15ED00258E44 /* BoardDetailsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */; };
 		F8E4DFE51C649CBD008E4F49 /* TempTaskInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E4DFE41C649CBD008E4F49 /* TempTaskInfo.swift */; };
+		F8F8B25C1C7DBAB7007A6F7D /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F8B25B1C7DBAB7007A6F7D /* UIColor+Extensions.swift */; };
+		F8F8B25E1C7DC67F007A6F7D /* BoardsAnimatedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F8B25D1C7DC67F007A6F7D /* BoardsAnimatedHeader.swift */; };
+		F8F8B2601C7DC690007A6F7D /* BoardsAnimatedHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8F8B25F1C7DC690007A6F7D /* BoardsAnimatedHeader.xib */; };
 		F8FA973C1C733F5700727282 /* BoardsHeaderViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FA973B1C733F5700727282 /* BoardsHeaderViewDelegate.swift */; };
 		F8FA973E1C733F8900727282 /* BoardsTableViewController+BoardsHeaderViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FA973D1C733F8900727282 /* BoardsTableViewController+BoardsHeaderViewDelegate.swift */; };
 /* End PBXBuildFile section */
@@ -215,6 +218,9 @@
 		F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardDetailsHeader.swift; sourceTree = "<group>"; };
 		F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BoardDetailsHeader.xib; sourceTree = "<group>"; };
 		F8E4DFE41C649CBD008E4F49 /* TempTaskInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempTaskInfo.swift; sourceTree = "<group>"; };
+		F8F8B25B1C7DBAB7007A6F7D /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		F8F8B25D1C7DC67F007A6F7D /* BoardsAnimatedHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsAnimatedHeader.swift; sourceTree = "<group>"; };
+		F8F8B25F1C7DC690007A6F7D /* BoardsAnimatedHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BoardsAnimatedHeader.xib; sourceTree = "<group>"; };
 		F8FA973B1C733F5700727282 /* BoardsHeaderViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsHeaderViewDelegate.swift; sourceTree = "<group>"; };
 		F8FA973D1C733F8900727282 /* BoardsTableViewController+BoardsHeaderViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BoardsTableViewController+BoardsHeaderViewDelegate.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -316,12 +322,14 @@
 				F84D686C1C4CEB2E00EF8A16 /* Assets.xcassets */,
 				F84D686E1C4CEB2E00EF8A16 /* LaunchScreen.storyboard */,
 				F84D68EF1C4CEDFB00EF8A16 /* TaskManager.storyboard */,
-				F815B9A21C6DE6DF00FE3CE0 /* BoardsHeaderView.xib */,
 				F815B9A41C6DE70C00FE3CE0 /* BoardsHeaderView.swift */,
+				F815B9A21C6DE6DF00FE3CE0 /* BoardsHeaderView.xib */,
+				F84CAD131C562AF700BC2ECC /* UserProfileHeader.swift */,
 				F84CAD111C5628D400BC2ECC /* UserProfileHeader.xib */,
 				F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */,
 				F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */,
-				F84CAD131C562AF700BC2ECC /* UserProfileHeader.swift */,
+				F8F8B25D1C7DC67F007A6F7D /* BoardsAnimatedHeader.swift */,
+				F8F8B25F1C7DC690007A6F7D /* BoardsAnimatedHeader.xib */,
 				F84D68711C4CEB2E00EF8A16 /* Info.plist */,
 			);
 			path = TaskManager;
@@ -360,6 +368,7 @@
 				F84B51731C5A1A010041A248 /* Extensions+UIImage.swift */,
 				F895CD511C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift */,
 				F83B7D2B1C6CBAD000A24A56 /* UIView+Extensions.swift */,
+				F8F8B25B1C7DBAB7007A6F7D /* UIColor+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -613,6 +622,7 @@
 			files = (
 				F815B9A31C6DE6DF00FE3CE0 /* BoardsHeaderView.xib in Resources */,
 				F84D68BF1C4CEB6900EF8A16 /* DigitsKitResources.bundle in Resources */,
+				F8F8B2601C7DC690007A6F7D /* BoardsAnimatedHeader.xib in Resources */,
 				F84D68701C4CEB2E00EF8A16 /* LaunchScreen.storyboard in Resources */,
 				F84D686D1C4CEB2E00EF8A16 /* Assets.xcassets in Resources */,
 				F84CAD121C5628D400BC2ECC /* UserProfileHeader.xib in Resources */,
@@ -708,6 +718,7 @@
 				F84D68D61C4CEB6900EF8A16 /* UserAuthenticating.swift in Sources */,
 				F84D68FF1C4D230600EF8A16 /* PublicUserRecordHandling.swift in Sources */,
 				F84D68C31C4CEB6900EF8A16 /* Board.swift in Sources */,
+				F8F8B25C1C7DBAB7007A6F7D /* UIColor+Extensions.swift in Sources */,
 				F87D68041C4FE740003C5689 /* CloudKitResults.swift in Sources */,
 				F8832BC01C4F9AF800D75FAE /* TaskEditType.swift in Sources */,
 				F84CAD181C56339600BC2ECC /* UserProfileHeaderDelegate.swift in Sources */,
@@ -777,6 +788,7 @@
 				F8832BC41C4FB64500D75FAE /* TaskErrors.swift in Sources */,
 				F84D68BC1C4CEB6900EF8A16 /* ErrorTaskBoard.swift in Sources */,
 				F84B51741C5A1A010041A248 /* Extensions+UIImage.swift in Sources */,
+				F8F8B25E1C7DC67F007A6F7D /* BoardsAnimatedHeader.swift in Sources */,
 				F84D68C61C4CEB6900EF8A16 /* TasksHandlerDataModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
