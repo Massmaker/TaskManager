@@ -7,6 +7,16 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="segoeui.ttf">
+            <string>SegoeUI</string>
+            <string>SegoeUI</string>
+            <string>SegoeUI</string>
+            <string>SegoeUI</string>
+            <string>SegoeUI</string>
+            <string>SegoeUI</string>
+        </mutableArray>
+    </customFonts>
     <scenes>
         <!--root tab bar controller-->
         <scene sceneID="C5R-t8-1rl">
@@ -68,17 +78,17 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xIr-3y-qaS">
-                                                    <rect key="frame" x="73" y="17" width="242" height="29"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                                    <rect key="frame" x="73" y="16" width="242" height="31"/>
+                                                    <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="23"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="details 2 rows available" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BAe-VS-LE8">
-                                                    <rect key="frame" x="73" y="48" width="247" height="17"/>
+                                                    <rect key="frame" x="73" y="49" width="247" height="19"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="35" id="yTG-2j-DOU"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="14"/>
                                                     <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -96,7 +106,7 @@
                                                 <constraint firstItem="gcs-0p-pPl" firstAttribute="centerY" secondItem="mke-DW-bhe" secondAttribute="centerY" id="DtY-CB-1na"/>
                                                 <constraint firstItem="xIr-3y-qaS" firstAttribute="leading" secondItem="gcs-0p-pPl" secondAttribute="trailing" constant="13" id="MsP-3N-csR"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="BAe-VS-LE8" secondAttribute="trailing" id="ObF-dt-CuZ"/>
-                                                <constraint firstItem="xIr-3y-qaS" firstAttribute="top" secondItem="gcs-0p-pPl" secondAttribute="top" constant="-4" id="bfm-MW-ljg"/>
+                                                <constraint firstItem="xIr-3y-qaS" firstAttribute="top" secondItem="gcs-0p-pPl" secondAttribute="top" constant="-5" id="bfm-MW-ljg"/>
                                                 <constraint firstItem="BAe-VS-LE8" firstAttribute="top" secondItem="xIr-3y-qaS" secondAttribute="bottom" constant="2" id="uTo-vY-AVt"/>
                                                 <constraint firstItem="BAe-VS-LE8" firstAttribute="leading" secondItem="xIr-3y-qaS" secondAttribute="leading" id="xOz-KW-J0h"/>
                                             </constraints>
@@ -419,22 +429,22 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="dWv-nq-cGA"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dRg-H4-jZ4">
                                                     <rect key="frame" x="75" y="37" width="237" height="17"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="14"/>
                                                     <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="25.01.16 14:25" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lQE-ur-4gG">
-                                                    <rect key="frame" x="219" y="66" width="60" height="29"/>
+                                                    <rect key="frame" x="219" y="65" width="60" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="60" id="Gus-2M-O8M"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="12"/>
                                                     <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -458,7 +468,7 @@
                                                         <constraint firstAttribute="height" constant="34" id="dQN-l7-QVG"/>
                                                         <constraint firstAttribute="width" constant="60" id="rlx-QY-eG4"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="12"/>
                                                     <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>

@@ -52,7 +52,7 @@ extension ContactsCollectionViewController : ContactsHandlerDelegate{
             }
             else
             {
-                self?.collectionView?.reloadSections(NSIndexSet(index: 0))
+                self?.collectionView?.reloadSections(NSIndexSet(index:0))
             }
         }
     }

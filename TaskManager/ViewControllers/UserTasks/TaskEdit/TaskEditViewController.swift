@@ -10,7 +10,7 @@ import UIKit
 import CloudKit
 import Eureka
 
-class TaskEditViewController: FormViewController {
+class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
 
     var taskBoard:Board?
     var creatorId:String?
@@ -30,6 +30,22 @@ class TaskEditViewController: FormViewController {
                     break
             }
         }
+    }
+    
+    var actionsHeader:HeaderFooterView<TaskActionsSectionTitleHeader> {
+        
+        let actionsTitle = NSLocalizedString("Action", comment: "")
+        
+        var header = HeaderFooterView<TaskActionsSectionTitleHeader>(.NibFile(name:"TaskActionsSectionTitleHeader", bundle:nil))
+        
+        header.onSetupView = {header, _, _ in
+            
+            header.titleLabel.text = actionsTitle
+        }
+        
+        header.height = {30.0}
+        
+        return header
     }
     
     private var newTaskInfo:TempTaskInfo?
@@ -62,14 +78,42 @@ class TaskEditViewController: FormViewController {
     //MARK: - 
     func setupTableViewWithCurrentTask()
     {
-        let titleSectionTitle = "task title"
-        let detailsSectionTitle = "task details"
+        let titleSectionTitle =  NSLocalizedString("Task title", comment:"")
+        let detailsSectionTitle = NSLocalizedString("Task details", comment: "")
+        let headerHeight = CGFloat(30.0)
+        
+        //prepare Title header
+        var titleHeader = HeaderFooterView<TaskActionsSectionTitleHeader>(.NibFile(name:"TaskActionsSectionTitleHeader", bundle:nil))
+        
+        titleHeader.onSetupView = {titleHeader, _, _ in
+            
+            titleHeader.titleLabel.text = titleSectionTitle
+        }
+        
+        titleHeader.height = {headerHeight}
+        
+        
+        // prepare Details header
+        var detailsHeader = HeaderFooterView<TaskActionsSectionTitleHeader>(.NibFile(name:"TaskActionsSectionTitleHeader", bundle:nil))
+        
+        detailsHeader.onSetupView = {header, _, _ in
+            
+            header.titleLabel.text = detailsSectionTitle
+        }
+        
+        detailsHeader.height = {headerHeight}
+        
         
         guard let task = self.currentTask else {
             
-            form +++ Section(titleSectionTitle)
+            form +++ Section(){ section in
+            
+                section.header = titleHeader
+            }
+                
                  <<< TextAreaRow(){
                         $0.placeholder = "enter task title"
+                    
                     }.onChange{ [unowned self] (titlewRow) in
                         if let _ = self.newTaskInfo //update board title
                         {
@@ -88,9 +132,13 @@ class TaskEditViewController: FormViewController {
                             }
                             self.checkSaveButtonEnabled()
                         }
+                    }.cellSetup { (cell, row) -> () in
+                        cell.textView.textContainerInset = UIEdgeInsetsMake(0, 50.0, 0, 0)
                     }
                 
-                +++ Section(detailsSectionTitle)
+                +++ Section(){ section in
+                    section.header = detailsHeader
+                }
                 <<< TextAreaRow() {
                         $0.placeholder = "enter task details"
                     }.onChange{ [unowned self] (detailsRow) in
@@ -117,7 +165,11 @@ class TaskEditViewController: FormViewController {
             return
         }
         
-        form +++ Section(titleSectionTitle)
+        form +++ Section(){ section in
+           
+                section.header = titleHeader
+            }
+
             //add single cell in section
             <<< TextAreaRow() {
                     $0.value = task.title
@@ -125,9 +177,16 @@ class TaskEditViewController: FormViewController {
                    
                     self.currentTask?.title = titlewRow.value ?? self.initialTitle
                     self.checkSaveButtonEnabled()
-                }
+                }.cellSetup { (cell, row) -> () in
+                    cell.textView.textContainerInset = UIEdgeInsetsMake(0, 48.0, 0, 0)
+                    cell.textView.font = UIFont.appSemiboldFontOfSize(28.0)
+                    cell.height = { 80.0 }
+            }
             
-            +++ Section(detailsSectionTitle)
+            +++ Section(){ section in
+             
+                section.header = detailsHeader
+            }
             //add single cell in section
             <<< TextAreaRow() {
                     $0.value = task.details
@@ -135,6 +194,11 @@ class TaskEditViewController: FormViewController {
                     
                     self.currentTask?.details = detailsRow.value ?? self.initialDetails
                     self.checkSaveButtonEnabled()
+                }.cellSetup{ (cell, row) -> () in
+                    cell.textView.textContainerInset = UIEdgeInsetsMake(0, 48.0, 0, 0)
+                    cell.textView.font = UIFont.appRegularFontOfSize(14.0)
+                    cell.textView.textColor = UIColor.grayColor()
+                    
                 }
     }
     
@@ -145,8 +209,6 @@ class TaskEditViewController: FormViewController {
     private func setupTakeOrFinishButtonCell()
     {
         setupActionsSection()
-        
-        setupDeleteSection()
     }
     
     private func setupActionsSection() {
@@ -155,13 +217,23 @@ class TaskEditViewController: FormViewController {
             return
         }
         
-        let actionsSection = Section("Actions")
+        let actionsSection = Section(){ section in
+            var footerView = HeaderFooterView<TaskActionsView>(.NibFile(name:"TaskActionsView", bundle:nil) )
+            footerView.onSetupView = { view, section, formController in
+                view.delegate = self
+            }
+            
+            footerView.height = { 100.0 }
+            
+            section.footer = footerView
+            
+            section.header = actionsHeader
+        }
        
          // 0 - Task title, 1 - Task details, 2 - Task actions(Take or Finish+Cancel)
         
         if currentTask?.dateFinished > 0 && currentTask?.dateTaken > 0{
             form[2] = actionsSection
-            setupTakeSection(actionsSection)
             return
         }
         
@@ -169,38 +241,19 @@ class TaskEditViewController: FormViewController {
             if currentTask?.dateFinished == 0{
                 if currentTask?.dateTaken == 0{
                     form[2] = actionsSection
-                    setupTakeSection(actionsSection)
                 }
                 else{
                     form[2] = actionsSection
-                    setupFinishCancelButtons(actionsSection)
                 }
             }
             else{
                 form[2] = actionsSection
-                setupTakeSection(actionsSection)
             }
         }
         else {
             
             form[2] = actionsSection
-            setupTakeSection(actionsSection)
         }
-    }
-    
-    private func setupTakeSection(section:Section) {
-        
-        let takeButtonRow = ButtonRow("Take task").cellSetup(){ (cell, row) -> () in
-                    cell.textLabel?.font = UIFont.boldSystemFontOfSize(17)
-                    cell.tintColor = UIColor.greenColor()
-                    row.title = "Take"
-                }.onCellSelection(){[weak self] (cell, row) -> () in
-                    cell.setSelected(false, animated: false)
-                    self?.takeTaskPressed()
-                }
-        
-        section.removeAll() //in case there are 2 buttons before inserting (Finish and Cancel actions)
-        section.append(takeButtonRow)
     }
     
     private func setupFinishCancelButtons(section:Section) {
@@ -226,21 +279,21 @@ class TaskEditViewController: FormViewController {
         section[0] = finishTaskButton
         section[1] = cancelTaskButton
     }
-    
-    func setupDeleteSection()
-    {
-        let deleteButtonRow = ButtonRow().cellSetup(){ (cell, row) -> () in
-                cell.tintColor = UIColor.redColor()
-                row.title = "Delete"
-                }.onCellSelection {[weak self] (cell , _) -> () in
-                   
-                    cell.setSelected(false, animated: false)
-                    self?.deleteTaskPressed()
-                }
-
-        
-        form +++ Section("Danger Zone") <<<  deleteButtonRow
-    }
+//    
+//    func setupDeleteSection()
+//    {
+//        let deleteButtonRow = ButtonRow().cellSetup(){ (cell, row) -> () in
+//                cell.tintColor = UIColor.redColor()
+//                row.title = "Delete"
+//                }.onCellSelection {[weak self] (cell , _) -> () in
+//                   
+//                    cell.setSelected(false, animated: false)
+//                    self?.deleteTaskPressed()
+//                }
+//
+//        
+//        form +++ Section("Danger Zone") <<<  deleteButtonRow
+//    }
     
     //MARK: - Save  button
     private func checkSaveButtonEnabled()
@@ -381,4 +434,38 @@ class TaskEditViewController: FormViewController {
         weakTasksHolder?.handleCancellingTask(task, byUsedID: userRecordId)
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    //MARK: - TaskActionsViewDelegate
+    func taskActionButtonTapped(button: UIView?) {
+        //scroll button to center
+        if let button = button{
+            
+            
+            let currentCenter = CGRectGetMidY(self.view.frame)
+            let currentPosition = button.convertPoint(button.center, toView: self.view)
+            
+            let difference = floor(currentPosition.y - currentCenter)
+            
+            if difference < 0.0{
+            
+                return
+            }
+            
+            self.tableView?.contentInset = UIEdgeInsetsMake(0, 0, difference, 0)
+            
+            if let footer = form[2].footer, let actionsView = footer.viewForSection(form[2], type: HeaderFooterType.Footer, controller: self) {
+                
+                let frame = actionsView.frame
+                self.tableView?.scrollRectToVisible(frame, animated: true)
+            }
+        }
+    }
+    
+    override func scrollViewWillBeginDragging(scrollView:UIScrollView){
+        super.scrollViewWillBeginDragging(scrollView)
+        UIView.animateWithDuration(0.2) {
+            self.tableView!.contentInset = UIEdgeInsetsZero
+        }
+    }
+    
 }

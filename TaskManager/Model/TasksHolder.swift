@@ -181,7 +181,6 @@ class TasksHolder:NSObject {
             catch{
                 
             }
-
         }
         
         return deletionHappened
@@ -454,7 +453,7 @@ class TasksHolder:NSObject {
             self.delegate?.tasksWillStartUpdating()
         case DataSyncronizerDidStopSyncronyzingNotificationName:
             self.setTasks(board!.orderedTasks)
-            self.table?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+            self.table?.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0,1)), withRowAnimation: .Automatic)
             self.delegate?.tasksDidFinishUpdating()
         default:
             break

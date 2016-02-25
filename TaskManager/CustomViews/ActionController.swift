@@ -127,7 +127,7 @@ class ActionController: UIViewController {
         let cancelButtonFrame = CGRectMake(width - 90.0, 0, 72.0, 50.0)
         let cancelButton = UIButton(type: .System)
         cancelButton.frame = cancelButtonFrame
-        let attributes = [NSForegroundColorAttributeName :UIColor.redColor(), NSFontAttributeName:UIFont.systemFontOfSize(20.0, weight: UIFontWeightBold)]
+        let attributes = [NSForegroundColorAttributeName :UIColor.whiteColor(), NSFontAttributeName:UIFont.systemFontOfSize(20.0, weight: UIFontWeightBold)]
         let attributedString = NSAttributedString(string:title, attributes: attributes)
         cancelButton.setAttributedTitle(attributedString, forState: .Normal)
         
@@ -143,7 +143,7 @@ class ActionController: UIViewController {
         
         var leadingOffset = CGFloat(8.0)
         
-        let attributesForActions = [NSFontAttributeName:UIFont.systemFontOfSize(20.0, weight: UIFontWeightRegular), NSForegroundColorAttributeName:UIColor.blueColor()]
+        let attributesForActions = [NSFontAttributeName:UIFont.systemFontOfSize(20.0, weight: UIFontWeightRegular), NSForegroundColorAttributeName:UIColor.redColor()]
         
         for (title, _) in info {
             

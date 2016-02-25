@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="segoeui.ttf">
+            <string>SegoeUI</string>
+            <string>SegoeUI</string>
+            <string>SegoeUI</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TaskActionsView" customModule="TaskManager" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="130"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_task_ckeckmark" translatesAutoresizingMaskIntoConstraints="NO" id="Kxb-aJ-rcs">
+                    <rect key="frame" x="233" y="25" width="25" height="25"/>
+                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                </imageView>
+                <imageView contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" image="button_task_take" translatesAutoresizingMaskIntoConstraints="NO" id="fPq-vB-tfB">
+                    <rect key="frame" x="158" y="8" width="59" height="59"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="fPq-vB-tfB" secondAttribute="height" multiplier="1:1" id="EP5-BN-fFI"/>
+                    </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="7a1-Yb-Wop" appends="YES" id="yhy-dq-kBB"/>
+                    </connections>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Take" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QFu-Lt-Lkh">
+                    <rect key="frame" x="170" y="83" width="35" height="24"/>
+                    <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="18"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11.06.16" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="frD-bb-gM5">
+                    <rect key="frame" x="90" y="28" width="52" height="19"/>
+                    <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="14"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15.06.16" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gRN-W9-3kJ">
+                    <rect key="frame" x="262" y="28" width="52" height="19"/>
+                    <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="14"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_task_arrow_start" translatesAutoresizingMaskIntoConstraints="NO" id="ELZ-pu-9ga">
+                    <rect key="frame" x="61" y="25" width="25" height="25"/>
+                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="mwI-DD-SI2"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="gRN-W9-3kJ" firstAttribute="centerY" secondItem="Kxb-aJ-rcs" secondAttribute="centerY" id="0mc-4G-c0A"/>
+                <constraint firstItem="QFu-Lt-Lkh" firstAttribute="top" secondItem="fPq-vB-tfB" secondAttribute="bottom" constant="16" id="1KF-gs-cxQ"/>
+                <constraint firstItem="fPq-vB-tfB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="Etd-Dp-bAE"/>
+                <constraint firstItem="gRN-W9-3kJ" firstAttribute="leading" secondItem="Kxb-aJ-rcs" secondAttribute="trailing" constant="4" id="F2o-wX-vzb"/>
+                <constraint firstItem="frD-bb-gM5" firstAttribute="leading" secondItem="ELZ-pu-9ga" secondAttribute="trailing" constant="4" id="HG1-yn-ENJ"/>
+                <constraint firstItem="ELZ-pu-9ga" firstAttribute="centerY" secondItem="frD-bb-gM5" secondAttribute="centerY" id="InW-7C-2Hd"/>
+                <constraint firstItem="fPq-vB-tfB" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.45" id="Ov2-Pm-gcf"/>
+                <constraint firstItem="QFu-Lt-Lkh" firstAttribute="centerX" secondItem="fPq-vB-tfB" secondAttribute="centerX" id="VET-za-yPx"/>
+                <constraint firstItem="ELZ-pu-9ga" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="61" id="VuN-wt-fQL"/>
+                <constraint firstItem="fPq-vB-tfB" firstAttribute="leading" secondItem="frD-bb-gM5" secondAttribute="trailing" constant="16" id="YW6-IW-yvW"/>
+                <constraint firstItem="Kxb-aJ-rcs" firstAttribute="leading" secondItem="fPq-vB-tfB" secondAttribute="trailing" constant="16" id="a8G-X4-1vN"/>
+                <constraint firstItem="fPq-vB-tfB" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="gLC-Qq-B8O"/>
+                <constraint firstItem="frD-bb-gM5" firstAttribute="centerY" secondItem="fPq-vB-tfB" secondAttribute="centerY" id="jeC-Qd-Agf"/>
+                <constraint firstItem="gRN-W9-3kJ" firstAttribute="width" secondItem="frD-bb-gM5" secondAttribute="width" id="t4r-Ug-Kum"/>
+                <constraint firstItem="Kxb-aJ-rcs" firstAttribute="centerY" secondItem="fPq-vB-tfB" secondAttribute="centerY" id="v4Q-eM-MZC"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="actionButtonImageView" destination="fPq-vB-tfB" id="s1p-dp-Im8"/>
+                <outlet property="actionTapRecognizer" destination="7a1-Yb-Wop" id="yaa-Wq-P54"/>
+                <outlet property="bottomLabel" destination="QFu-Lt-Lkh" id="bU0-Mk-8y7"/>
+                <outlet property="finishCheckmarkImageView" destination="Kxb-aJ-rcs" id="Poo-k2-gGX"/>
+                <outlet property="finishDateLabel" destination="gRN-W9-3kJ" id="njb-Mb-6Cj"/>
+                <outlet property="startArrowImageView" destination="ELZ-pu-9ga" id="xj9-Kx-LL9"/>
+                <outlet property="startDatelabel" destination="frD-bb-gM5" id="D9Z-R1-kzp"/>
+            </connections>
+            <point key="canvasLocation" x="366" y="319.5"/>
+        </view>
+        <tapGestureRecognizer id="7a1-Yb-Wop">
+            <connections>
+                <action selector="actionTapRecognized:" destination="iN0-l3-epB" id="rYo-WT-w0P"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="button_task_take" width="44" height="44"/>
+        <image name="icon_task_arrow_start" width="25" height="25"/>
+        <image name="icon_task_ckeckmark" width="25" height="25"/>
+    </resources>
+</document>
