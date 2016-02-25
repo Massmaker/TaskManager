@@ -63,28 +63,28 @@
                         <viewControllerLayoutGuide type="bottom" id="gpz-IK-UjL"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="c0R-3Y-7jg">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="130" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="U6E-B4-LB6">
-                                <rect key="frame" x="0.0" y="64" width="375" height="487"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="AllBoardsCell" rowHeight="82" id="A2h-Gn-tif" customClass="BoardsTableViewCell" customModule="TaskManager" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="82"/>
+                                        <rect key="frame" x="0.0" y="28" width="600" height="82"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="A2h-Gn-tif" id="mke-DW-bhe">
-                                            <rect key="frame" x="0.0" y="0.0" width="328" height="82"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="553" height="82"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xIr-3y-qaS">
-                                                    <rect key="frame" x="73" y="16" width="242" height="31"/>
+                                                    <rect key="frame" x="73" y="16" width="467" height="31"/>
                                                     <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="23"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="details 2 rows available" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BAe-VS-LE8">
-                                                    <rect key="frame" x="73" y="49" width="247" height="19"/>
+                                                    <rect key="frame" x="73" y="49" width="472" height="19"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="35" id="yTG-2j-DOU"/>
                                                     </constraints>
@@ -140,8 +140,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="375" height="600"/>
                     <connections>
                         <outlet property="tableView" destination="U6E-B4-LB6" id="tPv-ls-KLA"/>
                         <segue destination="A8A-CM-WBB" kind="presentation" identifier="PresentBoardEditing" id="8DW-2m-3HO"/>
@@ -382,18 +380,18 @@
                         <viewControllerLayoutGuide type="bottom" id="grm-kZ-rw6"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Rs0-rV-Cvq">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="112" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cuI-r2-89V">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="551"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TaskTableCell" rowHeight="108" id="dDA-gB-WxX" userLabel="TaskTableCell" customClass="TaskTableViewCell" customModule="TaskManager" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="320" height="108"/>
+                                        <rect key="frame" x="0.0" y="92" width="600" height="108"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dDA-gB-WxX" id="JUL-eh-MJF">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="108"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="108"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2p2-XH-1Ft" userLabel="backgroundImageHolder">
@@ -425,7 +423,7 @@
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="task title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LDT-yL-AnQ">
-                                                    <rect key="frame" x="75" y="8" width="237" height="21"/>
+                                                    <rect key="frame" x="75" y="8" width="517" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="dWv-nq-cGA"/>
                                                     </constraints>
@@ -434,7 +432,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dRg-H4-jZ4">
-                                                    <rect key="frame" x="75" y="37" width="237" height="17"/>
+                                                    <rect key="frame" x="75" y="37" width="517" height="17"/>
                                                     <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="14"/>
                                                     <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -523,8 +521,6 @@
                             <constraint firstAttribute="trailing" secondItem="cuI-r2-89V" secondAttribute="trailing" id="r1v-3p-0WN"/>
                         </constraints>
                     </view>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="600"/>
                     <connections>
                         <outlet property="tableView" destination="cuI-r2-89V" id="Fla-2G-CJj"/>
                         <segue destination="ffu-7D-fM7" kind="presentation" identifier="StartEditTask" id="PuF-uz-ykc"/>
@@ -532,7 +528,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cxd-fw-cLv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1671" y="-606"/>
+            <point key="canvasLocation" x="1716" y="-455"/>
         </scene>
         <!--Contact Profile View Controller-->
         <scene sceneID="WXb-jl-zwo">
