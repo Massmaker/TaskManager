@@ -93,6 +93,7 @@
 		F8547FE31C7F343B00296B45 /* segoeuil.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F8547FE01C7F343B00296B45 /* segoeuil.ttf */; };
 		F8547FE41C7F343B00296B45 /* seguisb.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F8547FE11C7F343B00296B45 /* seguisb.ttf */; };
 		F8547FE61C7F407E00296B45 /* BoardsAnimatedHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8547FE51C7F407E00296B45 /* BoardsAnimatedHeader.xib */; };
+		F8547FE81C7F40E000296B45 /* TaskActionsSectionTitleHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8547FE71C7F40E000296B45 /* TaskActionsSectionTitleHeader.xib */; };
 		F855B53C1C6220B200894413 /* CloudKitRecordKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F855B53B1C6220B200894413 /* CloudKitRecordKeys.swift */; };
 		F858B73F1C57CAC4003BF286 /* CloudRegisteredUsersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F858B73E1C57CAC4003BF286 /* CloudRegisteredUsersOperation.swift */; };
 		F87D68041C4FE740003C5689 /* CloudKitResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87D68031C4FE740003C5689 /* CloudKitResults.swift */; };
@@ -211,6 +212,7 @@
 		F8547FE01C7F343B00296B45 /* segoeuil.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = segoeuil.ttf; sourceTree = "<group>"; };
 		F8547FE11C7F343B00296B45 /* seguisb.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = seguisb.ttf; sourceTree = "<group>"; };
 		F8547FE51C7F407E00296B45 /* BoardsAnimatedHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BoardsAnimatedHeader.xib; sourceTree = "<group>"; };
+		F8547FE71C7F40E000296B45 /* TaskActionsSectionTitleHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskActionsSectionTitleHeader.xib; sourceTree = "<group>"; };
 		F855B53B1C6220B200894413 /* CloudKitRecordKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitRecordKeys.swift; sourceTree = "<group>"; };
 		F858B73E1C57CAC4003BF286 /* CloudRegisteredUsersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudRegisteredUsersOperation.swift; sourceTree = "<group>"; };
 		F87D68031C4FE740003C5689 /* CloudKitResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitResults.swift; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 				F8547FD01C7F0D9E00296B45 /* TaskActionsView.swift */,
 				F8547FCE1C7F0A4000296B45 /* TaskActionsView.xib */,
 				F8547FD41C7F200E00296B45 /* TaskActionsSectionTitleHeader.swift */,
+				F8547FE71C7F40E000296B45 /* TaskActionsSectionTitleHeader.xib */,
 				F8547FDE1C7F343B00296B45 /* CustomFonts */,
 				F84D68711C4CEB2E00EF8A16 /* Info.plist */,
 			);
@@ -649,6 +652,7 @@
 				F8547FE41C7F343B00296B45 /* seguisb.ttf in Resources */,
 				F84D68BF1C4CEB6900EF8A16 /* DigitsKitResources.bundle in Resources */,
 				F84D68701C4CEB2E00EF8A16 /* LaunchScreen.storyboard in Resources */,
+				F8547FE81C7F40E000296B45 /* TaskActionsSectionTitleHeader.xib in Resources */,
 				F84D686D1C4CEB2E00EF8A16 /* Assets.xcassets in Resources */,
 				F84CAD121C5628D400BC2ECC /* UserProfileHeader.xib in Resources */,
 				F8547FE61C7F407E00296B45 /* BoardsAnimatedHeader.xib in Resources */,
