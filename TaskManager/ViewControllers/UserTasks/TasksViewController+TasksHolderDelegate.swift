@@ -6,7 +6,7 @@
 //  Copyright © 2016 CloudCraft. All rights reserved.
 //
 
-import Foundation
+import UIKit
 extension TasksViewController : TasksHolderDelegate {
     
     func tasksWillStartUpdating()
@@ -17,5 +17,8 @@ extension TasksViewController : TasksHolderDelegate {
     func tasksDidFinishUpdating()
     {
         setLoadingIndicatorVisible(false)
+        if let editorVC_Holder = self.presentedViewController as? UINavigationController, _ = editorVC_Holder.viewControllers.first as? TaskEditViewController{
+            editorVC_Holder.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
 }

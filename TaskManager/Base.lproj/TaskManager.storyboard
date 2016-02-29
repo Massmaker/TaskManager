@@ -16,6 +16,9 @@
             <string>SegoeUI</string>
             <string>SegoeUI</string>
         </mutableArray>
+        <mutableArray key="seguisb.ttf">
+            <string>SegoeUI-SemiBold</string>
+        </mutableArray>
     </customFonts>
     <scenes>
         <!--root tab bar controller-->
@@ -269,11 +272,28 @@
                                     <action selector="loginButtonAction:" destination="bX5-Ca-dx8" eventType="touchUpInside" id="XLb-sK-3aE"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mono" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I2O-9U-O5z">
+                                <rect key="frame" x="277" y="288" width="46" height="23"/>
+                                <fontDescription key="fontDescription" name="SegoeUI-SemiBold" family="Segoe UI" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Test_Icon" translatesAutoresizingMaskIntoConstraints="NO" id="Xk0-kT-L2B">
+                                <rect key="frame" x="250" y="164" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="A5u-E1-unE"/>
+                                    <constraint firstAttribute="height" constant="100" id="Vck-r8-HSh"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Sbo-v1-cnx" firstAttribute="top" secondItem="inB-lh-8GD" secondAttribute="bottom" constant="64" id="21C-a8-Sls"/>
+                            <constraint firstItem="I2O-9U-O5z" firstAttribute="centerX" secondItem="0IA-10-gLf" secondAttribute="centerX" id="53W-mQ-ajr"/>
+                            <constraint firstItem="I2O-9U-O5z" firstAttribute="centerY" secondItem="0IA-10-gLf" secondAttribute="centerY" id="DZO-G7-ekL"/>
                             <constraint firstItem="inB-lh-8GD" firstAttribute="centerX" secondItem="0IA-10-gLf" secondAttribute="centerX" id="Z6F-9j-Jn9"/>
+                            <constraint firstItem="I2O-9U-O5z" firstAttribute="top" secondItem="Xk0-kT-L2B" secondAttribute="bottom" constant="24" id="g74-4F-0eV"/>
+                            <constraint firstItem="Xk0-kT-L2B" firstAttribute="centerX" secondItem="0IA-10-gLf" secondAttribute="centerX" id="r9l-vq-ioA"/>
                         </constraints>
                     </view>
                     <connections>
@@ -642,6 +662,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Test_Icon" width="90" height="90"/>
         <image name="button_task_take" width="44" height="44"/>
         <image name="icon_task_arrow_start" width="25" height="25"/>
         <image name="icon_task_ckeckmark" width="25" height="25"/>

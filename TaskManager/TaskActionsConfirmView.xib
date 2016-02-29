@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="segoeui.ttf">
+            <string>SegoeUI</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TaskActionsConfirmView" customModule="TaskManager" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm action" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V26-sf-Nri">
+                    <rect key="frame" x="8" y="8" width="584" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="R16-p0-cvW"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IG2-wr-DQ4" userLabel="actionButtonButton">
+                    <rect key="frame" x="8" y="62" width="46" height="30"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="actionButtonTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="5ev-pT-Yp1"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E7a-oa-wUo" userLabel="cancelButton">
+                    <rect key="frame" x="546" y="62" width="46" height="30"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="dismissButtonTouchUpInside" destination="iN0-l3-epB" eventType="touchUpInside" id="R4A-HG-e8n"/>
+                    </connections>
+                </button>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7i2-sE-g0q" userLabel="optionalActionButton">
+                    <rect key="frame" x="277" y="62" width="46" height="30"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="actionButtonTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="5SF-gc-5Zf"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="7i2-sE-g0q" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="CeQ-gc-drT"/>
+                <constraint firstItem="V26-sf-Nri" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="DsC-7x-7Ol"/>
+                <constraint firstAttribute="trailing" secondItem="V26-sf-Nri" secondAttribute="trailing" constant="8" id="Q4J-aW-lNk"/>
+                <constraint firstItem="V26-sf-Nri" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="Ydv-6T-VsA"/>
+                <constraint firstAttribute="bottom" secondItem="IG2-wr-DQ4" secondAttribute="bottom" constant="8" id="gVE-o7-YYx"/>
+                <constraint firstItem="IG2-wr-DQ4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="n47-xI-iL8"/>
+                <constraint firstAttribute="bottom" secondItem="E7a-oa-wUo" secondAttribute="bottom" constant="8" id="puE-Li-E6z"/>
+                <constraint firstAttribute="trailing" secondItem="E7a-oa-wUo" secondAttribute="trailing" constant="8" id="sMG-1z-uUP"/>
+                <constraint firstAttribute="bottom" secondItem="7i2-sE-g0q" secondAttribute="bottom" constant="8" id="vdj-sy-28E"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="actionButton" destination="IG2-wr-DQ4" id="9Hb-Pg-um9"/>
+                <outlet property="alternateActionButton" destination="7i2-sE-g0q" id="XtX-gX-oFT"/>
+                <outlet property="dismissButton" destination="E7a-oa-wUo" id="Db3-ld-M7f"/>
+                <outlet property="titleLabel" destination="V26-sf-Nri" id="uBt-tr-Bb7"/>
+            </connections>
+        </view>
+    </objects>
+</document>

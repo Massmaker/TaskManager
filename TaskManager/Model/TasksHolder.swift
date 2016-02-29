@@ -200,6 +200,8 @@ class TasksHolder:NSObject {
                         taskToEdit.fillInfoFrom(editedRecord)
                         anAppDelegate()?.coreDatahandler?.saveMainContext()
                         self.delegate?.tasksDidFinishUpdating()
+                        let dummyNote = NSNotification(name: DataSyncronizerDidStopSyncronyzingNotificationName, object: nil)
+                        self.handleSyncNotification(dummyNote)
                     }
                 }
                 else if let error = editError
@@ -211,6 +213,8 @@ class TasksHolder:NSObject {
                         anAppDelegate()?.coreDatahandler?.undoChangesInContext()
                         anAppDelegate()?.coreDatahandler?.saveMainContext()
                         self.delegate?.tasksDidFinishUpdating()
+                        let dummyNote = NSNotification(name: DataSyncronizerDidStopSyncronyzingNotificationName, object: nil)
+                        self.handleSyncNotification(dummyNote)
                     }
                 }
             }
@@ -453,8 +457,8 @@ class TasksHolder:NSObject {
             self.delegate?.tasksWillStartUpdating()
         case DataSyncronizerDidStopSyncronyzingNotificationName:
             self.setTasks(board!.orderedTasks)
-            self.table?.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0,1)), withRowAnimation: .Automatic)
             self.delegate?.tasksDidFinishUpdating()
+            self.table?.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0,1)), withRowAnimation: .Automatic)
         default:
             break
         }

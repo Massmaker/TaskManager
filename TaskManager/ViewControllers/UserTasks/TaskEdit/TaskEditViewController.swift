@@ -256,45 +256,6 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
         }
     }
     
-    private func setupFinishCancelButtons(section:Section) {
-        
-        let finishTaskButton = ButtonRow("Finish Task").cellSetup{(cell, row) in
-                    cell.textLabel?.font = UIFont.boldSystemFontOfSize(17)
-                    cell.tintColor = UIColor.blueColor()
-                    row.title = "Finish"
-                }.onCellSelection {[weak self] (cell, row) -> () in
-                    cell.setSelected(false, animated: false)
-                    self?.finishTaskPressed()
-                }
-        
-        let cancelTaskButton = ButtonRow("Cancel Task").cellSetup(){ (cell, row) -> () in
-                    cell.tintColor = UIColor.purpleColor()
-                    row.title = "Cancel"
-                }.onCellSelection(){[weak self] (cell, row) -> () in
-                    cell.setSelected(false, animated: false)
-                    self?.cancelTaskPressed()
-                }
-    
-        section.removeAll()// in case there is Take button (Take button action)
-        section[0] = finishTaskButton
-        section[1] = cancelTaskButton
-    }
-//    
-//    func setupDeleteSection()
-//    {
-//        let deleteButtonRow = ButtonRow().cellSetup(){ (cell, row) -> () in
-//                cell.tintColor = UIColor.redColor()
-//                row.title = "Delete"
-//                }.onCellSelection {[weak self] (cell , _) -> () in
-//                   
-//                    cell.setSelected(false, animated: false)
-//                    self?.deleteTaskPressed()
-//                }
-//
-//        
-//        form +++ Section("Danger Zone") <<<  deleteButtonRow
-//    }
-    
     //MARK: - Save  button
     private func checkSaveButtonEnabled()
     {
@@ -425,7 +386,7 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func cancelTaskPressed() {
+    func stopTaskPressed() {
         guard let task = self.currentTask, let userRecordId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else
         {
             return
@@ -458,6 +419,67 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
                 let frame = actionsView.frame
                 self.tableView?.scrollRectToVisible(frame, animated: true)
             }
+            
+            
+            guard let confirmControl = TaskActionsConfirmView.loadFromNibNamed("TaskActionsConfirmView") as? TaskActionsConfirmView else {
+                
+                return
+                
+            }
+            
+            if let task = currentTask{
+                
+                confirmControl.addTarget(self, action: "handleConfirmAction:", forControlEvents: .ValueChanged)
+                confirmControl.frame = CGRectMake(0, CGRectGetMaxY(self.view.bounds) - 100.0, CGRectGetWidth(self.view.bounds), 100.0)
+                
+                var actionType:TaskActionType = .IsFree
+                
+                if let ownerId = task.currentOwnerId{
+                    
+                    if task.dateFinished > 0 && task.dateTaken > 0{
+                        actionType = .Finished
+                    }
+                    else if task.dateTaken > 0{
+                        if ownerId == anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName{
+                            actionType = .TakenByMe
+                        }
+                        else{
+                            actionType = .TakenBySomebody
+                        }
+                    }
+                }
+                
+                confirmControl.setActionType(actionType)
+                confirmControl.showInView(self.view)
+            }
+            
+           
+          
+            
+            
+            //TAKE task, CANCEL(don`t take, dismiss form)
+            
+            //CANCEL(dismiss form) FINISH task, STOP task (release)
+        }
+    }
+    
+    func handleConfirmAction(sender:TaskActionsConfirmView){
+        let action = sender.activeActionState
+        let type = sender.actionType
+        switch action{
+        case .MainAction:
+            print("MAIN ACTION")
+            switch type{
+            case TaskActionType.TakenBySomebody, .Finished, .IsFree:
+                takeTaskPressed()
+            case .TakenByMe:
+                finishTaskPressed()
+            }
+        case .AlternateAction:
+            print("- - - RELEASE TASK pressed - - -")
+            stopTaskPressed()
+        default:
+            break
         }
     }
     

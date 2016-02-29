@@ -91,7 +91,7 @@ func createTaskRecordFrom(taskInfo:Task, recordID:String? = nil) throws -> CKRec
     
     newTaskRecord[DetailsStringKey] = taskInfo.details ?? "" //non optional but can be empty string
     newTaskRecord[SortOrderIndexIntKey] = NSNumber(integer: Int(taskInfo.sortOrder)) // not optional , ZERO by default
-    newTaskRecord[CurrentOwnerStringKey] = taskInfo.currentOwner?.phone // optional
+    newTaskRecord[CurrentOwnerStringKey] = taskInfo.currentOwnerId // optional
     newTaskRecord[DateTakenDateKey] = taskInfo.takenDate //optional
     newTaskRecord[DateFinishedDateKey] = taskInfo.finishedDate //optional
     

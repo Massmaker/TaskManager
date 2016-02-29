@@ -110,6 +110,8 @@
 		F895CD501C5F63B100D08EE9 /* SubscriptionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */; };
 		F895CD521C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD511C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift */; };
 		F895CD541C5F8B7F00D08EE9 /* NotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD531C5F8B7F00D08EE9 /* NotificationsHandler.swift */; };
+		F8BFD4D71C807E7D008081C6 /* TaskActionsConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BFD4D61C807E7D008081C6 /* TaskActionsConfirmView.swift */; };
+		F8BFD4D91C808E1E008081C6 /* TaskActionsConfirmView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8BFD4D81C808E1E008081C6 /* TaskActionsConfirmView.xib */; };
 		F8DD67581C5A0EB300258E44 /* Extensions+NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */; };
 		F8DD675E1C5A15C500258E44 /* BoardDetailsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */; };
 		F8DD67601C5A15ED00258E44 /* BoardDetailsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */; };
@@ -229,6 +231,8 @@
 		F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsHandler.swift; sourceTree = "<group>"; };
 		F895CD511C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+CKSubscriptionOptions.swift"; sourceTree = "<group>"; };
 		F895CD531C5F8B7F00D08EE9 /* NotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHandler.swift; sourceTree = "<group>"; };
+		F8BFD4D61C807E7D008081C6 /* TaskActionsConfirmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskActionsConfirmView.swift; sourceTree = "<group>"; };
+		F8BFD4D81C808E1E008081C6 /* TaskActionsConfirmView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskActionsConfirmView.xib; sourceTree = "<group>"; };
 		F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+NSDate.swift"; sourceTree = "<group>"; };
 		F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardDetailsHeader.swift; sourceTree = "<group>"; };
 		F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BoardDetailsHeader.xib; sourceTree = "<group>"; };
@@ -346,6 +350,8 @@
 				F8547FCE1C7F0A4000296B45 /* TaskActionsView.xib */,
 				F8547FD41C7F200E00296B45 /* TaskActionsSectionTitleHeader.swift */,
 				F8547FE71C7F40E000296B45 /* TaskActionsSectionTitleHeader.xib */,
+				F8BFD4D61C807E7D008081C6 /* TaskActionsConfirmView.swift */,
+				F8BFD4D81C808E1E008081C6 /* TaskActionsConfirmView.xib */,
 				F8547FDE1C7F343B00296B45 /* CustomFonts */,
 				F84D68711C4CEB2E00EF8A16 /* Info.plist */,
 			);
@@ -651,6 +657,7 @@
 			files = (
 				F8547FE41C7F343B00296B45 /* seguisb.ttf in Resources */,
 				F84D68BF1C4CEB6900EF8A16 /* DigitsKitResources.bundle in Resources */,
+				F8BFD4D91C808E1E008081C6 /* TaskActionsConfirmView.xib in Resources */,
 				F84D68701C4CEB2E00EF8A16 /* LaunchScreen.storyboard in Resources */,
 				F8547FE81C7F40E000296B45 /* TaskActionsSectionTitleHeader.xib in Resources */,
 				F84D686D1C4CEB2E00EF8A16 /* Assets.xcassets in Resources */,
@@ -815,6 +822,7 @@
 				F84D68E41C4CEB6900EF8A16 /* BoardsHolder.swift in Sources */,
 				F84D68F71C4CF8E700EF8A16 /* ContactProfileViewController.swift in Sources */,
 				F88669991C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift in Sources */,
+				F8BFD4D71C807E7D008081C6 /* TaskActionsConfirmView.swift in Sources */,
 				F84B4D741C4E720E0013D7F1 /* TaskEditNavigationController.swift in Sources */,
 				F8067C421C60F34000782E63 /* BoardsHolderDelegate.swift in Sources */,
 				F8067C441C60F38300782E63 /* BoardsTableViewController+BoardsHolderDelegate.swift in Sources */,
