@@ -202,9 +202,6 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
                 }
     }
     
-    
-    
-    
     //MARK: - Task Actions setup
     private func setupTakeOrFinishButtonCell()
     {
@@ -221,6 +218,8 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
             var footerView = HeaderFooterView<TaskActionsView>(.NibFile(name:"TaskActionsView", bundle:nil) )
             footerView.onSetupView = { view, section, formController in
                 view.delegate = self
+                view.taskStartDate = self.currentTask?.takenDate?.todayTimeOrDateStringRepresentation()
+                view.taskFinishDate = self.currentTask?.finishedDate?.todayTimeOrDateStringRepresentation()
             }
             
             footerView.height = { 100.0 }

@@ -26,6 +26,7 @@
                 </imageView>
                 <imageView contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" image="button_task_take" translatesAutoresizingMaskIntoConstraints="NO" id="fPq-vB-tfB">
                     <rect key="frame" x="158" y="8" width="59" height="59"/>
+                    <color key="backgroundColor" red="0.23529411759999999" green="0.52549019610000003" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="fPq-vB-tfB" secondAttribute="height" multiplier="1:1" id="EP5-BN-fFI"/>
@@ -34,8 +35,8 @@
                         <outletCollection property="gestureRecognizers" destination="7a1-Yb-Wop" appends="YES" id="yhy-dq-kBB"/>
                     </connections>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Take" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QFu-Lt-Lkh">
-                    <rect key="frame" x="170" y="83" width="35" height="24"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Action" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QFu-Lt-Lkh">
+                    <rect key="frame" x="162" y="83" width="52" height="24"/>
                     <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="18"/>
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
@@ -70,7 +71,7 @@
                 <constraint firstItem="ELZ-pu-9ga" firstAttribute="centerY" secondItem="frD-bb-gM5" secondAttribute="centerY" id="InW-7C-2Hd"/>
                 <constraint firstItem="fPq-vB-tfB" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.45" id="Ov2-Pm-gcf"/>
                 <constraint firstItem="QFu-Lt-Lkh" firstAttribute="centerX" secondItem="fPq-vB-tfB" secondAttribute="centerX" id="VET-za-yPx"/>
-                <constraint firstItem="ELZ-pu-9ga" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="61" id="VuN-wt-fQL"/>
+                <constraint firstItem="ELZ-pu-9ga" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="61" id="VuN-wt-fQL" userLabel="leading"/>
                 <constraint firstItem="fPq-vB-tfB" firstAttribute="leading" secondItem="frD-bb-gM5" secondAttribute="trailing" constant="16" id="YW6-IW-yvW"/>
                 <constraint firstItem="Kxb-aJ-rcs" firstAttribute="leading" secondItem="fPq-vB-tfB" secondAttribute="trailing" constant="16" id="a8G-X4-1vN"/>
                 <constraint firstItem="fPq-vB-tfB" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="gLC-Qq-B8O"/>
@@ -82,6 +83,7 @@
             <connections>
                 <outlet property="actionButtonImageView" destination="fPq-vB-tfB" id="s1p-dp-Im8"/>
                 <outlet property="actionTapRecognizer" destination="7a1-Yb-Wop" id="yaa-Wq-P54"/>
+                <outlet property="arrowLeadingConstraint" destination="VuN-wt-fQL" id="SZa-T6-XW2"/>
                 <outlet property="bottomLabel" destination="QFu-Lt-Lkh" id="bU0-Mk-8y7"/>
                 <outlet property="finishCheckmarkImageView" destination="Kxb-aJ-rcs" id="Poo-k2-gGX"/>
                 <outlet property="finishDateLabel" destination="gRN-W9-3kJ" id="njb-Mb-6Cj"/>

@@ -52,7 +52,7 @@
                     <rect key="frame" x="75" y="69" width="199" height="39"/>
                     <gestureRecognizers/>
                     <fontDescription key="fontDescription" name="SegoeUI-SemiBold" family="Segoe UI" pointSize="29"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="TwE-WU-FrC" appends="YES" id="5fE-Jz-afN"/>
