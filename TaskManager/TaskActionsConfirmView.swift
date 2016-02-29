@@ -150,7 +150,7 @@ class TaskActionsConfirmView : UIControl{
             return
         }
         
-        let attrs = [NSForegroundColorAttributeName : UIColor.appThemeColorBlue.colorWithAlphaComponent(0.9), NSFontAttributeName:buttonTitleFont]
+        let attrs = [NSForegroundColorAttributeName : UIColor.appThemeColorBlue, NSFontAttributeName:buttonTitleFont]
         
         let attrTitle = NSAttributedString(string: title, attributes: attrs)
         self.alternateActionButton.hidden = false

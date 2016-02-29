@@ -85,6 +85,8 @@ class TaskTableViewCell: UITableViewCell {
             {
                 self.taskStatusImageView?.image = defaultTaskStatusBackground
                 avatarView.image = nil
+                startTaskImageView.hidden = true
+                finishTaskImageView.hidden = true
             }
             
             finishDateLabel.text = task.finishedDate?.dateTimeCustomString()

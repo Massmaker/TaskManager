@@ -407,19 +407,16 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
             
             let difference = floor(currentPosition.y - currentCenter)
             
-            if difference < 0.0{
+            if difference > 0.0{
             
-                return
-            }
-            
-            self.tableView?.contentInset = UIEdgeInsetsMake(0, 0, difference, 0)
-            
-            if let footer = form[2].footer, let actionsView = footer.viewForSection(form[2], type: HeaderFooterType.Footer, controller: self) {
+                self.tableView?.contentInset = UIEdgeInsetsMake(0, 0, difference, 0)
                 
-                let frame = actionsView.frame
-                self.tableView?.scrollRectToVisible(frame, animated: true)
+                if let footer = form[2].footer, let actionsView = footer.viewForSection(form[2], type: HeaderFooterType.Footer, controller: self) {
+                    
+                    let frame = actionsView.frame
+                    self.tableView?.scrollRectToVisible(frame, animated: true)
+                }
             }
-            
             
             guard let confirmControl = TaskActionsConfirmView.loadFromNibNamed("TaskActionsConfirmView") as? TaskActionsConfirmView else {
                 
@@ -452,14 +449,6 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
                 confirmControl.setActionType(actionType)
                 confirmControl.showInView(self.view)
             }
-            
-           
-          
-            
-            
-            //TAKE task, CANCEL(don`t take, dismiss form)
-            
-            //CANCEL(dismiss form) FINISH task, STOP task (release)
         }
     }
     
