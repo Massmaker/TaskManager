@@ -12,6 +12,7 @@ class TaskActionsView: UIView {
 
     @IBOutlet weak var bottomLabel:UILabel!
     @IBOutlet weak var actionButtonImageView:UIImageView!
+    @IBOutlet weak var taskOwnerImageView:UIImageView!
     @IBOutlet weak var startArrowImageView:UIImageView!
     @IBOutlet weak var startDatelabel:UILabel!
     @IBOutlet weak var finishDateLabel:UILabel!
@@ -30,8 +31,20 @@ class TaskActionsView: UIView {
     
     var taskFinishDate:String?{
         didSet{
-            finishCheckmarkImageView.hidden = (taskFinishDate == nil)
             finishDateLabel.text = taskFinishDate
+            if let _ = taskFinishDate{
+               finishCheckmarkImageView.hidden = false
+                actionButtonImageView.image = UIImage(named:"icon_task_finished")
+            }
+            else{
+                finishCheckmarkImageView.hidden = true
+                actionButtonImageView.image = UIImage(named: "button_task_take")
+            }
+        }
+    }
+    var taskOwnerImage:UIImage?{
+        didSet{
+            taskOwnerImageView.image = taskOwnerImage
         }
     }
     
@@ -41,10 +54,12 @@ class TaskActionsView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        actionButtonImageView.layer.borderColor = UIColor.appThemeColorBlue.CGColor
-        actionButtonImageView.layer.borderWidth = 2.0
-        actionButtonImageView.layer.cornerRadius = actionButtonImageView.layer.bounds.size.height / 2.0
-        actionButtonImageView.layer.masksToBounds = true
+//        actionButtonImageView.layer.borderColor = UIColor.appThemeColorBlue.CGColor
+//        actionButtonImageView.layer.borderWidth = 2.0
+//        actionButtonImageView.layer.cornerRadius = actionButtonImageView.layer.bounds.size.height / 2.0
+//        actionButtonImageView.layer.masksToBounds = true
+        taskOwnerImageView.layer.masksToBounds = true
+        taskOwnerImageView.layer.cornerRadius = taskOwnerImageView.bounds.size.height / 2.0
         
         if self.bounds.size.width < 330.0{
             self.arrowLeadingConstraint.constant = 24.0

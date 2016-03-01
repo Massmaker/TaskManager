@@ -214,12 +214,28 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
             return
         }
         
+        let currentTaskOwnerId = currentTask?.currentOwnerId
+        
         let actionsSection = Section(){ section in
             var footerView = HeaderFooterView<TaskActionsView>(.NibFile(name:"TaskActionsView", bundle:nil) )
             footerView.onSetupView = { view, section, formController in
                 view.delegate = self
-                view.taskStartDate = self.currentTask?.takenDate?.todayTimeOrDateStringRepresentation()
-                view.taskFinishDate = self.currentTask?.finishedDate?.todayTimeOrDateStringRepresentation()
+                let startDate = self.currentTask?.takenDate?.todayTimeOrDateStringRepresentation()
+                let finishDate = self.currentTask?.finishedDate?.todayTimeOrDateStringRepresentation()
+                view.taskStartDate = startDate
+                view.taskFinishDate = finishDate
+                
+                if let _ = startDate, taskOwner = currentTaskOwnerId{
+                    if taskOwner == currentLoggedUserID{
+                        view.taskOwnerImage = DocumentsFolderFileHandler.getAvatarImageFromDocumentsForUserId(taskOwner)
+                    }
+                    else{
+                        view.taskOwnerImage = anAppDelegate()?.coreDatahandler?.findContactByPhone(taskOwner)?.avatarImage ?? testAvatarImage
+                    }
+                }
+                else{
+                    view.taskOwnerImage = nil
+                }
             }
             
             footerView.height = { 100.0 }
@@ -236,7 +252,7 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
             return
         }
         
-        if let taskOwnerId = currentTask?.currentOwnerId where taskOwnerId == currentLoggedUserID {
+        if let taskOwnerId = currentTaskOwnerId where taskOwnerId == currentLoggedUserID {
             if currentTask?.dateFinished == 0{
                 if currentTask?.dateTaken == 0{
                     form[2] = actionsSection
