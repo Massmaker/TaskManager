@@ -248,61 +248,41 @@ class BoardEditViewController: FormViewController {
         addRegisteredContacts(registered, toSection: aSection)
     }
     
-    private func addRegisteredContacts(contacts:[User], toSection section:Section)
-    {
+    private func addRegisteredContacts(contacts:[User], toSection section:Section){
         let editable = checkEditingEnabled()
-        if editable
-        {
-            for aUser in contacts
-            {
-                let contactCheckRow = CheckRow().cellSetup(){ (cell, row) -> () in
-                    row.title = aUser.displayName
-                    row.value = (self.tempParticimantIDs.contains(aUser.phone!))
-                    //row.disabled = self.editingDisabledForBoard
-                }
+        
+        for aUser in contacts{
+            let phone = aUser.phone!
+            
+            let contactCheckRow = CheckRowSubclass().cellSetup(){ (cell, row) in
                 
-//                if editable
-//                {
-                    contactCheckRow.onChange(){ (chRow) -> () in
-                        
-                        if chRow.value == true
-                        {
-                            self.tempParticimantIDs.insert(aUser.phone!)
-                        }
-                        else
-                        {
-                            self.tempParticimantIDs.remove(aUser.phone!)
-                        }
-                        
-                        self.checkSaveButtonEnabled()
-                    }
-//                }
-                
-                section <<< contactCheckRow
+                row.value = self.tempParticimantIDs.contains(phone)
+                let taskTitle = anAppDelegate()?.coreDatahandler?.findActiveTasksForUserById(aUser.phone!)?.first?.title
+                cell.info = (aUser, taskTitle)
+                cell.selectionStyle = .None
+                cell.radioCheckView?.backGroundColor = (editable) ? UIColor.appThemeColorBlue : UIColor.appThemeColorBlue.colorWithAlphaComponent(0.7)
+                cell.editingEnabled = editable
             }
-        }
-        else
-        {
-            for aUser in contacts
-            {
-                let contactCheckRow = LabelRow().cellSetup(){ (cell, row) -> () in
-                    //row.value = NSLocalizedString("add", comment: "titleName for table view cell")
-                    row.title = aUser.displayName
-                    cell.textLabel?.opaque = true
-                    cell.textLabel?.backgroundColor = UIColor.clearColor()
+            
+            if editable{
+                contactCheckRow.onChange(){(row) in
                     
-                    if (self.tempParticimantIDs.contains(aUser.phone!))
+                    if row.value == true
                     {
-                        cell.contentView.backgroundColor = UIColor.greenColor().colorWithAlphaComponent(0.5)
+                        self.tempParticimantIDs.insert(phone)
                     }
+                    else
+                    {
+                        self.tempParticimantIDs.remove(phone)
+                    }
+                    
+                    self.checkSaveButtonEnabled()
                 }
-                
-                section <<< contactCheckRow
             }
+            
+            section <<< contactCheckRow
         }
-      
     }
-    
     //MARK: -
     @IBAction func cancelBarButtonAction(sender:AnyObject?)
     {

@@ -112,6 +112,10 @@
 		F895CD541C5F8B7F00D08EE9 /* NotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD531C5F8B7F00D08EE9 /* NotificationsHandler.swift */; };
 		F8BFD4D71C807E7D008081C6 /* TaskActionsConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BFD4D61C807E7D008081C6 /* TaskActionsConfirmView.swift */; };
 		F8BFD4D91C808E1E008081C6 /* TaskActionsConfirmView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8BFD4D81C808E1E008081C6 /* TaskActionsConfirmView.xib */; };
+		F8C231451C85D468003C600A /* ContactSelectableTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C231441C85D468003C600A /* ContactSelectableTableCell.swift */; };
+		F8C231471C85D63E003C600A /* RadioCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C231461C85D63E003C600A /* RadioCheckbox.swift */; };
+		F8C231491C85D85A003C600A /* RadioCheckbox.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C231481C85D85A003C600A /* RadioCheckbox.xib */; };
+		F8C231511C85EB2D003C600A /* ContactSelectableTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C2314F1C85EB2D003C600A /* ContactSelectableTableCell.xib */; };
 		F8DD67581C5A0EB300258E44 /* Extensions+NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */; };
 		F8DD675E1C5A15C500258E44 /* BoardDetailsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */; };
 		F8DD67601C5A15ED00258E44 /* BoardDetailsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */; };
@@ -233,6 +237,10 @@
 		F895CD531C5F8B7F00D08EE9 /* NotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHandler.swift; sourceTree = "<group>"; };
 		F8BFD4D61C807E7D008081C6 /* TaskActionsConfirmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskActionsConfirmView.swift; sourceTree = "<group>"; };
 		F8BFD4D81C808E1E008081C6 /* TaskActionsConfirmView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskActionsConfirmView.xib; sourceTree = "<group>"; };
+		F8C231441C85D468003C600A /* ContactSelectableTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactSelectableTableCell.swift; sourceTree = "<group>"; };
+		F8C231461C85D63E003C600A /* RadioCheckbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioCheckbox.swift; sourceTree = "<group>"; };
+		F8C231481C85D85A003C600A /* RadioCheckbox.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RadioCheckbox.xib; sourceTree = "<group>"; };
+		F8C2314F1C85EB2D003C600A /* ContactSelectableTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactSelectableTableCell.xib; sourceTree = "<group>"; };
 		F8DD67571C5A0EB300258E44 /* Extensions+NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+NSDate.swift"; sourceTree = "<group>"; };
 		F8DD675D1C5A15C500258E44 /* BoardDetailsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardDetailsHeader.swift; sourceTree = "<group>"; };
 		F8DD675F1C5A15ED00258E44 /* BoardDetailsHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BoardDetailsHeader.xib; sourceTree = "<group>"; };
@@ -282,6 +290,8 @@
 				F83B7D291C6CB67600A24A56 /* FloatingButtonHolder.swift */,
 				F83D66681C7B4D72007E67E7 /* ActionController.swift */,
 				F83D66691C7B4D72007E67E7 /* ActionController.xib */,
+				F8C231461C85D63E003C600A /* RadioCheckbox.swift */,
+				F8C231481C85D85A003C600A /* RadioCheckbox.xib */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -510,6 +520,8 @@
 				F84D68A81C4CEB6900EF8A16 /* ContactsCollectionViewController.swift */,
 				F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */,
 				F84D68F61C4CF8E700EF8A16 /* ContactProfileViewController.swift */,
+				F8C231441C85D468003C600A /* ContactSelectableTableCell.swift */,
+				F8C2314F1C85EB2D003C600A /* ContactSelectableTableCell.xib */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -655,6 +667,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8C231491C85D85A003C600A /* RadioCheckbox.xib in Resources */,
 				F8547FE41C7F343B00296B45 /* seguisb.ttf in Resources */,
 				F84D68BF1C4CEB6900EF8A16 /* DigitsKitResources.bundle in Resources */,
 				F8BFD4D91C808E1E008081C6 /* TaskActionsConfirmView.xib in Resources */,
@@ -665,6 +678,7 @@
 				F8547FE61C7F407E00296B45 /* BoardsAnimatedHeader.xib in Resources */,
 				F8547FE31C7F343B00296B45 /* segoeuil.ttf in Resources */,
 				F8DD67601C5A15ED00258E44 /* BoardDetailsHeader.xib in Resources */,
+				F8C231511C85EB2D003C600A /* ContactSelectableTableCell.xib in Resources */,
 				F8547FE21C7F343B00296B45 /* segoeui.ttf in Resources */,
 				F8547FCF1C7F0A4000296B45 /* TaskActionsView.xib in Resources */,
 				F84D68F11C4CEDFB00EF8A16 /* TaskManager.storyboard in Resources */,
@@ -756,6 +770,7 @@
 				F84B4D691C4E69240013D7F1 /* TasksHolder.swift in Sources */,
 				F80191C01C50F94D0007D2AF /* RecordIdIndexable.swift in Sources */,
 				F84D68DF1C4CEB6900EF8A16 /* TabBarViewController.swift in Sources */,
+				F8C231451C85D468003C600A /* ContactSelectableTableCell.swift in Sources */,
 				F84D68D61C4CEB6900EF8A16 /* UserAuthenticating.swift in Sources */,
 				F84D68FF1C4D230600EF8A16 /* PublicUserRecordHandling.swift in Sources */,
 				F84D68C31C4CEB6900EF8A16 /* Board.swift in Sources */,
@@ -804,6 +819,7 @@
 				F84D68661C4CEB2E00EF8A16 /* AppDelegate.swift in Sources */,
 				F84D68B61C4CEB6900EF8A16 /* CloudKitDatabaseHandler.swift in Sources */,
 				F84D68F51C4CF8DF00EF8A16 /* BoardEditViewController.swift in Sources */,
+				F8C231471C85D63E003C600A /* RadioCheckbox.swift in Sources */,
 				F84D68C91C4CEB6900EF8A16 /* ContactsFetcherIOS9.swift in Sources */,
 				F84D68C41C4CEB6900EF8A16 /* Task+CoreDataProperties.swift in Sources */,
 				F84CAD0F1C5624F000BC2ECC /* UserProfileViewController.swift in Sources */,

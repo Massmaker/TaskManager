@@ -131,7 +131,7 @@ class TaskActionsConfirmView : UIControl{
     
     private func setupCancelButtonWithTitle(title:String) {
         
-        let attrs = [NSFontAttributeName:buttonTitleFont, NSForegroundColorAttributeName:UIColor.whiteColor()]
+        let attrs = [NSFontAttributeName:buttonTitleFont, NSForegroundColorAttributeName:UIColor.redColor()]
         
         self.dismissButton.setAttributedTitle(NSAttributedString(string: title, attributes: attrs), forState: .Normal)
     }

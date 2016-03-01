@@ -25,45 +25,51 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IG2-wr-DQ4" userLabel="actionButtonButton">
-                    <rect key="frame" x="8" y="62" width="46" height="30"/>
-                    <state key="normal" title="Button"/>
+                <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gOv-Br-Xhb">
+                    <rect key="frame" x="16" y="56" width="52" height="28"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <inset key="contentEdgeInsets" minX="4" minY="5" maxX="4" maxY="5"/>
+                    <state key="normal" title="Action"/>
                     <connections>
-                        <action selector="actionButtonTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="5ev-pT-Yp1"/>
+                        <action selector="actionButtonTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="OFO-bn-FVi"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E7a-oa-wUo" userLabel="cancelButton">
-                    <rect key="frame" x="546" y="62" width="46" height="30"/>
-                    <state key="normal" title="Button"/>
+                <button hidden="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50z-rc-h4O">
+                    <rect key="frame" x="263" y="56" width="75" height="28"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <inset key="contentEdgeInsets" minX="4" minY="5" maxX="4" maxY="5"/>
+                    <state key="normal" title="additional"/>
                     <connections>
-                        <action selector="dismissButtonTouchUpInside" destination="iN0-l3-epB" eventType="touchUpInside" id="R4A-HG-e8n"/>
+                        <action selector="actionButtonTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="Qpu-Aq-XjZ"/>
                     </connections>
                 </button>
-                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7i2-sE-g0q" userLabel="optionalActionButton">
-                    <rect key="frame" x="277" y="62" width="46" height="30"/>
-                    <state key="normal" title="Button"/>
+                <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YLb-50-I8x">
+                    <rect key="frame" x="528" y="56" width="56" height="28"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <inset key="contentEdgeInsets" minX="4" minY="5" maxX="4" maxY="5"/>
+                    <state key="normal" title="Cancel"/>
                     <connections>
-                        <action selector="actionButtonTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="5SF-gc-5Zf"/>
+                        <action selector="dismissButtonTouchUpInside" destination="iN0-l3-epB" eventType="touchUpInside" id="SJM-dn-itg"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="7i2-sE-g0q" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="CeQ-gc-drT"/>
+                <constraint firstAttribute="bottom" secondItem="YLb-50-I8x" secondAttribute="bottom" constant="16" id="2gT-TG-xVz"/>
+                <constraint firstItem="gOv-Br-Xhb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="AUy-p2-4e1"/>
                 <constraint firstItem="V26-sf-Nri" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="DsC-7x-7Ol"/>
+                <constraint firstAttribute="trailing" secondItem="YLb-50-I8x" secondAttribute="trailing" constant="16" id="Mol-3Z-KeO"/>
                 <constraint firstAttribute="trailing" secondItem="V26-sf-Nri" secondAttribute="trailing" constant="8" id="Q4J-aW-lNk"/>
                 <constraint firstItem="V26-sf-Nri" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="Ydv-6T-VsA"/>
-                <constraint firstAttribute="bottom" secondItem="IG2-wr-DQ4" secondAttribute="bottom" constant="8" id="gVE-o7-YYx"/>
-                <constraint firstItem="IG2-wr-DQ4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="n47-xI-iL8"/>
-                <constraint firstAttribute="bottom" secondItem="E7a-oa-wUo" secondAttribute="bottom" constant="8" id="puE-Li-E6z"/>
-                <constraint firstAttribute="trailing" secondItem="E7a-oa-wUo" secondAttribute="trailing" constant="8" id="sMG-1z-uUP"/>
-                <constraint firstAttribute="bottom" secondItem="7i2-sE-g0q" secondAttribute="bottom" constant="8" id="vdj-sy-28E"/>
+                <constraint firstAttribute="bottom" secondItem="50z-rc-h4O" secondAttribute="bottom" constant="16" id="Zwx-3x-aTa"/>
+                <constraint firstItem="50z-rc-h4O" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="mrm-ES-cQn"/>
+                <constraint firstAttribute="bottom" secondItem="gOv-Br-Xhb" secondAttribute="bottom" constant="16" id="o9X-tr-5py"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="actionButton" destination="IG2-wr-DQ4" id="9Hb-Pg-um9"/>
-                <outlet property="alternateActionButton" destination="7i2-sE-g0q" id="XtX-gX-oFT"/>
-                <outlet property="dismissButton" destination="E7a-oa-wUo" id="Db3-ld-M7f"/>
+                <outlet property="actionButton" destination="gOv-Br-Xhb" id="10S-sq-A60"/>
+                <outlet property="alternateActionButton" destination="50z-rc-h4O" id="xpG-7m-RhU"/>
+                <outlet property="dismissButton" destination="YLb-50-I8x" id="fuJ-91-Pne"/>
                 <outlet property="titleLabel" destination="V26-sf-Nri" id="uBt-tr-Bb7"/>
             </connections>
         </view>
