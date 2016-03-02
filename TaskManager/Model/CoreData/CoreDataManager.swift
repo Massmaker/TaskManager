@@ -665,9 +665,9 @@ class CoreDataManager
            
                 foundTask.recordId = aRecord.recordID.recordName
 
-                if let ownerID = aRecord[CurrentOwnerStringKey] as? String, userFound = findContactByPhone(ownerID)
+                if let ownerID = aRecord[CurrentOwnerStringKey] as? String
                 {
-                    foundTask.currentOwner = userFound
+                    foundTask.currentOwnerId = ownerID
                 }
                 
                 print(" - Updated TASK")
@@ -685,9 +685,9 @@ class CoreDataManager
                 newTask.board = board
                 
            
-                if let ownerID = aRecord[CurrentOwnerStringKey] as? String, userFound = findContactByPhone(ownerID)
+                if let ownerID = aRecord[CurrentOwnerStringKey] as? String
                 {
-                    newTask.currentOwner = userFound
+                    newTask.currentOwnerId = ownerID
                 }
                 print(" - Inserted TASK")
             }

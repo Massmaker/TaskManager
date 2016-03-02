@@ -10,7 +10,7 @@ import UIKit
 import Eureka
 import CloudKit
 
-class BoardEditViewController: FormViewController {
+class BoardEditViewController: FormViewController, BoardDetailsHeaderDelegate {
     
     weak var boardsHolder:BoardsHolder?
     
@@ -59,12 +59,38 @@ class BoardEditViewController: FormViewController {
     
     private func populateTableViewWithBoard(board:Board?)
     {
-        let titleSectionTitle = "board title"
-        let detailsSectionTitle = "board details"
+        let titleSectionTitle = NSLocalizedString("Board Title", comment: "board title header text")
+        let detailsSectionTitle = NSLocalizedString( "Board Details", comment: "board details header text")
+        let headerHeight = CGFloat(30.0)
+        
+        //prepare Title header
+        var titleHeader = HeaderFooterView<TaskActionsSectionTitleHeader>(.NibFile(name:"TaskActionsSectionTitleHeader", bundle:nil))
+        
+        titleHeader.onSetupView = {titleHeader, _, _ in
+            
+            titleHeader.titleLabel.text = titleSectionTitle
+        }
+        
+        titleHeader.height = {headerHeight}
+        
+        
+        // prepare Details header
+        var detailsHeader = HeaderFooterView<TaskActionsSectionTitleHeader>(.NibFile(name:"TaskActionsSectionTitleHeader", bundle:nil))
+        
+        detailsHeader.onSetupView = {header, _, _ in
+            
+            header.titleLabel.text = detailsSectionTitle
+        }
+        
+        detailsHeader.height = {headerHeight}
+        
+        
         guard let editableBoard = board else
         {
             form +++
-                Section(titleSectionTitle)                
+                Section(){titleSection in
+                    titleSection.header = titleHeader
+                }
                 <<< TextAreaRow(){ $0.placeholder = "Enter board title"}.onChange(){ [unowned self](row) -> () in
                         if let title = row.value
                         {
@@ -88,7 +114,11 @@ class BoardEditViewController: FormViewController {
                         }
                         self.checkSaveButtonEnabled()
                     }//onChange end
-                +++ Section(detailsSectionTitle)
+                
+                +++ Section(){ detailsSection in
+                    detailsSection.header = detailsHeader
+                }
+                
                 <<< TextAreaRow(){ $0.placeholder = "Enter board description"}.onChange(){[unowned self] (row) -> () in
                         if let details = row.value
                         {
@@ -121,10 +151,12 @@ class BoardEditViewController: FormViewController {
         form +++
             Section(){ section in
                 var header = HeaderFooterView<BoardDetailsHeader>(.NibFile(name:"BoardDetailsHeader", bundle:nil))
+        
                 header.onSetupView = {view, section, formController in
                     view.nameLabel.text = "name"
                     view.dateLabel.text = editableBoard.shortDateString
                     view.avatarView.image = testAvatarImage
+                    
                     if let creatorId = board?.creatorId
                     {
                         if creatorId == anAppDelegate()!.cloudKitHandler.publicCurrentUser!.recordID.recordName
@@ -135,12 +167,27 @@ class BoardEditViewController: FormViewController {
                             lvContact.lastName = UserDefaultsManager.getUserLastNameFromDefaults()
                             
                             view.nameLabel.text = lvContact.displayName
+                            //we can delete own boards
+                            view.headerDelegate = self
+                            view.deleteButton.hidden = false
                         }
                         else if let foundUser = ContactsHandler.sharedInstance.contactByPhone(creatorId)
                         {
                             view.nameLabel.text = foundUser.displayName
                             view.avatarView.image = foundUser.avatarImage
+                            
+                            //we cannot delete boards created by other users
+                            view.deleteButton.hidden = true
+                            view.headerDelegate = nil
                         }
+                        else{
+                            view.deleteButton.hidden = true
+                            view.headerDelegate = nil
+                        }
+                    }
+                    else{
+                        view.deleteButton.hidden = true
+                        view.headerDelegate = nil
                     }
                 }
                 
@@ -150,7 +197,9 @@ class BoardEditViewController: FormViewController {
             }
         
             +++
-            Section(titleSectionTitle)
+            Section(){ titleSection in
+                titleSection.header = titleHeader
+            }
             <<< TextAreaRow(){
                 
                     $0.disabled = editingDisabledForBoard
@@ -163,11 +212,16 @@ class BoardEditViewController: FormViewController {
                         self.currentBoard?.title = titleText
                         self.checkSaveButtonEnabled()
                     }
+                }.cellSetup { (cell, _) -> () in
+                    cell.textView.textContainerInset = UIEdgeInsetsMake(0, 48.0, 0, 0)
                 }
             
             +++
             
-            Section(detailsSectionTitle)
+            Section(){ detailsSection in
+                detailsSection.header = detailsHeader
+            }
+            
             <<< TextAreaRow(){
                 
                     $0.value = editableBoard.details
@@ -184,6 +238,8 @@ class BoardEditViewController: FormViewController {
                         self.currentBoard?.details = ""
                     }
                     self.checkSaveButtonEnabled()
+                }.cellSetup { (cell, _) -> () in
+                    cell.textView.textContainerInset = UIEdgeInsetsMake(0, 48.0, 0, 0)
                 }
         
         addContactsSection()
@@ -241,7 +297,20 @@ class BoardEditViewController: FormViewController {
         }
         
         let contactsSectionTitle = NSLocalizedString("Participants", comment:"")
-        let aSection =  Section(contactsSectionTitle)
+        
+        //prepare Title header
+        var titleHeader = HeaderFooterView<TaskActionsSectionTitleHeader>(.NibFile(name:"TaskActionsSectionTitleHeader", bundle:nil))
+        
+        titleHeader.onSetupView = {titleHeader, _, _ in
+            
+            titleHeader.titleLabel.text = contactsSectionTitle
+        }
+        
+        titleHeader.height = {30.0}
+        
+        let aSection =  Section(){ section in
+            section.header = titleHeader
+        }
         
         form +++ aSection
         
@@ -283,6 +352,7 @@ class BoardEditViewController: FormViewController {
             section <<< contactCheckRow
         }
     }
+    
     //MARK: -
     @IBAction func cancelBarButtonAction(sender:AnyObject?)
     {
@@ -330,4 +400,39 @@ class BoardEditViewController: FormViewController {
             self.cancelBarButtonAction(nil)
         }
     }
+    
+    func deleteBoard(){
+        guard let board = self.currentBoard else{
+            return
+        }
+        
+        self.boardsHolder?.handleDeletingBoard(board)
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    //MARK: - BoardDetailsHeaderDelegate
+    func boardsHeaderDeleteButtonTapped(sender:UIButton?) {
+    
+        let alertController = UIAlertController(title: "Confirm deletion", message: "Sure to delete board and all tasks in it?", preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let action = UIAlertAction(title: "Delete", style: .Destructive) {[weak self] _ in
+            self?.deleteBoard()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        alertController.addAction(action)
+        
+        if UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.Pad{
+            alertController.modalPresentationStyle = UIModalPresentationStyle.Popover
+            guard let popPresenter = alertController.popoverPresentationController else{
+                return
+            }
+
+            popPresenter.sourceView = sender
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
+        else{
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
+    }
+    
 }

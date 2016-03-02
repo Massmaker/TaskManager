@@ -15,7 +15,7 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JTz-3Z-NOy">
                     <rect key="frame" x="17" y="19" width="50" height="50"/>
-                    <color key="backgroundColor" red="0.68792682886123657" green="0.81239610910415649" blue="0.93327242136001587" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="JTz-3Z-NOy" secondAttribute="height" multiplier="1:1" id="mgw-Nz-0oo"/>
                     </constraints>
@@ -30,10 +30,10 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="color" keyPath="dotBackgroundColor">
-                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="color" keyPath="backGroundColor">
-                    <color key="value" red="0.54149785937631589" green="0.52549019610000003" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="value" red="0.60000002384185791" green="0.40000000596046448" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <connections>

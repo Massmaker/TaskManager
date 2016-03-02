@@ -13,6 +13,8 @@ class BoardDetailsHeader: UIView {
     @IBOutlet weak var avatarView:UIImageView!
     @IBOutlet weak var dateLabel:UILabel!
     @IBOutlet weak var nameLabel:UILabel!
+    @IBOutlet weak var deleteButton:UIButton!
+    weak var headerDelegate:BoardDetailsHeaderDelegate?
     
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -22,4 +24,7 @@ class BoardDetailsHeader: UIView {
     }
 
 
+    @IBAction func deleteAction(sender:UIButton){
+        self.headerDelegate?.boardsHeaderDeleteButtonTapped(sender)
+    }
 }

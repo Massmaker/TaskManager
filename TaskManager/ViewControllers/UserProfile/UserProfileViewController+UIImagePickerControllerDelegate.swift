@@ -34,6 +34,7 @@ extension UserProfileViewController : UIImagePickerControllerDelegate, UINavigat
         picker.dismissViewControllerAnimated(true, completion: {[unowned self] in
             
             self.documentsFileHandler.saveAvatarImageToDocuments(avatarThumbnail, forUserId: userPhone)
+            anAppDelegate()?.cloudKitHandler.resetCurrentUserAvatarImage()
         })
         
         

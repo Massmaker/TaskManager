@@ -343,7 +343,8 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
         
         boardsHolder.fetchBoardsFromCoreData()
         
-        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0,1)), withRowAnimation: .Automatic)
+        self.tableView.reloadData()
+        //self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0,1)), withRowAnimation: .Automatic)
       
         
         if let control = self.refreshControl

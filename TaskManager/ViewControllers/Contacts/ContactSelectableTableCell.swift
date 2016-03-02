@@ -10,7 +10,6 @@ import UIKit
 import Eureka
 
 
-
 class ContactSelectableTableCell: CheckCell {
     
     static let className = "ContactSelectableTableCell"

@@ -26,63 +26,53 @@ class TaskTableViewCell: UITableViewCell {
     
     func setCurrentTask(taskInfo :Task?)
     {
-        if let task = taskInfo
-        {
-            if task.takenDate != nil && task.finishedDate == nil
-            {
+        if let task = taskInfo{
+            
+            if task.takenDate != nil && task.finishedDate == nil{
+                
                 finishTaskImageView.hidden = true
                 startTaskImageView.hidden = false
                 self.taskStatusImageView.image = defaultTaskStatusBackground
                 
-                if let currentOwner = task.currentOwner
-                {
-                    avatarView.image = currentOwner.avatarImage ?? testAvatarImage
-                }
-                else if let currentTaskOwnerID = task.currentOwnerId
-                {
-                    if currentTaskOwnerID == anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName
-                    {
+                if let currentTaskOwnerID = task.currentOwnerId{
+                    if currentTaskOwnerID == anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName{
                         avatarView.image = anAppDelegate()?.cloudKitHandler.currentUserAvatar ?? testAvatarImage
                     }
-                    else if let foundContact = anAppDelegate()?.coreDatahandler?.findContactByPhone(currentTaskOwnerID)
-                    {
+                    else if let foundContact = anAppDelegate()?.coreDatahandler?.findContactByPhone(currentTaskOwnerID){
                         avatarView.image = foundContact.avatarImage ?? testAvatarImage
                     }
-                    else
-                    {
+                    else{
                         avatarView.image = testAvatarImage
                     }
                 }
+                else{
+                    avatarView.image = testAvatarImage
+                }
             }
-            else if task.finishedDate != nil && task.takenDate != nil
-            {
+            else if task.finishedDate != nil && task.takenDate != nil{
                 //task is finished
                 finishTaskImageView.hidden = false
                 startTaskImageView.hidden = false
                 self.taskStatusImageView.image = finishedTaskStatusBackground
                 
-                if let currentOwner = task.currentOwner
-                {
-                    avatarView.image = currentOwner.avatarImage ?? testAvatarImage
-                }
-                else if let currentTaskOwnerID = task.currentOwnerId
-                {
-                    if currentTaskOwnerID == anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName
-                    {
+                if let currentTaskOwnerID = task.currentOwnerId{
+                    
+                    if currentTaskOwnerID == anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName{
                         avatarView.image = anAppDelegate()?.cloudKitHandler.currentUserAvatar ?? testAvatarImage
                     }
-                    else if let foundContact = anAppDelegate()?.coreDatahandler?.findContactByPhone(currentTaskOwnerID)
-                    {
+                    else if let foundContact = anAppDelegate()?.coreDatahandler?.findContactByPhone(currentTaskOwnerID){
                         avatarView.image = foundContact.avatarImage ?? testAvatarImage
                     }
-                    else
-                    {
+                    else{
                         avatarView.image = testAvatarImage
                     }
                 }
+                else{
+                    avatarView.image = testAvatarImage
+                }
             }
-            else
-            {
+            else{
+                
                 self.taskStatusImageView?.image = defaultTaskStatusBackground
                 avatarView.image = nil
                 startTaskImageView.hidden = true
@@ -96,8 +86,7 @@ class TaskTableViewCell: UITableViewCell {
             titleLabel.text = task.title
             detailsLabel.text = task.details
         }
-        else
-        {
+        else{
             self.taskStatusImageView.image = defaultTaskStatusBackground
             finishDateLabel.text = nil
             startDateLabel.text = nil

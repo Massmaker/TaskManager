@@ -63,6 +63,9 @@ class CloudKitDatabaseHandler{
         self.privateDB = container.privateCloudDatabase
     }
 
+    func resetCurrentUserAvatarImage(){
+        pCurrentUserAvatar = UIImage()
+    }
    
     //MARK: - 
     func deleteCurrentUserRecord()

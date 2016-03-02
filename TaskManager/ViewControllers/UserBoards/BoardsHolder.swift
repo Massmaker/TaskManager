@@ -164,6 +164,30 @@ class BoardsHolder : NSObject {
         return result
     }
     
+    func handleDeletingBoard(board:Board) {
+        
+        guard let boardID = board.recordId else{
+            return
+        }
+        let tasksIDs = board.taskIDsSet
+        
+        if !tasksIDs.isEmpty{
+            let arrayOfIDs = Array(tasksIDs)
+            anAppDelegate()?.cloudKitHandler.deleteTasks(arrayOfIDs){ (deletedIDs, deletionError) -> () in
+                if let anError = deletionError{
+                    print(anError)
+                }
+                else{
+                    print("Deleted tasks for deleting board: \n taskRecordIDs: \(deletedIDs)")
+                }
+            }
+        }
+        
+        self.deleteFromDatabase(board)
+        anAppDelegate()?.coreDatahandler?.appendBoardIDToDelete(boardID)
+        anAppDelegate()?.coreDatahandler?.startBoardsDeletionToCloudKit()
+    }
+    
     func updateBoardsSortIndexes()
     {
         let actualizedBoards = self.currentBoards.filter { (board) -> Bool in

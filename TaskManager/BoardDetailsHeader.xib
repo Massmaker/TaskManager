@@ -3,50 +3,92 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="segoeui.ttf">
+            <string>SegoeUI</string>
+        </mutableArray>
+        <mutableArray key="seguisb.ttf">
+            <string>SegoeUI-SemiBold</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="BoardDetailsHeader" customModule="TaskManager" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="221"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zG-uj-AQV">
-                    <rect key="frame" x="8" y="96" width="27" height="16"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jTE-0W-dLd">
+                    <rect key="frame" x="60" y="16" width="70" height="70"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="70" id="JQn-ET-h8n"/>
+                        <constraint firstAttribute="height" constant="70" id="xhM-Df-daO"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_task_arrow_start" translatesAutoresizingMaskIntoConstraints="NO" id="MV9-Vy-gdd" userLabel="arrowImageView">
+                    <rect key="frame" x="138" y="58" width="25" height="25"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="0.23529411759999999" green="0.52549019610000003" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="ktG-Rg-luE"/>
+                        <constraint firstAttribute="height" constant="25" id="xWz-cY-JTd"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idz-wL-R4I">
+                    <rect key="frame" x="171" y="60" width="32" height="22"/>
+                    <fontDescription key="fontDescription" name="SegoeUI" family="Segoe UI" pointSize="16"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rxE-Ot-QAg">
-                    <rect key="frame" x="101" y="8" width="211" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kP1-gV-gUc">
+                    <rect key="frame" x="264" y="16" width="40" height="40"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="VsJ-vn-YgB"/>
+                        <constraint firstAttribute="width" secondItem="kP1-gV-gUc" secondAttribute="height" multiplier="1:1" id="dt6-XY-pVS"/>
+                    </constraints>
+                    <color key="tintColor" red="0.23529411759999999" green="0.52549019610000003" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <inset key="contentEdgeInsets" minX="15" minY="10" maxX="10" maxY="15"/>
+                    <state key="normal" image="icon_cross"/>
+                    <connections>
+                        <action selector="deleteAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="Dzg-1q-yct"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jacob" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rxE-Ot-QAg">
+                    <rect key="frame" x="143" y="16" width="52" height="27"/>
+                    <fontDescription key="fontDescription" name="SegoeUI-SemiBold" family="Segoe UI" pointSize="20"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jTE-0W-dLd">
-                    <rect key="frame" x="8" y="8" width="80" height="80"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="80" id="JQn-ET-h8n"/>
-                        <constraint firstAttribute="height" constant="80" id="xhM-Df-daO"/>
-                    </constraints>
-                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="8zG-uj-AQV" secondAttribute="bottom" constant="8" id="3ff-CU-XkJ"/>
-                <constraint firstItem="jTE-0W-dLd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="TpJ-PA-8x6"/>
-                <constraint firstAttribute="trailing" secondItem="rxE-Ot-QAg" secondAttribute="trailing" constant="8" id="a5X-ux-6fe"/>
-                <constraint firstItem="8zG-uj-AQV" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="hQf-1D-xq7"/>
-                <constraint firstItem="jTE-0W-dLd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="hjV-fh-u3w"/>
-                <constraint firstItem="rxE-Ot-QAg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="ow3-4u-ceM"/>
+                <constraint firstItem="MV9-Vy-gdd" firstAttribute="top" secondItem="rxE-Ot-QAg" secondAttribute="bottom" constant="15" id="7di-Y9-YLJ"/>
+                <constraint firstItem="kP1-gV-gUc" firstAttribute="top" secondItem="jTE-0W-dLd" secondAttribute="top" id="QRg-fd-wV0"/>
+                <constraint firstItem="jTE-0W-dLd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="TpJ-PA-8x6"/>
+                <constraint firstItem="kP1-gV-gUc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="rxE-Ot-QAg" secondAttribute="trailing" constant="5" id="aQ5-x0-2QG"/>
+                <constraint firstAttribute="trailing" secondItem="kP1-gV-gUc" secondAttribute="trailing" constant="16" id="blq-V5-JFN"/>
+                <constraint firstItem="idz-wL-R4I" firstAttribute="leading" secondItem="MV9-Vy-gdd" secondAttribute="trailing" constant="8" id="bsE-Kj-Dfg"/>
+                <constraint firstItem="idz-wL-R4I" firstAttribute="centerY" secondItem="MV9-Vy-gdd" secondAttribute="centerY" id="eO3-IT-y6D"/>
+                <constraint firstItem="jTE-0W-dLd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="60" id="hjV-fh-u3w"/>
+                <constraint firstItem="MV9-Vy-gdd" firstAttribute="leading" secondItem="jTE-0W-dLd" secondAttribute="trailing" constant="8" id="oj4-uB-0kf"/>
+                <constraint firstItem="rxE-Ot-QAg" firstAttribute="top" secondItem="jTE-0W-dLd" secondAttribute="top" id="rAq-8l-RIJ"/>
                 <constraint firstItem="rxE-Ot-QAg" firstAttribute="leading" secondItem="jTE-0W-dLd" secondAttribute="trailing" constant="13" id="tVE-sZ-PG5"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="avatarView" destination="jTE-0W-dLd" id="QFZ-Ih-ltJ"/>
-                <outlet property="dateLabel" destination="8zG-uj-AQV" id="wLm-V8-gzX"/>
+                <outlet property="dateLabel" destination="idz-wL-R4I" id="EEp-nl-nfv"/>
+                <outlet property="deleteButton" destination="kP1-gV-gUc" id="HXt-Hh-4EV"/>
                 <outlet property="nameLabel" destination="rxE-Ot-QAg" id="17T-H7-E32"/>
             </connections>
+            <point key="canvasLocation" x="398" y="535.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="icon_cross" width="40" height="40"/>
+        <image name="icon_task_arrow_start" width="25" height="25"/>
+    </resources>
 </document>

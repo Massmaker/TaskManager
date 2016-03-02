@@ -8,25 +8,23 @@
 
 import UIKit
 
-@IBDesignable
-public
 class RadioCheckbox: UIView {
 
-    @IBInspectable
+    //@IBInspectable
     var backGroundColor:UIColor?{
         didSet{
             self.backgroundColor = backGroundColor ?? UIColor.appThemeColorBlue
         }
     }
     
-    @IBInspectable
+    //@IBInspectable
     var dotBackgroundColor:UIColor?{
         didSet{
             self.dotView?.backgroundColor = dotBackgroundColor ?? UIColor.whiteColor()
         }
     }
     
-    @IBOutlet public var dotView:UIView?
+    @IBOutlet var dotView:UIView?
     
     var selected:Bool = false{
         didSet{
@@ -34,7 +32,7 @@ class RadioCheckbox: UIView {
         }
     }
     
-    override public func layoutSubviews() {
+    override func layoutSubviews() {
         super.layoutSubviews()
         
         self.layer.masksToBounds = true

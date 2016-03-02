@@ -84,6 +84,7 @@
 		F84D69011C4D2D0500EF8A16 /* AppDelegateError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69001C4D2D0500EF8A16 /* AppDelegateError.swift */; };
 		F84D69081C4D3DF400EF8A16 /* BoardEditingHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69061C4D3DF400EF8A16 /* BoardEditingHolder.swift */; };
 		F84D69091C4D3DF400EF8A16 /* BoardEditingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D69071C4D3DF400EF8A16 /* BoardEditingType.swift */; };
+		F84DCDA01C8723D200D42BA3 /* BoardDetailsHeaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84DCD9F1C8723D200D42BA3 /* BoardDetailsHeaderDelegate.swift */; };
 		F8547FCF1C7F0A4000296B45 /* TaskActionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8547FCE1C7F0A4000296B45 /* TaskActionsView.xib */; };
 		F8547FD11C7F0D9E00296B45 /* TaskActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8547FD01C7F0D9E00296B45 /* TaskActionsView.swift */; };
 		F8547FD31C7F0F3900296B45 /* TaskActionsViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8547FD21C7F0F3900296B45 /* TaskActionsViewDelegate.swift */; };
@@ -209,6 +210,7 @@
 		F84D69001C4D2D0500EF8A16 /* AppDelegateError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateError.swift; sourceTree = "<group>"; };
 		F84D69061C4D3DF400EF8A16 /* BoardEditingHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardEditingHolder.swift; path = TaskBoardWork/BoardEditingHolder.swift; sourceTree = "<group>"; };
 		F84D69071C4D3DF400EF8A16 /* BoardEditingType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardEditingType.swift; path = TaskBoardWork/BoardEditingType.swift; sourceTree = "<group>"; };
+		F84DCD9F1C8723D200D42BA3 /* BoardDetailsHeaderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardDetailsHeaderDelegate.swift; sourceTree = "<group>"; };
 		F8547FCE1C7F0A4000296B45 /* TaskActionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskActionsView.xib; sourceTree = "<group>"; };
 		F8547FD01C7F0D9E00296B45 /* TaskActionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskActionsView.swift; sourceTree = "<group>"; };
 		F8547FD21C7F0F3900296B45 /* TaskActionsViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskActionsViewDelegate.swift; sourceTree = "<group>"; };
@@ -496,6 +498,7 @@
 				F884BC471C60DDF90057539E /* RecordIDStringIndexable.swift */,
 				F8FA973B1C733F5700727282 /* BoardsHeaderViewDelegate.swift */,
 				F8547FD21C7F0F3900296B45 /* TaskActionsViewDelegate.swift */,
+				F84DCD9F1C8723D200D42BA3 /* BoardDetailsHeaderDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -807,6 +810,7 @@
 				F8FA973E1C733F8900727282 /* BoardsTableViewController+BoardsHeaderViewDelegate.swift in Sources */,
 				F84D68E81C4CEBA100EF8A16 /* LoginViewController.swift in Sources */,
 				F84B4D651C4E66C70013D7F1 /* TasksViewController.swift in Sources */,
+				F84DCDA01C8723D200D42BA3 /* BoardDetailsHeaderDelegate.swift in Sources */,
 				F8547FDD1C7F332800296B45 /* UIFont+Extension.swift in Sources */,
 				F84D68CA1C4CEB6900EF8A16 /* ContactsFetcherPreIOS9.swift in Sources */,
 				F84CAD1C1C56363D00BC2ECC /* UserProfileViewController+UIImagePickerControllerDelegate.swift in Sources */,
