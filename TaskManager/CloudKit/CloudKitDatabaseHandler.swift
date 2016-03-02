@@ -202,7 +202,7 @@ class CloudKitDatabaseHandler{
         op.fetchSubscriptionCompletionBlock = {(fetchedDict, error) in
             if let errorFetching = error
             {
-                
+                print("\n - Error fetching subscriptions:\n\(errorFetching)\n - ")
             }
             else
             {
@@ -751,7 +751,6 @@ class CloudKitDatabaseHandler{
                     foundBoard[TitleStringKey] = boardInfo.title
                     foundBoard[DetailsStringKey] = boardInfo.details
                     foundBoard[BoardParticipantsKey] = currentBoard[BoardParticipantsKey]
-                    foundBoard[BoardTasksReferenceListKey] = currentBoard[BoardTasksReferenceListKey]
                     print(" \n  - edited board participants: \((foundBoard[BoardParticipantsKey] as? [String])?.count) ")
                     
                     self.saveBoard(foundBoard) { (savedBoard, saveError) -> () in
@@ -905,58 +904,66 @@ class CloudKitDatabaseHandler{
     //MARK: - Tasks
     func loadTasksForBoard(board:CKRecord, completion:((tasks:[CKRecord]?, error:ErrorType?)->())) -> Bool
     {
-        guard let taskReferences = board[BoardTasksReferenceListKey] as? [CKReference] where !taskReferences.isEmpty else
-        {
-            return false
-        }
+        let reference = CKReference(recordID: board.recordID, action: CKReferenceAction.DeleteSelf)
         
+        let predicate = NSPredicate(format: "board = %@", reference)
+        let query = CKQuery(recordType: "Task", predicate: predicate)
         
-        var taskRecordIDs = [CKRecordID]()
-        for aReference in taskReferences
-        {
-            let recordId = aReference.recordID
-            taskRecordIDs.append(recordId)
-        }
+        let fetchOp = CKQueryOperation(query: query)
         
-        let fetchRecordsOp = CKFetchRecordsOperation(recordIDs: taskRecordIDs)
-
-        fetchRecordsOp.qualityOfService = .UserInitiated
-        
-//        fetchRecordsOp.perRecordCompletionBlock = { record, recordId, error in
-//            if let _ = record
+//        let fetchRecordsOp = CKFetchRecordsOperation(recordIDs: taskRecordIDs)
+//
+//        fetchRecordsOp.qualityOfService = .UserInitiated
+//        
+//        fetchRecordsOp.fetchRecordsCompletionBlock = { (recordsDict, error) in
+//            if let fetchedTasks = recordsDict
 //            {
-//                print("fetched record per \(recordId!)")
+//                var taskRecords = [CKRecord]()
+//                for ( _ , aTaskRec) in fetchedTasks
+//                {
+//                    taskRecords.append(aTaskRec)
+//                }
+//                completion(tasks: taskRecords, error: nil)
 //            }
-//            else
+//            else if let error = error
 //            {
-//                print("error per \(recordId!) : \n \(error!)")
+//                let errorResult =  CloudKitErrorParser.handleCloudKitErrorAs(error)
+//                switch errorResult
+//                {
+//                case .Fail(let message):
+//                    print(message)
+//                default:break
+//                }
+//                completion(tasks: nil, error: error)
 //            }
 //        }
+        var fetchedRecords = [CKRecord]()
         
-        fetchRecordsOp.fetchRecordsCompletionBlock = { (recordsDict, error) in
-            if let fetchedTasks = recordsDict
-            {
-                var taskRecords = [CKRecord]()
-                for ( _ , aTaskRec) in fetchedTasks
-                {
-                    taskRecords.append(aTaskRec)
-                }
-                completion(tasks: taskRecords, error: nil)
-            }
-            else if let error = error
-            {
-                let errorResult =  CloudKitErrorParser.handleCloudKitErrorAs(error)
-                switch errorResult
-                {
-                case .Fail(let message):
-                    print(message)
-                default:break
-                }
-                completion(tasks: nil, error: error)
-            }
+        fetchOp.qualityOfService = .UserInitiated
+        
+        fetchOp.recordFetchedBlock = { record in
+            fetchedRecords.append(record)
         }
         
-        self.publicDB.addOperation(fetchRecordsOp)
+        fetchOp.queryCompletionBlock = { cursor, error in
+            
+            if let error = error {
+                print("error fetching task records: \(error)")
+            }
+            
+            if let cursor = cursor {
+                print("\n Attention!   Not all tesks fetched for board: \(board[TitleStringKey] as? String)")
+                print("Recieved cursor: \(cursor)")
+                print("Need to fetch more..  TODO.  \n")
+            }
+            if fetchedRecords.isEmpty{
+                completion(tasks: nil, error: UserError.NotFound)
+            }
+            else{
+                completion(tasks: fetchedRecords, error: nil)
+            }
+        }
+        self.publicDB.addOperation(fetchOp)
 
         return true
     }

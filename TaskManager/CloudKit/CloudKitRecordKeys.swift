@@ -11,7 +11,7 @@ import Foundation
 //MARK: - CKRecord keys
 
 let BoardReferenceKey = "board"
-let BoardTasksReferenceListKey = "tasks"
+
 let TitleStringKey = "title"
 let DetailsStringKey = "details"
 ///"sortOrderIndex"

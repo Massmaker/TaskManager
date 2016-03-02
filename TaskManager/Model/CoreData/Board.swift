@@ -169,20 +169,6 @@ class Board: NSManagedObject {
             self.sortOrder = Int64(order.integerValue)
         }
         
-        if let taskReferences = record[BoardTasksReferenceListKey] as? [CKReference]
-        {
-            let recordIDs = NSMutableArray(capacity: taskReferences.count)
-            for aRef in taskReferences
-            {
-                recordIDs.addObject(aRef.recordID.recordName)
-            }
-            self.taskIDs = recordIDs
-        }
-        else
-        {
-            self.taskIDs = NSArray()
-        }
-        
         if let participantIDs = record[BoardParticipantsKey] as? [String]
         {
             let anArray = NSArray(array: participantIDs)

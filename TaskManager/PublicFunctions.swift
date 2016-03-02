@@ -94,7 +94,10 @@ func createTaskRecordFrom(taskInfo:Task, recordID:String? = nil) throws -> CKRec
     newTaskRecord[CurrentOwnerStringKey] = taskInfo.currentOwnerId // optional
     newTaskRecord[DateTakenDateKey] = taskInfo.takenDate //optional
     newTaskRecord[DateFinishedDateKey] = taskInfo.finishedDate //optional
-    
+    if let board = taskInfo.board, recordID = board.recordId{
+        let boardReference = CKReference(recordID: CKRecordID(recordName: recordID), action: .DeleteSelf)
+        newTaskRecord[BoardReferenceKey] = boardReference
+    }
     return newTaskRecord
 }
 
@@ -126,22 +129,6 @@ func createBoardRecordFrom(board:Board) throws -> CKRecord
         let array = Array(participantsSet)
         newBoardRecord[BoardParticipantsKey] = array
     }
-    
-    
-    //fill task references field if present
-    var references = [CKReference]()
-    
-    if let boardTasks = board.taskIDs as? [String]
-    {
-        for aTaskRecordName in boardTasks
-        {
-            let recordId = CKRecordID(recordName: aTaskRecordName)
-            let taskReference = CKReference(recordID: recordId, action: .None)
-            references.append(taskReference)
-        }
-    }
-    
-    newBoardRecord[BoardTasksReferenceListKey] = references
     
     return newBoardRecord
 }

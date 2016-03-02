@@ -189,7 +189,7 @@ class TasksHolder:NSObject {
     func editTask(taskToEdit:Task){
         
         do{
-            let taskRec = try createTaskRecordFrom(taskToEdit)
+            let taskRec = try createTaskRecordFrom(taskToEdit, recordID: taskToEdit.recordId)
         
             self.delegate?.tasksWillStartUpdating()
             

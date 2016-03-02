@@ -137,15 +137,6 @@ class DataSyncronizer {
                 return
             }
             
-            if boardRecord[BoardTasksReferenceListKey] == nil
-            {
-                objc_sync_enter(self)
-                self.syncing = false
-                center.postNotificationName(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
-                objc_sync_exit(self)
-                return
-            }
-            
             
             var taskRecords = [CKRecord]()
             
