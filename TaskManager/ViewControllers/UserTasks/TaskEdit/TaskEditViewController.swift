@@ -274,6 +274,15 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
     //MARK: - Save  button
     private func checkSaveButtonEnabled()
     {
+        guard let appDel = anAppDelegate() else{
+            self.disableSaveButton()
+            return
+        }
+        
+        if !appDel.internetReachable{
+            self.disableSaveButton()
+            return
+        }
         
         switch taskEditingType
         {

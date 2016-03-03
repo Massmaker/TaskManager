@@ -264,6 +264,18 @@ class BoardEditViewController: FormViewController, BoardDetailsHeaderDelegate {
     
     private func checkSaveButtonEnabled()
     {
+        guard let appDel = anAppDelegate() else {
+            
+            self.navigationItem.rightBarButtonItem = nil
+            return
+        }
+        
+        if !appDel.internetReachable{
+            
+            self.navigationItem.rightBarButtonItem = nil
+            return
+        }
+        
         guard let currentBoard = self.currentBoard, title = currentBoard.title where !title.isEmpty else
         {
             self.navigationItem.rightBarButtonItem = nil

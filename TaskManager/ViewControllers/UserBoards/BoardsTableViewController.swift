@@ -30,8 +30,7 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
         let headerNib = UINib(nibName: "BoardsAnimatedHeader", bundle: nil)
         self.tableView.registerNib(headerNib, forHeaderFooterViewReuseIdentifier: "BoardsAnimatedHeader")
         
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        self.setupEditButton()
         
         ///----
         //headerView.delegate = self
@@ -302,7 +301,22 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
         return 82.0
     }
     
-    //MARK: -
+    //MARK: - Editing
+    func setupEditButton()
+    {
+        guard let appDel = anAppDelegate() else {
+            self.navigationItem.rightBarButtonItem = nil
+            return
+        }
+        
+        if appDel.internetReachable{
+            self.navigationItem.rightBarButtonItem = self.editButtonItem() //enable deleting of Take/Finish tasks, rearranging tasks
+        }
+        else{
+            self.navigationItem.rightBarButtonItem = nil
+        }
+    }
+    
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         

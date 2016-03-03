@@ -27,7 +27,7 @@ class TasksViewController:UIViewController, UITableViewDelegate {
         tableView.estimatedRowHeight = 108.0
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        self.navigationItem.rightBarButtonItem = self.editButtonItem() //enable deleting of Take/Finish tasks, rearranging tasks
+        setupEditButton()
         tasksSource.board = weakBoard
     }
     
@@ -120,7 +120,22 @@ class TasksViewController:UIViewController, UITableViewDelegate {
     }
     
     
-    //MARK: - 
+    //MARK: - Editing
+    func setupEditButton()
+    {
+        guard let appDel = anAppDelegate() else {
+            self.navigationItem.rightBarButtonItem = nil
+            return
+        }
+        
+        if appDel.internetReachable{
+            self.navigationItem.rightBarButtonItem = self.editButtonItem() //enable deleting of Take/Finish tasks, rearranging tasks
+        }
+        else{
+            self.navigationItem.rightBarButtonItem = nil
+        }
+    }
+    
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         
