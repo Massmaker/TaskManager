@@ -231,7 +231,6 @@ class TasksHolder:NSObject {
         {
             return
         }
-        
         if let newTask = coreDataHandler.insertNewTaskFrom(taskToInsert), let board = newTask.board
         {
             self.delegate?.tasksWillStartUpdating()

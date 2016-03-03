@@ -22,16 +22,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var coreDatahandler:CoreDataManager?
     
+    private var reachability:Reachability?
+    
+    var internetReachable:Bool = false{
+        didSet{
+            dispatchMain(){[weak self] in
+                self?.applyNavigationBarAppearance()
+            }
+        }
+    }
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
         let appThemeColor = UIColor.appThemeColorBlue
         let whiteColor = UIColor.whiteColor()
+        
         UINavigationBar.appearance().tintColor = appThemeColor
         UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().barTintColor = whiteColor
         UINavigationBar.appearance().setBackgroundImage(UIImage(), forBarMetrics: .Default)
         UINavigationBar.appearance().shadowImage = UIImage()
+        
         UITabBar.appearance().tintColor = appThemeColor
         UITabBar.appearance().translucent = false
         UITabBar.appearance().barTintColor = whiteColor
@@ -41,6 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Fabric.with([Digits.self])
         
         let lastSyncedInfo = keyValueCloudStore.userDataFromUbuquity()
+        
         UserDefaultsManager.updateUserDefaultsWith(lastSyncedInfo)
         
         let _ = keyValueCloudStore.startObservingUbiquityNotifications()
@@ -80,6 +93,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let settings = UIUserNotificationSettings(forTypes: [.Alert, .Sound, .Badge], categories: nil)
             UIApplication.sharedApplication().registerUserNotificationSettings(settings)
             UIApplication.sharedApplication().registerForRemoteNotifications()
+            
+            do{
+                let reachability = try Reachability(hostname: "google.com")
+                
+                if reachability.isReachable(){
+                    self.internetReachable = true
+                }
+                
+                try reachability.startNotifier()
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: "reachabilityStatusChangedNotificationHandler:", name: ReachabilityChangedNotification, object: reachability)
+                self.reachability = reachability
+            }
+            catch let error as ReachabilityError{
+                switch error{
+                case ReachabilityError.FailedToCreateWithHostname(let hostName):
+                    self.internetReachable = false
+                case ReachabilityError.FailedToCreateWithAddress(let addr):
+                    self.internetReachable = false
+                default:
+                    self.internetReachable = false
+                }
+            }
+            catch{
+                self.internetReachable = false
+            }
+            
         }
         
         return true
@@ -127,6 +166,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         {
             let ckNote = CKQueryNotification(fromRemoteNotificationDictionary: userInfo)
             NotificationsHandler.sharedInstance.handleNote(ckNote)
+        }
+    }
+    
+    //MARK: -
+    func reachabilityStatusChangedNotificationHandler(notification:NSNotification){
+        if let reach = notification.object as? Reachability{
+            self.internetReachable = reach.isReachable()
+        }
+    }
+    
+    func applyNavigationBarAppearance(){
+        
+        if self.internetReachable{
+            UINavigationBar.appearance().barTintColor = UIColor.whiteColor()
+            UINavigationBar.appearance().tintColor = UIColor.appThemeColorBlue
+        }else{
+            UINavigationBar.appearance().barTintColor = UIColor.redColor().colorWithAlphaComponent(0.7)
+            UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        }
+        
+        if let tabBarController = window?.rootViewController as? UITabBarController, let navViewControllers = tabBarController.viewControllers{
+            for aVC in navViewControllers{
+                if let navVC = aVC as? UINavigationController{
+                    navVC.setNavigationBarHidden(true, animated: false)
+                    navVC.setNavigationBarHidden(false, animated: true)
+                }
+            }
         }
     }
     

@@ -16,6 +16,7 @@
 		F8067C4C1C60FAF200782E63 /* TasksHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C4B1C60FAF200782E63 /* TasksHolderDelegate.swift */; };
 		F8067C4E1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8067C4D1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift */; };
 		F81954D91C565669007D15E8 /* UserCloudPreferencesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81954D81C565669007D15E8 /* UserCloudPreferencesHandler.swift */; };
+		F81985B71C8854DD009D1E92 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81985B61C8854DD009D1E92 /* Reachability.swift */; };
 		F82755CF1C58F804005A1964 /* Extensions+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82755CE1C58F804005A1964 /* Extensions+String.swift */; };
 		F8386A2D1C5B6A0B00C298A5 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8386A2C1C5B6A0B00C298A5 /* TaskTableViewCell.swift */; };
 		F83B7D2A1C6CB67600A24A56 /* FloatingButtonHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B7D291C6CB67600A24A56 /* FloatingButtonHolder.swift */; };
@@ -139,6 +140,7 @@
 		F8067C4B1C60FAF200782E63 /* TasksHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksHolderDelegate.swift; sourceTree = "<group>"; };
 		F8067C4D1C61098A00782E63 /* TasksViewController+TasksHolderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksViewController+TasksHolderDelegate.swift"; sourceTree = "<group>"; };
 		F81954D81C565669007D15E8 /* UserCloudPreferencesHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCloudPreferencesHandler.swift; sourceTree = "<group>"; };
+		F81985B61C8854DD009D1E92 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		F82755CE1C58F804005A1964 /* Extensions+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+String.swift"; sourceTree = "<group>"; };
 		F8386A2C1C5B6A0B00C298A5 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		F83B7D291C6CB67600A24A56 /* FloatingButtonHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingButtonHolder.swift; sourceTree = "<group>"; };
@@ -373,6 +375,7 @@
 		F84D68771C4CEB6900EF8A16 /* CloudKit */ = {
 			isa = PBXGroup;
 			children = (
+				F81985B61C8854DD009D1E92 /* Reachability.swift */,
 				F84D68781C4CEB6900EF8A16 /* CloudKitDatabaseHandler.swift */,
 				F84D68791C4CEB6900EF8A16 /* CloudRecordTypes.swift */,
 				F8832BC71C4FE1D200D75FAE /* CloudKitErrorParser.swift */,
@@ -785,6 +788,7 @@
 				F84B4D721C4E71C60013D7F1 /* TaskEditViewController.swift in Sources */,
 				F84D68CD1C4CEB6900EF8A16 /* DeviceContact+Extension.swift in Sources */,
 				F84D68E21C4CEB6900EF8A16 /* BoardEditNavigationController.swift in Sources */,
+				F81985B71C8854DD009D1E92 /* Reachability.swift in Sources */,
 				F84D69091C4D3DF400EF8A16 /* BoardEditingType.swift in Sources */,
 				F88669971C5786D100F56C0A /* CoreDataManager.swift in Sources */,
 				F895CD501C5F63B100D08EE9 /* SubscriptionsHandler.swift in Sources */,
