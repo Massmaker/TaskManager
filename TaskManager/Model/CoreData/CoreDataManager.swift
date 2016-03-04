@@ -166,27 +166,27 @@ class CoreDataManager
     
     func deleteAllContacts()
     {
-        if #available(iOS 9.0, *)
-        {
-            let fetchRequest = NSFetchRequest(entityName: "User")
-            let batchDelete = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-            do
-            {
-                try persistentStoreCoordinator.executeRequest(batchDelete, withContext: self.mainQueueManagedObjectContext)
-            }
-            catch let error
-            {
-                NSLog("\n -  Deletion All USERs from local databale failure: \n \(error) \n -----")
-            }
-        }
-        else
-        {
+//        if #available(iOS 9.0, *)
+//        {
+//            let fetchRequest = NSFetchRequest(entityName: "User")
+//            let batchDelete = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+//            do
+//            {
+//                try persistentStoreCoordinator.executeRequest(batchDelete, withContext: self.mainQueueManagedObjectContext)
+//            }
+//            catch let error
+//            {
+//                NSLog("\n -  Deletion All USERs from local databale failure: \n \(error) \n -----")
+//            }
+//        }
+//        else
+//        {
             let allContacts = self.allContacts()
             for aContact in allContacts
             {
                 self.mainQueueManagedObjectContext.deleteObject(aContact)
             }
-        }
+//        }
     }
     
     @warn_unused_result
@@ -846,19 +846,19 @@ class CoreDataManager
         let context = self.mainQueueManagedObjectContext
         
         context.performBlock(){
-            if #available (iOS 9.0, *)
-            {
-                let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-                do{
-                    try context.executeRequest(batchDeleteRequest)
-                }
-                catch let batchError{
-                    print("Error Batch Deleting TASKs toBeDeleted:")
-                    print(batchError)
-                }
-            }
-            else
-            {
+//            if #available (iOS 9.0, *)
+//            {
+//                let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+//                do{
+//                    try context.executeRequest(batchDeleteRequest)
+//                }
+//                catch let batchError{
+//                    print("Error Batch Deleting TASKs toBeDeleted:")
+//                    print(batchError)
+//                }
+//            }
+//            else
+//            {
                 fetchRequest.resultType = .ManagedObjectResultType
                 do{
                     if let tasksToDelete = try context.executeFetchRequest(fetchRequest) as? [NSManagedObject] where !tasksToDelete.isEmpty
@@ -873,7 +873,7 @@ class CoreDataManager
                     print(" \n - Error fetching tasks toBeDeleted:")
                     print(fetchError)
                 }
-            }
+//            }
             
             self.saveMainContext()
         }

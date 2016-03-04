@@ -75,6 +75,17 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleNetworkChangeStatus:", name: ReachabilityChangedNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotification, object: nil)
+    }
+    
+    
     //MARK: - 
     func setupTableViewWithCurrentTask()
     {
@@ -171,18 +182,36 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
             }
 
             //add single cell in section
-            <<< TextAreaRow() {
-                    $0.value = task.title
-                }.onChange{ [unowned self] (titlewRow) in
+            <<< TextAreaRow(){
+                    $0.value = self.currentTask?.title
+                    $0.cell.textView.font = UIFont.appSemiboldFontOfSize(28.0)
+                    $0.cell.textView.textContainerInset = UIEdgeInsetsMake(0, 48.0, 0, 0)
+                    $0.cell.textView.scrollEnabled = false
+                
+                    let size = $0.cell.textView.sizeThatFits(CGSizeMake($0.cell.textView.bounds.width, CGFloat.max))
+                    let height = size.height
+                    
+                    $0.cell.height = {
+                        return (height + 36.0)
+                    }
+                
+                }.onChange{ [unowned self] (titleRow) in
                    
-                    self.currentTask?.title = titlewRow.value ?? self.initialTitle
+                    self.currentTask?.title = titleRow.value ?? self.initialTitle
                     self.checkSaveButtonEnabled()
-                }.cellSetup { (cell, row) -> () in
-                    cell.textView.textContainerInset = UIEdgeInsetsMake(0, 48.0, 0, 0)
-                    cell.textView.font = UIFont.appSemiboldFontOfSize(28.0)
-                    cell.height = { 80.0 }
+                    
+                    let size = titleRow.cell.textView.sizeThatFits(CGSizeMake(titleRow.cell.textView.bounds.width, CGFloat.max))
+                    let height = size.height
+                    
+                    titleRow.cell.height = {
+                        return (height + 36.0)
+                    }
+                    
+                    self.tableView?.beginUpdates()
+                    self.tableView?.endUpdates()
             }
-            
+
+            //add details section
             +++ Section(){ section in
              
                 section.header = detailsHeader
@@ -190,16 +219,19 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
             //add single cell in section
             <<< TextAreaRow() {
                     $0.value = task.details
+                    $0.cell.textView.textContainerInset = UIEdgeInsetsMake(0, 48.0, 0, 0)
+                    $0.cell.textView.font = UIFont.appRegularFontOfSize(14.0)
+                    $0.cell.textView.textColor = UIColor.grayColor()
                 }.onChange{[unowned self] (detailsRow) in
-                    
                     self.currentTask?.details = detailsRow.value ?? self.initialDetails
                     self.checkSaveButtonEnabled()
-                }.cellSetup{ (cell, row) -> () in
-                    cell.textView.textContainerInset = UIEdgeInsetsMake(0, 48.0, 0, 0)
-                    cell.textView.font = UIFont.appRegularFontOfSize(14.0)
-                    cell.textView.textColor = UIColor.grayColor()
-                    
                 }
+//                .cellSetup{ (cell, row) -> () in
+//                    cell.textView.textContainerInset = UIEdgeInsetsMake(0, 48.0, 0, 0)
+//                    cell.textView.font = UIFont.appRegularFontOfSize(14.0)
+//                    cell.textView.textColor = UIColor.grayColor()
+//                    
+//                }
     }
     
     //MARK: - Task Actions setup
@@ -335,6 +367,9 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
     //MARK: - Cancel and Save nivigation button actions
     @IBAction func cancelBarButtonAction(sender:AnyObject?)
     {
+        self.currentTask?.title = self.initialTitle
+        self.currentTask?.details = self.initialDetails
+        
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
         return
     }
@@ -500,6 +535,13 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
         super.scrollViewWillBeginDragging(scrollView)
         UIView.animateWithDuration(0.2) {
             self.tableView!.contentInset = UIEdgeInsetsZero
+        }
+    }
+    
+    //MARK: - Internet reachability status change
+    func handleNetworkChangeStatus(note:NSNotification){
+        dispatchMain(){[weak self] in
+            self?.checkSaveButtonEnabled()
         }
     }
     

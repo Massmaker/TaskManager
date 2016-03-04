@@ -33,7 +33,10 @@ class TasksViewController:UIViewController, UITableViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         startObservingDataSyncronizerNotifications()
+        
         super.viewWillAppear(animated)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleNetworkChangeStatus:", name: ReachabilityChangedNotification, object: nil)
   
         tasksSource.delegate = self
     }
@@ -44,8 +47,10 @@ class TasksViewController:UIViewController, UITableViewDelegate {
         displayAddButton(checkAddTaskButtonEnabled())
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotification, object: nil)
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -316,6 +321,7 @@ class TasksViewController:UIViewController, UITableViewDelegate {
             if self.tasksSource.deleteTaskAtIndex(indexPath.row)
             {
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                editingDidHappen = true
             }
             else
             {
@@ -330,6 +336,13 @@ class TasksViewController:UIViewController, UITableViewDelegate {
     {
         //checks "Plus" button on the NavBar right
         self.userRecordId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID
+        
+        let status = anAppDelegate()!.internetReachable
+        
+        if !status{
+            return false
+        }
+        
         return self.userRecordId != nil
     }
     
@@ -348,6 +361,19 @@ class TasksViewController:UIViewController, UITableViewDelegate {
         else
         {
             showAlertController("Error", text: "Can not start adding task without board", closeButtonTitle: "Close")
+        }
+    }
+    
+    //MARK: - 
+    func handleNetworkChangeStatus(note:NSNotification){
+
+        dispatchMain(){[weak self]  in
+            
+            guard let weakSelf = self else{
+                return
+            }
+            
+            weakSelf.displayAddButton(weakSelf.checkAddTaskButtonEnabled())
         }
     }
     

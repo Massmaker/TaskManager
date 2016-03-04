@@ -52,12 +52,14 @@ class TaskActionsConfirmView : UIControl{
         
         self._actionType = .IsFree
         super.init(coder: aDecoder)
+        self.backgroundColor = UIColor.appThemeColorBlue.colorWithAlphaComponent(0.75)
     }
     
     override init(frame: CGRect) {
         
         self._actionType = .IsFree
         super.init(frame: frame)
+        self.backgroundColor = UIColor.appThemeColorBlue.colorWithAlphaComponent(0.75)
     }
     
     func setActionType(type:TaskActionType) {
@@ -65,12 +67,10 @@ class TaskActionsConfirmView : UIControl{
         setupCancelButtonWithTitle("Cancel")
         switch self._actionType{
         case .IsFree:
-            self.backgroundColor = UIColor.greenColor().colorWithAlphaComponent(0.7)
             setupTakeFinishButtonWithTitle("Take")
             setupAlternateButtonWithTitle(nil)
             
         case .TakenBySomebody, .TakenByMe:
-            self.backgroundColor = UIColor.appThemeColorBlue.colorWithAlphaComponent(0.7)
             if type == .TakenByMe{
                 setupTakeFinishButtonWithTitle("Finish")
                 setupAlternateButtonWithTitle("Release")
@@ -81,10 +81,8 @@ class TaskActionsConfirmView : UIControl{
                 setupAlternateButtonWithTitle(nil)
             }
         case .Finished:
-            self.backgroundColor = UIColor.appThemeColorBlue.colorWithAlphaComponent(0.75)
             setupTakeFinishButtonWithTitle("Take")
             setupAlternateButtonWithTitle(nil)
-            
         }
         
         self.setNeedsLayout()
@@ -131,17 +129,17 @@ class TaskActionsConfirmView : UIControl{
     
     private func setupCancelButtonWithTitle(title:String) {
         
-        let attrs = [NSFontAttributeName:buttonTitleFont, NSForegroundColorAttributeName:UIColor.redColor()]
+        let attrs = [NSFontAttributeName:buttonTitleFont]//, NSForegroundColorAttributeName:UIColor.redColor()]
         
         self.dismissButton.setAttributedTitle(NSAttributedString(string: title, attributes: attrs), forState: .Normal)
     }
     
     private func setupTakeFinishButtonWithTitle(title:String) {
 
-        let attrs = [NSFontAttributeName:buttonTitleFont, NSForegroundColorAttributeName:UIColor.appThemeColorBlue]
+        let attrs = [NSFontAttributeName:buttonTitleFont]//, NSForegroundColorAttributeName:UIColor.appThemeColorBlue]
         
         self.actionButton.setAttributedTitle(NSAttributedString(string: title, attributes: attrs), forState: .Normal)
-        self.actionButton.tintColor = UIColor.appThemeColorBlue
+        //self.actionButton.tintColor = UIColor.appThemeColorBlue
     }
     
     private func setupAlternateButtonWithTitle(title:String?){
@@ -150,7 +148,7 @@ class TaskActionsConfirmView : UIControl{
             return
         }
         
-        let attrs = [NSForegroundColorAttributeName : UIColor.appThemeColorBlue, NSFontAttributeName:buttonTitleFont]
+        let attrs = [/*NSForegroundColorAttributeName : UIColor.appThemeColorBlue,*/ NSFontAttributeName:buttonTitleFont]
         
         let attrTitle = NSAttributedString(string: title, attributes: attrs)
         self.alternateActionButton.hidden = false

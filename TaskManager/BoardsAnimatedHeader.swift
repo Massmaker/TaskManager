@@ -45,7 +45,7 @@ class BoardsAnimatedHeader: UIView {
                 startTaskDateTimeLabel.hidden = true
                 startTaskIconImageView.hidden = true
                 taskTitleLabel.userInteractionEnabled = false
-                taskTitleLabel.text = NSLocalizedString("No active task", comment: "string to display when there is no active task for current user")
+                taskTitleLabel.text = nil//NSLocalizedString("No active task", comment: "string to display when there is no active task for current user")
             }
         }
     }
