@@ -90,6 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        
         let queue = dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)
         dispatch_async(queue) {
+            
             let settings = UIUserNotificationSettings(forTypes: [.Alert, .Sound, .Badge], categories: nil)
             UIApplication.sharedApplication().registerUserNotificationSettings(settings)
             UIApplication.sharedApplication().registerForRemoteNotifications()
@@ -107,9 +108,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             catch let error as ReachabilityError{
                 switch error{
-                case ReachabilityError.FailedToCreateWithHostname(let hostName):
+                case ReachabilityError.FailedToCreateWithHostname(_):
                     self.internetReachable = false
-                case ReachabilityError.FailedToCreateWithAddress(let addr):
+                case ReachabilityError.FailedToCreateWithAddress(_):
                     self.internetReachable = false
                 default:
                     self.internetReachable = false

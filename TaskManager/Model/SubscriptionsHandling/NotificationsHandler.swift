@@ -179,7 +179,8 @@ class NotificationsHandler{
                                 postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: NotificationsHandler.sharedInstance, userInfo: nil)
 
                             }catch let insertError{
-                                
+                                print("- Failed to insert board:")
+                                print(insertError)
                             }
                         case CloudRecordTypes.Task.rawValue:
                             print("Some trouble happened: We don`t expect refreshing tasks here")
