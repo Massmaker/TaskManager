@@ -507,7 +507,9 @@ extension Form : RangeReplaceableCollectionType {
         for (var i = subRange.startIndex; i < subRange.endIndex; i++) {
             if let section = kvoWrapper.sections.objectAtIndex(i) as? Section {
                 section.willBeRemovedFromForm()
-                kvoWrapper._allSections.removeAtIndex(kvoWrapper._allSections.indexOf(section)!)
+                if let index = kvoWrapper._allSections.indexOf(section){
+                    kvoWrapper._allSections.removeAtIndex(index)
+                }
             }
         }
         kvoWrapper.sections.replaceObjectsInRange(NSMakeRange(subRange.startIndex, subRange.endIndex - subRange.startIndex), withObjectsFromArray: newElements.map { $0 })

@@ -367,11 +367,14 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
     //MARK: - Cancel and Save nivigation button actions
     @IBAction func cancelBarButtonAction(sender:AnyObject?)
     {
-        self.currentTask?.title = self.initialTitle
-        self.currentTask?.details = self.initialDetails
+        if self.currentTask?.title != self.initialTitle{
+            self.currentTask?.title = self.initialTitle
+        }
+        if self.currentTask?.details != self.initialDetails{
+            self.currentTask?.details = self.initialDetails
+        }
         
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-        return
     }
     
     func saveEdits(sender:UIBarButtonItem)

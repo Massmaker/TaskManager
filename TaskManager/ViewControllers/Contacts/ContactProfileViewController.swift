@@ -77,7 +77,7 @@ class ContactProfileViewController: FormViewController {
                     }
             }
         
-            if let taskTaken = contact.currentTask
+            if let taskTaken = anAppDelegate()?.coreDatahandler?.findActiveTasksForUserById(contact.phone!)?.first
             {
                 form
                     +++

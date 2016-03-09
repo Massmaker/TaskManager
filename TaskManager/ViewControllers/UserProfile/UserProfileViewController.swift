@@ -39,9 +39,8 @@ class UserProfileViewController: FormViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.tableView?.reloadData()
-    }
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
+        
+        self.checkFinishedTasksSection()
     }
     
     //MARK: -
@@ -131,25 +130,7 @@ class UserProfileViewController: FormViewController {
             
             <<< firstNameRowWith(self.currentProfileInfo?.firstName)
             <<< lastNameRowWith(self.currentProfileInfo?.lastName)
-            
-            //<<< emailRowWith(self.currentProfileInfo?.email)
     }
-    
-//    private func emailRowWith(email:String?) -> EmailRow
-//    {
-//        let emailRow =   EmailRow(){
-//            $0.title = "Email:"
-//            $0.placeholder = optionalPlaceholder
-//            $0.value = email
-//            }.onCellHighlight(){ (_, _) -> () in
-//                //if onHighLight is not implemented - "onUnHighLight" is not called
-//            }.onCellUnHighlight(){[weak self] ( _ , row) -> () in
-//                self?.currentProfileInfo?.email = row.value
-//                UserDefaultsManager.setEmailToDefaults(self?.currentProfileInfo?.email)
-//        }
-//        
-//        return emailRow
-//    }
     
     private func lastNameRowWith(lastName:String?) -> NameRow
     {
@@ -182,4 +163,53 @@ class UserProfileViewController: FormViewController {
         
         return nameRow
     }
+    
+    private func finishedTaskRowFor(taskTitle:String, date:NSDate?) -> LabelRow {
+        let taskRow = LabelRow(){
+            $0.title = taskTitle
+            $0.value = date?.todayTimeOrDateStringRepresentation()
+            //$0.disabled = Condition(booleanLiteral: true)
+            $0.cell.detailTextLabel?.textColor = UIColor.appThemeColorBlue
+        }
+        
+        return taskRow
+    }
+    
+    private func checkFinishedTasksSection(){
+        
+        //display section with finished tasks
+        if let userId = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName,  let finishedTasks = anAppDelegate()?.coreDatahandler?.findFinishedTasksByUserId(userId){
+            
+            let finishedTasksSectionTitle = NSLocalizedString("Finished tasks", comment: "header title for finished tasks by user or contact")
+            let headerHeight = CGFloat(30.0)
+            
+            //prepare Title header
+            var titleHeader = HeaderFooterView<TaskActionsSectionTitleHeader>(.NibFile(name:"TaskActionsSectionTitleHeader", bundle:nil))
+            
+            titleHeader.onSetupView = {titleHeader, _, _ in
+                
+                titleHeader.titleLabel.text = finishedTasksSectionTitle
+            }
+            
+            titleHeader.height = {headerHeight}
+            
+            let finishedTasksSection = Section(){ section in
+                section.header = titleHeader
+            }
+            
+            for aTask in finishedTasks{
+                let taskRow = self.finishedTaskRowFor(aTask.title!, date: aTask.finishedDate)
+                finishedTasksSection <<< taskRow
+            }
+            
+            form[1] = finishedTasksSection
+        }
+        else{
+            if form.endIndex > 1{
+                form.removeAtIndex(1)
+            }
+        }
+    }
+    
+    
 }

@@ -796,30 +796,54 @@ class CoreDataManager
     
     /// - Returns: at least one task in array  or nil
     func findActiveTasksForUserById(string:String) -> [Task]? {
-        
-        var tasksToReturn:[Task]?
-        
+          
         let context = self.mainQueueManagedObjectContext
         
         let predicate = NSPredicate(format: "currentOwnerId = %@", string)
-        let datesPredicate = NSPredicate(format: "dateTaken.floatValue > %f AND dateFinished.floatValue = %f", 0.0, 0.0)
+        //        let datesPredicate = NSPredicate(format: "dateTaken.floatValue > %f AND dateFinished.floatValue = %f", 0.0, 0.0)
+        let dateStartedPred = NSPredicate(format: "dateTaken.floatValue > %f", 0.0)
+        let dateFinishedPred = NSPredicate(format: "dateFinished.floatValue = %f", 0.0)
+        let compound = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, dateStartedPred, dateFinishedPred]) // datesPredicate])
+        let fetchRequest = NSFetchRequest(entityName: "Task")
+        fetchRequest.predicate = compound
+        
+        do{
+            if let tasks = try context.executeFetchRequest(fetchRequest) as? [Task] where !tasks.isEmpty{
+                return tasks
+            }
+            
+            return nil
+            
+        }catch let fetchError{
+            print("\n - Error fetching active tasks by current user:")
+            print(fetchError)
+            return nil
+        }
+    }
+    
+    /// - Returns: nil or an array with at least one **Task** in it
+    func findFinishedTasksByUserId(userId:String) -> [Task]?{
+        
+        let context = self.mainQueueManagedObjectContext
+        
+        let predicate = NSPredicate(format: "currentOwnerId = %@", userId)
+        let datesPredicate = NSPredicate(format: "dateTaken.floatValue > %f AND dateFinished.floatValue > %f", 0.0, 0.0)
         let compound = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, datesPredicate])
         let fetchRequest = NSFetchRequest(entityName: "Task")
         fetchRequest.predicate = compound
         
         do{
             if let tasks = try context.executeFetchRequest(fetchRequest) as? [Task] where !tasks.isEmpty{
-                tasksToReturn = tasks
+                return tasks
             }
-        }catch let fetchError{
+            
+            return nil
+        }
+        catch let fetchError{
             print("\n - Error fetching active tasks by current user:")
             print(fetchError)
+            return nil
         }
-        
-        if tasksToReturn != nil{
-            return tasksToReturn!
-        }
-        return nil
     }
     
     func deleteTasksByIDs(taskIDs:[String], saveImmediately:Bool = false)
