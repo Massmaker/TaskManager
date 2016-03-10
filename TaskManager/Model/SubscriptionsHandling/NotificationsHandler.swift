@@ -188,7 +188,6 @@ class NotificationsHandler{
                             break
                         }
                     }
-                        
                 }
             }
         }
@@ -213,6 +212,5 @@ class NotificationsHandler{
             print("\n _ Warning!:  Did not find local Task or Board to delete by remote notification recieved:  RecordID: (recordID.recordName) ")
         }
     }
-    
     
 }
