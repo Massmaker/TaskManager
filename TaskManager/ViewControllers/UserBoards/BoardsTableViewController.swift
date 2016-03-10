@@ -43,6 +43,8 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
         
         self.refreshControl?.addTarget(self, action: "pullLatestBoardsFromCloud:", forControlEvents: .ValueChanged)
         self.tableView.addSubview(self.refreshControl!)
+        
+        self.displayAppNameInTitle()
     }
 
     
@@ -80,6 +82,18 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
         self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
     }
 
+    //MARK: - 
+    
+    func displayAppNameInTitle(){
+        let label = UILabel(frame: CGRectMake(0,0, 100, 35))
+        label.font = UIFont.appRegularFontOfSize(18.0)
+        label.textColor = UIColor.appThemeColorBlue
+        label.text = "Mono"
+        label.textAlignment = NSTextAlignment.Center
+        label.sizeToFit()
+        
+        self.navigationItem.titleView = label
+    }
     //MARK: -
     private func reloadNavigationTitleViewWithCurrentUserInfo() -> Bool
     {

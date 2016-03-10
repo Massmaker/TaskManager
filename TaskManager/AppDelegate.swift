@@ -25,9 +25,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var reachability:Reachability?
     
     var internetReachable:Bool = false{
-        didSet{
-            dispatchMain(){[weak self] in
-                self?.applyNavigationBarAppearance()
+        didSet(oldValue){
+             if oldValue != internetReachable{
+                dispatchMain(){[weak self] in
+                    self?.applyNavigationBarAppearance()
+                }
             }
         }
     }
@@ -173,7 +175,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //MARK: -
     func reachabilityStatusChangedNotificationHandler(notification:NSNotification){
         if let reach = notification.object as? Reachability{
-            self.internetReachable = reach.isReachable()
+            self.internetReachable = ( reach.isReachableViaWiFi() || reach.isReachableViaWWAN()  )
         }
     }
     
