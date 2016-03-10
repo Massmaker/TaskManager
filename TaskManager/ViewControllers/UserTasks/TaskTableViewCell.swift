@@ -79,9 +79,9 @@ class TaskTableViewCell: UITableViewCell {
                 finishTaskImageView.hidden = true
             }
             
-            finishDateLabel.text = task.finishedDate?.dateTimeCustomString()
+            finishDateLabel.text = task.finishedDate?.todayTimeOrDateStringRepresentation()
             
-            startDateLabel.text = task.takenDate?.dateTimeCustomString()
+            startDateLabel.text = task.takenDate?.todayTimeOrDateStringRepresentation()
             
             titleLabel.text = task.title
             detailsLabel.text = task.details

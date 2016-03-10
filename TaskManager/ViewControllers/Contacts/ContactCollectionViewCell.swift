@@ -23,7 +23,7 @@ class ContactCollectionViewCell: UICollectionViewCell {
     {
         if boolValue
         {
-            imageView.layer.borderColor = UIColor.greenColor().CGColor
+            imageView.layer.borderColor = UIColor.appThemeColorBlue.CGColor
         }
         else
         {

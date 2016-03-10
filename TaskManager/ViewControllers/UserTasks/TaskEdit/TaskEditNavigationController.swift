@@ -11,7 +11,7 @@ import CloudKit
 
 class TaskEditNavigationController: UINavigationController {
 
-    var enclosingBoardId:CKReference?
+    //var enclosingBoardId:CKReference?
     
     override func viewDidLoad() {
         super.viewDidLoad()

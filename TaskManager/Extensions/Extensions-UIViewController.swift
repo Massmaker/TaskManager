@@ -27,12 +27,12 @@ extension UIViewController
                 return
             }
             
-            let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+            let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
             indicatorView.tag = 0x70AD
             let frame = CGRectMake(0, 0, 200.0, 200.0)
             indicatorView.frame = frame
             indicatorView.layer.cornerRadius = 7.0
-            indicatorView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
+            indicatorView.backgroundColor = UIColor.clearColor()
             indicatorView.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds))
             indicatorView.autoresizingMask =  [.FlexibleLeftMargin , .FlexibleRightMargin , .FlexibleTopMargin , .FlexibleBottomMargin]
             self.view.addSubview(indicatorView)

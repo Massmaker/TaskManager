@@ -93,6 +93,19 @@ class UserProfileViewController: FormViewController {
         }
     }
     
+    func showTaskEditFor(task:Task){
+        guard let editNavVC = self.storyboard?.instantiateViewControllerWithIdentifier("TaskEditNavigationController") as? TaskEditNavigationController, editVC = editNavVC.viewControllers.first as? TaskEditViewController  else {
+                return
+        }
+        
+        editVC.taskEditingType = TaskEditType.EditCurrent(task: task)
+        
+        self.presentViewController(editNavVC, animated: true) { () -> Void in
+            
+        }
+    }
+    
+    //MARK: -
     private func readUserDefaultsDataIntoMemory()
     {
         guard let contactPhone = anAppDelegate()?.cloudKitHandler.publicCurrentUser?.recordID.recordName else
@@ -199,6 +212,11 @@ class UserProfileViewController: FormViewController {
             
             for aTask in finishedTasks{
                 let taskRow = self.finishedTaskRowFor(aTask.title!, date: aTask.finishedDate)
+                
+                taskRow.onCellSelection(){[weak self] (cell, row) -> () in
+                    self?.showTaskEditFor(aTask)
+                }
+                
                 finishedTasksSection <<< taskRow
             }
             

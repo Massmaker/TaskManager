@@ -252,8 +252,8 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
             var footerView = HeaderFooterView<TaskActionsView>(.NibFile(name:"TaskActionsView", bundle:nil) )
             footerView.onSetupView = { view, section, formController in
                 view.delegate = self
-                let startDate = self.currentTask?.takenDate?.todayTimeOrDateStringRepresentation()
-                let finishDate = self.currentTask?.finishedDate?.todayTimeOrDateStringRepresentation()
+                let startDate = self.currentTask?.takenDate?.dateTimeCustomString() //todayTimeOrDateStringRepresentation()
+                let finishDate = self.currentTask?.finishedDate?.dateTimeCustomString()//todayTimeOrDateStringRepresentation()
                 view.taskStartDate = startDate
                 view.taskFinishDate = finishDate
                 
@@ -460,9 +460,16 @@ class TaskEditViewController: FormViewController, TaskActionsViewDelegate {
     
     //MARK: - TaskActionsViewDelegate
     func taskActionButtonTapped(button: UIView?) {
+        
+        if let presentingVC = self.navigationController?.presentingViewController as? TabBarViewController{
+            let currentIndex = presentingVC.selectedIndex
+            if currentIndex > 0{ //task details view controller(us)  is presented from User`s profile VC, or from Contact`s profile VC
+                return
+            }
+        }
+        
         //scroll button to center
         if let button = button{
-            
             
             let currentCenter = CGRectGetMidY(self.view.frame)
             let currentPosition = button.convertPoint(button.center, toView: self.view)
