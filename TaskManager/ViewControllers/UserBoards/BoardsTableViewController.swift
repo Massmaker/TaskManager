@@ -85,15 +85,17 @@ class BoardsTableViewController: UIViewController, UITableViewDataSource, UITabl
     //MARK: - 
     
     func displayAppNameInTitle(){
+        
         let label = UILabel(frame: CGRectMake(0,0, 100, 35))
         label.font = UIFont.appRegularFontOfSize(18.0)
-        label.textColor = UIColor.appThemeColorBlue
+        label.textColor = self.navigationController!.navigationBar.tintColor
         label.text = "Mono"
         label.textAlignment = NSTextAlignment.Center
         label.sizeToFit()
         
         self.navigationItem.titleView = label
     }
+    
     //MARK: -
     private func reloadNavigationTitleViewWithCurrentUserInfo() -> Bool
     {
