@@ -12,7 +12,7 @@ extension NSDate {
     func dateTimeCustomString() -> String
     {
         let formatter = NSDateFormatter()
-        formatter.dateFormat = "dd.MM.YY HH:MM"
+        formatter.dateFormat = "dd.MM.YY HH:mm"
         let string = formatter.stringFromDate(self)
         return string
     }
@@ -26,7 +26,7 @@ extension NSDate {
         let formatter = NSDateFormatter()
         
         if isToday{
-            formatter.dateFormat = "HH:MM"
+            formatter.dateFormat = "HH:mm"
         }
         else{
             formatter.dateFormat = "dd.MM.YY"

@@ -134,6 +134,8 @@ class UserProfileViewController: FormViewController {
                     view.avatar.image = self.currentProfileInfo?.avatarImage
                     view.phoneLabel.text = self.currentProfileInfo?.phoneNumber
                     view.delegate = self
+                    view.smsButton.hidden = true
+                    view.phoneCallButton.hidden = true
                 }
             
                 header.height = { 120.0 }

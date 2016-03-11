@@ -112,6 +112,10 @@
 		F895CD501C5F63B100D08EE9 /* SubscriptionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */; };
 		F895CD521C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD511C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift */; };
 		F895CD541C5F8B7F00D08EE9 /* NotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD531C5F8B7F00D08EE9 /* NotificationsHandler.swift */; };
+		F8AF1BB41C91B95C001EB2B5 /* ContactsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AF1BB31C91B95C001EB2B5 /* ContactsTableViewController.swift */; };
+		F8AF1BB61C91B9E5001EB2B5 /* ContactsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AF1BB51C91B9E5001EB2B5 /* ContactsListCell.swift */; };
+		F8AF1BB81C91BF70001EB2B5 /* ContactsTableViewController + ContactsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AF1BB71C91BF70001EB2B5 /* ContactsTableViewController + ContactsHandlerDelegate.swift */; };
+		F8AF1BBE1C91D165001EB2B5 /* ContactProfileViewController+ContactProfileHeaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AF1BBD1C91D165001EB2B5 /* ContactProfileViewController+ContactProfileHeaderDelegate.swift */; };
 		F8BFD4D71C807E7D008081C6 /* TaskActionsConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BFD4D61C807E7D008081C6 /* TaskActionsConfirmView.swift */; };
 		F8BFD4D91C808E1E008081C6 /* TaskActionsConfirmView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8BFD4D81C808E1E008081C6 /* TaskActionsConfirmView.xib */; };
 		F8C231451C85D468003C600A /* ContactSelectableTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C231441C85D468003C600A /* ContactSelectableTableCell.swift */; };
@@ -239,6 +243,10 @@
 		F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsHandler.swift; sourceTree = "<group>"; };
 		F895CD511C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+CKSubscriptionOptions.swift"; sourceTree = "<group>"; };
 		F895CD531C5F8B7F00D08EE9 /* NotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHandler.swift; sourceTree = "<group>"; };
+		F8AF1BB31C91B95C001EB2B5 /* ContactsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewController.swift; sourceTree = "<group>"; };
+		F8AF1BB51C91B9E5001EB2B5 /* ContactsListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsListCell.swift; sourceTree = "<group>"; };
+		F8AF1BB71C91BF70001EB2B5 /* ContactsTableViewController + ContactsHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactsTableViewController + ContactsHandlerDelegate.swift"; sourceTree = "<group>"; };
+		F8AF1BBD1C91D165001EB2B5 /* ContactProfileViewController+ContactProfileHeaderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactProfileViewController+ContactProfileHeaderDelegate.swift"; sourceTree = "<group>"; };
 		F8BFD4D61C807E7D008081C6 /* TaskActionsConfirmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskActionsConfirmView.swift; sourceTree = "<group>"; };
 		F8BFD4D81C808E1E008081C6 /* TaskActionsConfirmView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskActionsConfirmView.xib; sourceTree = "<group>"; };
 		F8C231441C85D468003C600A /* ContactSelectableTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactSelectableTableCell.swift; sourceTree = "<group>"; };
@@ -526,8 +534,12 @@
 				F84D68A81C4CEB6900EF8A16 /* ContactsCollectionViewController.swift */,
 				F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */,
 				F84D68F61C4CF8E700EF8A16 /* ContactProfileViewController.swift */,
+				F8AF1BBD1C91D165001EB2B5 /* ContactProfileViewController+ContactProfileHeaderDelegate.swift */,
 				F8C231441C85D468003C600A /* ContactSelectableTableCell.swift */,
 				F8C2314F1C85EB2D003C600A /* ContactSelectableTableCell.xib */,
+				F8AF1BB31C91B95C001EB2B5 /* ContactsTableViewController.swift */,
+				F8AF1BB71C91BF70001EB2B5 /* ContactsTableViewController + ContactsHandlerDelegate.swift */,
+				F8AF1BB51C91B9E5001EB2B5 /* ContactsListCell.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -786,6 +798,7 @@
 				F84CAD181C56339600BC2ECC /* UserProfileHeaderDelegate.swift in Sources */,
 				F884BC441C60AB1F0057539E /* DataSyncronizer.swift in Sources */,
 				F84B4D721C4E71C60013D7F1 /* TaskEditViewController.swift in Sources */,
+				F8AF1BB41C91B95C001EB2B5 /* ContactsTableViewController.swift in Sources */,
 				F84D68CD1C4CEB6900EF8A16 /* DeviceContact+Extension.swift in Sources */,
 				F84D68E21C4CEB6900EF8A16 /* BoardEditNavigationController.swift in Sources */,
 				F81985B71C8854DD009D1E92 /* Reachability.swift in Sources */,
@@ -793,6 +806,7 @@
 				F88669971C5786D100F56C0A /* CoreDataManager.swift in Sources */,
 				F895CD501C5F63B100D08EE9 /* SubscriptionsHandler.swift in Sources */,
 				F8DD675E1C5A15C500258E44 /* BoardDetailsHeader.swift in Sources */,
+				F8AF1BBE1C91D165001EB2B5 /* ContactProfileViewController+ContactProfileHeaderDelegate.swift in Sources */,
 				F84CAD161C562E0600BC2ECC /* DocumentsFolderFileHandler.swift in Sources */,
 				F84D68BD1C4CEB6900EF8A16 /* Extensions-UIViewController.swift in Sources */,
 				F84D68C81C4CEB6900EF8A16 /* User.swift in Sources */,
@@ -827,6 +841,7 @@
 				F84D68661C4CEB2E00EF8A16 /* AppDelegate.swift in Sources */,
 				F84D68B61C4CEB6900EF8A16 /* CloudKitDatabaseHandler.swift in Sources */,
 				F84D68F51C4CF8DF00EF8A16 /* BoardEditViewController.swift in Sources */,
+				F8AF1BB61C91B9E5001EB2B5 /* ContactsListCell.swift in Sources */,
 				F8C231471C85D63E003C600A /* RadioCheckbox.swift in Sources */,
 				F84D68C91C4CEB6900EF8A16 /* ContactsFetcherIOS9.swift in Sources */,
 				F84D68C41C4CEB6900EF8A16 /* Task+CoreDataProperties.swift in Sources */,
@@ -834,6 +849,7 @@
 				F84D68D81C4CEB6900EF8A16 /* PublicFunctions.swift in Sources */,
 				F84CAD201C563FEB00BC2ECC /* UserDefalutKeys.swift in Sources */,
 				F84D69081C4D3DF400EF8A16 /* BoardEditingHolder.swift in Sources */,
+				F8AF1BB81C91BF70001EB2B5 /* ContactsTableViewController + ContactsHandlerDelegate.swift in Sources */,
 				F8832BC81C4FE1D200D75FAE /* CloudKitErrorParser.swift in Sources */,
 				F884BC481C60DDF90057539E /* RecordIDStringIndexable.swift in Sources */,
 				F84CAD141C562AF700BC2ECC /* UserProfileHeader.swift in Sources */,

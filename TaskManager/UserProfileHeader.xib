@@ -12,9 +12,38 @@
             <rect key="frame" x="0.0" y="0.0" width="451" height="120"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Test_Icon" translatesAutoresizingMaskIntoConstraints="NO" id="fWj-ap-uDJ">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="248" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ZI-Bv-kru">
+                    <rect key="frame" x="133" y="60" width="310" height="0.0"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CFe-FO-eT8">
+                    <rect key="frame" x="347" y="38" width="44" height="44"/>
+                    <color key="tintColor" red="0.23529411759999999" green="0.52549019610000003" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <inset key="contentEdgeInsets" minX="9" minY="9" maxX="9" maxY="9"/>
+                    <state key="normal" image="icon_phonetube"/>
+                    <connections>
+                        <action selector="phoneButtonTap:" destination="iN0-l3-epB" eventType="touchUpInside" id="wqV-cJ-O05"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yJx-VH-I3J">
+                    <rect key="frame" x="399" y="38" width="44" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="aws-em-XBR"/>
+                        <constraint firstAttribute="width" constant="44" id="mRG-nm-WMR"/>
+                    </constraints>
+                    <color key="tintColor" red="0.23529411759999999" green="0.52549019610000003" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <inset key="contentEdgeInsets" minX="6" minY="6" maxX="6" maxY="6"/>
+                    <state key="normal" image="icon_sms"/>
+                    <connections>
+                        <action selector="smsButtonTap:" destination="iN0-l3-epB" eventType="touchUpInside" id="MJ9-kp-bB2"/>
+                    </connections>
+                </button>
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="No_Avatar" translatesAutoresizingMaskIntoConstraints="NO" id="fWj-ap-uDJ">
                     <rect key="frame" x="8" y="8" width="102" height="102"/>
-                    <color key="backgroundColor" red="0.96078431369999995" green="0.2784313725" blue="0.28235294119999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="0.23529411759999999" green="0.52549019610000003" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="fWj-ap-uDJ" secondAttribute="height" multiplier="1:1" id="AkY-7m-mQz"/>
@@ -23,17 +52,17 @@
                         <outletCollection property="gestureRecognizers" destination="e7l-FL-lM6" appends="YES" id="f6i-Q4-C44"/>
                     </connections>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="248" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ZI-Bv-kru">
-                    <rect key="frame" x="133" y="60" width="310" height="0.0"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="yJx-VH-I3J" secondAttribute="trailing" constant="8" id="0bE-oD-lCG"/>
+                <constraint firstItem="CFe-FO-eT8" firstAttribute="centerY" secondItem="yJx-VH-I3J" secondAttribute="centerY" id="8iV-3x-Cm7"/>
+                <constraint firstItem="CFe-FO-eT8" firstAttribute="height" secondItem="yJx-VH-I3J" secondAttribute="height" id="IVv-3I-8hA"/>
+                <constraint firstItem="yJx-VH-I3J" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="J6d-ry-QD0"/>
                 <constraint firstItem="fWj-ap-uDJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="aCk-HQ-U9L"/>
+                <constraint firstItem="yJx-VH-I3J" firstAttribute="leading" secondItem="CFe-FO-eT8" secondAttribute="trailing" constant="8" id="c4k-Zu-cit"/>
                 <constraint firstItem="fWj-ap-uDJ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="glV-KQ-a9r"/>
+                <constraint firstItem="CFe-FO-eT8" firstAttribute="width" secondItem="yJx-VH-I3J" secondAttribute="width" id="k7x-cU-ae0"/>
                 <constraint firstItem="1ZI-Bv-kru" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="l6G-NR-v2t"/>
                 <constraint firstAttribute="trailing" secondItem="1ZI-Bv-kru" secondAttribute="trailing" constant="8" id="qfe-at-JBb"/>
                 <constraint firstItem="1ZI-Bv-kru" firstAttribute="leading" secondItem="fWj-ap-uDJ" secondAttribute="trailing" constant="23" id="s7u-AU-wIY"/>
@@ -42,7 +71,9 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="avatar" destination="fWj-ap-uDJ" id="p2q-q2-tcO"/>
+                <outlet property="phoneCallButton" destination="CFe-FO-eT8" id="3Uc-1B-JPv"/>
                 <outlet property="phoneLabel" destination="1ZI-Bv-kru" id="NtK-Zj-d6T"/>
+                <outlet property="smsButton" destination="yJx-VH-I3J" id="S9e-Ja-tEh"/>
             </connections>
             <point key="canvasLocation" x="510.5" y="270"/>
         </view>
@@ -53,6 +84,8 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="Test_Icon" width="90" height="90"/>
+        <image name="No_Avatar" width="256" height="256"/>
+        <image name="icon_phonetube" width="100" height="100"/>
+        <image name="icon_sms" width="100" height="100"/>
     </resources>
 </document>

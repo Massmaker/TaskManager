@@ -22,8 +22,19 @@ class UserProfileHeader: UIView {
     
     @IBOutlet weak var avatar:UIImageView!
     @IBOutlet weak var phoneLabel:UILabel!
-    @IBAction func imageTappedRecognizerAction(sender:UITapGestureRecognizer)
-    {
+    
+    @IBOutlet weak var phoneCallButton: UIButton!
+    @IBOutlet weak var smsButton: UIButton!
+    
+    @IBAction func imageTappedRecognizerAction(sender:UITapGestureRecognizer){
         self.delegate?.userProfileHeaderTapped()
+    }
+    
+    @IBAction func phoneButtonTap(sender:UIButton){
+        delegate?.startCall()
+    }
+    
+    @IBAction func smsButtonTap(sender:UIButton){
+        delegate?.startSms()
     }
 }

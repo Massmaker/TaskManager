@@ -11,5 +11,7 @@ import Foundation
 protocol UserProfileHeaderDelegate:class{
     
     func userProfileHeaderTapped()
+    func startCall()
+    func startSms()
     
 }

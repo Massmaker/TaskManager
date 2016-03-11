@@ -8,7 +8,16 @@
 
 import Foundation
 extension UserProfileViewController : UserProfileHeaderDelegate {
+    
     func userProfileHeaderTapped() {
         self.showImagePickerForUserAvatar()
+    }
+    
+    func startCall(){
+        
+    }
+    
+    func startSms(){
+        
     }
 }
