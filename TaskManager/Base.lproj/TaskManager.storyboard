@@ -326,72 +326,6 @@
             </objects>
             <point key="canvasLocation" x="264" y="298"/>
         </scene>
-        <!--Contacts collection view controller-->
-        <scene sceneID="Gbf-OE-zwT">
-            <objects>
-                <collectionViewController title="Contacts collection view controller" id="kvS-8R-PMx" customClass="ContactsCollectionViewController" customModule="TaskManager" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" indicatorStyle="white" dataMode="prototypes" id="xCy-FS-gMh">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="tintColor" red="0.23529411759999999" green="0.52549019610000003" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2Mt-B8-dXe">
-                            <size key="itemSize" width="60" height="80"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ContactCollectionCell" id="8PC-Ah-1Yp" customClass="ContactCollectionViewCell" customModule="TaskManager" customModuleProvider="target">
-                                <rect key="frame" x="8" y="0.0" width="60" height="80"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="60" height="80"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="250" text="element title or detils" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="naq-qs-JNL">
-                                            <rect key="frame" x="8" y="38" width="44" height="34"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <color key="textColor" red="0.23529411759999999" green="0.52549019610000003" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nhs-Au-V0q">
-                                            <rect key="frame" x="8" y="8" width="44" height="44"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="nhs-Au-V0q" secondAttribute="height" multiplier="1:1" id="CR2-Ls-h3n"/>
-                                            </constraints>
-                                        </imageView>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailingMargin" secondItem="nhs-Au-V0q" secondAttribute="trailing" id="2Xx-9M-rs5"/>
-                                    <constraint firstAttribute="topMargin" secondItem="nhs-Au-V0q" secondAttribute="top" id="4wa-hP-4yW"/>
-                                    <constraint firstAttribute="leadingMargin" secondItem="nhs-Au-V0q" secondAttribute="leading" id="7MU-6c-rlB"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="naq-qs-JNL" secondAttribute="trailing" id="aKM-xQ-GGQ"/>
-                                    <constraint firstAttribute="bottomMargin" secondItem="naq-qs-JNL" secondAttribute="bottom" id="bhp-UR-EvV"/>
-                                    <constraint firstAttribute="leadingMargin" secondItem="naq-qs-JNL" secondAttribute="leading" id="eb7-y8-lni"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="elementLabel" destination="naq-qs-JNL" id="8kh-I2-Znf"/>
-                                    <outlet property="imageView" destination="nhs-Au-V0q" id="QsN-6p-AS1"/>
-                                </connections>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="kvS-8R-PMx" id="2Zn-To-rcB"/>
-                            <outlet property="delegate" destination="kvS-8R-PMx" id="BY1-DF-ljv"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" id="AS4-vF-LwW"/>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="eT2-0R-15h" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="914" y="200"/>
-        </scene>
         <!--Contacts Table View Controller-->
         <scene sceneID="j6x-zf-hBm">
             <objects>
@@ -479,6 +413,7 @@
                                         <connections>
                                             <outlet property="avatarHolderView" destination="0JH-wM-Jbv" id="AE2-o3-zRx"/>
                                             <outlet property="avatarImageView" destination="iYv-9x-PCY" id="J5c-mB-IJ7"/>
+                                            <outlet property="currentTaskTitleLabel" destination="KKG-Dp-qnx" id="T8u-jP-vlW"/>
                                             <outlet property="nameLabel" destination="fd5-Lb-3cA" id="4aE-Yl-d8x"/>
                                             <outlet property="phoneLabel" destination="zXF-eG-sE9" id="5G9-lt-kNf"/>
                                         </connections>
@@ -498,16 +433,32 @@
                             <constraint firstItem="zGl-7L-cFu" firstAttribute="leading" secondItem="rZC-yA-nDj" secondAttribute="leading" id="rYs-f1-9p5"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Pur-Sv-sxP"/>
+                    <navigationItem key="navigationItem" id="Pur-Sv-sxP">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="4qT-iM-gZf">
+                            <rect key="frame" x="96" y="7" width="128" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <segments>
+                                <segment title="Mono"/>
+                                <segment title="All"/>
+                            </segments>
+                            <color key="tintColor" red="0.23529411759999999" green="0.52549019610000003" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="contactsSwitchDidSwitch:" destination="2HL-Vo-rhH" eventType="valueChanged" id="kIe-7C-ar5"/>
+                            </connections>
+                        </segmentedControl>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="contactsSwitch" destination="4qT-iM-gZf" id="piD-be-W3E"/>
                         <outlet property="contactsTableView" destination="zGl-7L-cFu" id="Ph5-is-nGP"/>
                         <segue destination="Thx-zd-184" kind="show" identifier="ShowSelectedContactSegue" id="iYQ-Is-0bP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i3M-Jh-ZMv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="607" y="963"/>
+            <point key="canvasLocation" x="867" y="298"/>
         </scene>
         <!--Tasks View Controller-->
         <scene sceneID="5fq-lg-jNj">
@@ -699,7 +650,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QzV-31-lZM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1689" y="298"/>
+            <point key="canvasLocation" x="1356" y="298"/>
         </scene>
         <!--User Profile View Controller-->
         <scene sceneID="5jm-PP-COJ">

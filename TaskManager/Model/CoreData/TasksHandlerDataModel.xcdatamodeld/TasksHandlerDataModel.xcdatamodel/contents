@@ -29,7 +29,7 @@
         <relationship name="board" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Board" inverseName="tasks" inverseEntity="Board" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName=".User" syncable="YES">
-        <attribute name="avatarData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="avatarData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="firstName" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
         <attribute name="lastName" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
         <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>

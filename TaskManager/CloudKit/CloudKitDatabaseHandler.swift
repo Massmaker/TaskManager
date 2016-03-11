@@ -21,6 +21,9 @@ class CloudKitDatabaseHandler{
     
     private var currentUserRecord:CKRecord?
     
+    private var tasksForAllBoardsCursor:CKQueryCursor?
+    private var pendingTasksToLoad:[CKRecord]?
+    
     var currentUserPhoneNumber:String?{
         didSet{
             print("new phone number is set in cloudKitDatabaseHandler : \n \(currentUserPhoneNumber)")
@@ -1146,6 +1149,68 @@ class CloudKitDatabaseHandler{
         }
         
         self.publicDB.addOperation(fetchTaskRecordsOp)
+    }
+    
+    func findTasksForBoardIDs(boardIDs:[String], completion:((tasks:[CKRecord]?)->())){
+        
+        var boardRefs = [CKReference]()
+        for aBoardID in boardIDs{
+            let reference = CKReference(recordID: CKRecordID(recordName: aBoardID), action: CKReferenceAction.DeleteSelf)
+            boardRefs.append(reference)
+        }
+  
+        
+        let predicate = NSPredicate(format: "board IN %@", boardRefs)
+        let query = CKQuery(recordType: "Task", predicate: predicate)
+        
+        let fetchOp = CKQueryOperation(query: query)
+        
+        fetchOp.resultsLimit = 5
+        
+        self.pendingTasksToLoad = [CKRecord]()
+        
+        fetchOp.qualityOfService = .Utility
+        
+        fetchOp.recordFetchedBlock = { [unowned self]record in
+            self.pendingTasksToLoad?.append(record)
+        }
+        
+        fetchOp.queryCompletionBlock = {[unowned self] cursor, error in
+            if let aCursor = cursor{
+                self.tasksForAllBoardsCursor = aCursor
+                self.proceedFetchingTasksWithCursor(aCursor, completion: completion)
+            }
+            else{
+                self.tasksForAllBoardsCursor = nil
+                completion(tasks: self.pendingTasksToLoad)
+                self.pendingTasksToLoad?.removeAll()
+                self.pendingTasksToLoad = nil
+            }
+        }
+        self.publicDB.addOperation(fetchOp)
+    }
+    
+    private func proceedFetchingTasksWithCursor(cursor:CKQueryCursor, completion:((tasks:[CKRecord]?)->()) ){
+        let fetchOp = CKQueryOperation(cursor: cursor)
+        fetchOp.resultsLimit = 5
+        
+        fetchOp.recordFetchedBlock = { [unowned self]record in
+                self.pendingTasksToLoad?.append(record)
+        }
+        
+        fetchOp.queryCompletionBlock = {[unowned self] cursor, error in
+            if let anotherCursor = cursor{
+                self.tasksForAllBoardsCursor = anotherCursor
+                self.proceedFetchingTasksWithCursor(anotherCursor, completion: completion)
+            }
+            else{
+                self.tasksForAllBoardsCursor = nil
+                completion(tasks: self.pendingTasksToLoad)
+                self.pendingTasksToLoad?.removeAll()
+                self.pendingTasksToLoad = nil
+            }
+        }
+        self.publicDB.addOperation(fetchOp)
     }
     
 }//class end

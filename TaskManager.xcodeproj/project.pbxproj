@@ -69,8 +69,6 @@
 		F84D68D61C4CEB6900EF8A16 /* UserAuthenticating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68A11C4CEB6900EF8A16 /* UserAuthenticating.swift */; };
 		F84D68D71C4CEB6900EF8A16 /* UserAuthenticatorDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68A21C4CEB6900EF8A16 /* UserAuthenticatorDelegates.swift */; };
 		F84D68D81C4CEB6900EF8A16 /* PublicFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68A31C4CEB6900EF8A16 /* PublicFunctions.swift */; };
-		F84D68D91C4CEB6900EF8A16 /* ContactCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68A61C4CEB6900EF8A16 /* ContactCollectionViewCell.swift */; };
-		F84D68DB1C4CEB6900EF8A16 /* ContactsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68A81C4CEB6900EF8A16 /* ContactsCollectionViewController.swift */; };
 		F84D68DF1C4CEB6900EF8A16 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68AC1C4CEB6900EF8A16 /* TabBarViewController.swift */; };
 		F84D68E21C4CEB6900EF8A16 /* BoardEditNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68B11C4CEB6900EF8A16 /* BoardEditNavigationController.swift */; };
 		F84D68E41C4CEB6900EF8A16 /* BoardsHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84D68B31C4CEB6900EF8A16 /* BoardsHolder.swift */; };
@@ -108,7 +106,6 @@
 		F884BC481C60DDF90057539E /* RecordIDStringIndexable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F884BC471C60DDF90057539E /* RecordIDStringIndexable.swift */; };
 		F88669951C577A5200F56C0A /* BoardsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669941C577A5200F56C0A /* BoardsTableViewCell.swift */; };
 		F88669971C5786D100F56C0A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669961C5786D100F56C0A /* CoreDataManager.swift */; };
-		F88669991C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */; };
 		F895CD501C5F63B100D08EE9 /* SubscriptionsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */; };
 		F895CD521C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD511C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift */; };
 		F895CD541C5F8B7F00D08EE9 /* NotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F895CD531C5F8B7F00D08EE9 /* NotificationsHandler.swift */; };
@@ -199,8 +196,6 @@
 		F84D68A11C4CEB6900EF8A16 /* UserAuthenticating.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAuthenticating.swift; sourceTree = "<group>"; };
 		F84D68A21C4CEB6900EF8A16 /* UserAuthenticatorDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAuthenticatorDelegates.swift; sourceTree = "<group>"; };
 		F84D68A31C4CEB6900EF8A16 /* PublicFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicFunctions.swift; sourceTree = "<group>"; };
-		F84D68A61C4CEB6900EF8A16 /* ContactCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCollectionViewCell.swift; sourceTree = "<group>"; };
-		F84D68A81C4CEB6900EF8A16 /* ContactsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsCollectionViewController.swift; sourceTree = "<group>"; };
 		F84D68AC1C4CEB6900EF8A16 /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		F84D68B11C4CEB6900EF8A16 /* BoardEditNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardEditNavigationController.swift; sourceTree = "<group>"; };
 		F84D68B31C4CEB6900EF8A16 /* BoardsHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoardsHolder.swift; path = ../ViewControllers/UserBoards/BoardsHolder.swift; sourceTree = "<group>"; };
@@ -239,7 +234,6 @@
 		F884BC471C60DDF90057539E /* RecordIDStringIndexable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordIDStringIndexable.swift; sourceTree = "<group>"; };
 		F88669941C577A5200F56C0A /* BoardsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardsTableViewCell.swift; sourceTree = "<group>"; };
 		F88669961C5786D100F56C0A /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactsCollectionViewController+ContactsHandlerDelegate.swift"; sourceTree = "<group>"; };
 		F895CD4F1C5F63B100D08EE9 /* SubscriptionsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsHandler.swift; sourceTree = "<group>"; };
 		F895CD511C5F791D00D08EE9 /* Extension+CKSubscriptionOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+CKSubscriptionOptions.swift"; sourceTree = "<group>"; };
 		F895CD531C5F8B7F00D08EE9 /* NotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHandler.swift; sourceTree = "<group>"; };
@@ -530,9 +524,6 @@
 		F84D68A51C4CEB6900EF8A16 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
-				F84D68A61C4CEB6900EF8A16 /* ContactCollectionViewCell.swift */,
-				F84D68A81C4CEB6900EF8A16 /* ContactsCollectionViewController.swift */,
-				F88669981C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift */,
 				F84D68F61C4CF8E700EF8A16 /* ContactProfileViewController.swift */,
 				F8AF1BBD1C91D165001EB2B5 /* ContactProfileViewController+ContactProfileHeaderDelegate.swift */,
 				F8C231441C85D468003C600A /* ContactSelectableTableCell.swift */,
@@ -773,7 +764,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8547FD51C7F200E00296B45 /* TaskActionsSectionTitleHeader.swift in Sources */,
-				F84D68D91C4CEB6900EF8A16 /* ContactCollectionViewCell.swift in Sources */,
 				F84D68F31C4CF5D800EF8A16 /* LoginViewController+UserDelegateExtensions.swift in Sources */,
 				F84D68B71C4CEB6900EF8A16 /* CloudRecordTypes.swift in Sources */,
 				F8386A2D1C5B6A0B00C298A5 /* TaskTableViewCell.swift in Sources */,
@@ -813,7 +803,6 @@
 				F84D68D01C4CEB6900EF8A16 /* PhoneAndCloudAuthenticator.swift in Sources */,
 				F855B53C1C6220B200894413 /* CloudKitRecordKeys.swift in Sources */,
 				F8067C4C1C60FAF200782E63 /* TasksHolderDelegate.swift in Sources */,
-				F84D68DB1C4CEB6900EF8A16 /* ContactsCollectionViewController.swift in Sources */,
 				F83D16031C4F825100E46E43 /* UserErrors.swift in Sources */,
 				F8547FD31C7F0F3900296B45 /* TaskActionsViewDelegate.swift in Sources */,
 				F84D68D71C4CEB6900EF8A16 /* UserAuthenticatorDelegates.swift in Sources */,
@@ -861,7 +850,6 @@
 				F84D68CC1C4CEB6900EF8A16 /* ContactsHandlerDelegate.swift in Sources */,
 				F84D68E41C4CEB6900EF8A16 /* BoardsHolder.swift in Sources */,
 				F84D68F71C4CF8E700EF8A16 /* ContactProfileViewController.swift in Sources */,
-				F88669991C57997800F56C0A /* ContactsCollectionViewController+ContactsHandlerDelegate.swift in Sources */,
 				F8BFD4D71C807E7D008081C6 /* TaskActionsConfirmView.swift in Sources */,
 				F84B4D741C4E720E0013D7F1 /* TaskEditNavigationController.swift in Sources */,
 				F8067C421C60F34000782E63 /* BoardsHolderDelegate.swift in Sources */,

@@ -16,6 +16,33 @@ class CoreDataManager
     
     private lazy var boardIDsToDeleteFromCloud:Set<String> = Set<String>()
     
+    static var registeredContactsFetchRequest:NSFetchRequest {
+        
+        return fetchRequestForContactsRegistered(true)
+    }
+    
+    static var unregisteredContactsFetchRequest:NSFetchRequest{
+
+        return fetchRequestForContactsRegistered(false)
+    }
+    
+    private class func fetchRequestForContactsRegistered(registered:Bool) -> NSFetchRequest{
+        
+        let fetch = NSFetchRequest(entityName: "User")
+        let sortByFirstName = NSSortDescriptor(key: "firstName", ascending: true)
+        
+        fetch.sortDescriptors = [sortByFirstName]
+        
+        if registered{
+            fetch.predicate = NSPredicate(format: "registered = YES")
+        }
+        else{
+            fetch.predicate = NSPredicate(format: "registered = NO")
+        }
+        
+        return fetch
+    }
+    
     //MARK: - Initialization stuff
     class func getManagedObjectModel() -> NSManagedObjectModel?
     {
@@ -95,6 +122,9 @@ class CoreDataManager
         }
     }
     
+    func getMainContext() -> NSManagedObjectContext{
+        return self.mainQueueManagedObjectContext
+    }
     
     //MARK: - Contacts
     
@@ -222,6 +252,7 @@ class CoreDataManager
         return self.fetchContacts(true)
     }
     
+    @warn_unused_result
     private func fetchContacts(registeredOnly:Bool) -> [User]
     {
         var usersToReturn = [User]()
@@ -229,7 +260,7 @@ class CoreDataManager
         let allFetchRequest = NSFetchRequest(entityName: "User")
         allFetchRequest.returnsObjectsAsFaults = false
         let sortRegistered = NSSortDescriptor(key: "registered", ascending: false)
-        let sortByFirstName = NSSortDescriptor(key: "firstName", ascending: false)
+        let sortByFirstName = NSSortDescriptor(key: "firstName", ascending: true)
         if registeredOnly
         {
             allFetchRequest.predicate = NSPredicate(format: "registered = YES")
@@ -619,6 +650,55 @@ class CoreDataManager
     }
 
     //MARK: - Tasks
+    
+    func saveTasksFromRecords(taskRecords:[CKRecord], completion:(()->())){
+        let privateContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        privateContext.parentContext = self.mainQueueManagedObjectContext
+        
+        privateContext.performBlock(){
+            for aTaskRecord in taskRecords{
+                if let boardRef = aTaskRecord[BoardReferenceKey] as? CKReference{
+                    
+                    let boardId = boardRef.recordID.recordName
+                    
+                    let boardFetchRequest = NSFetchRequest(entityName: "Board")
+                    let predicate = NSPredicate(format: "recordId = %@", boardId)
+                    boardFetchRequest.predicate = predicate
+                    do{
+                        guard let board = (try privateContext.executeFetchRequest(boardFetchRequest) as? [Board])?.first else{
+                            assertionFailure("Board for Task \" \(aTaskRecord[TitleStringKey] as! String)\" is not local database")
+                            continue
+                        }
+                        
+                        if let existingTask = self.findTaskById(aTaskRecord.recordID.recordName){
+                            existingTask.fillInfoFrom(aTaskRecord)
+                            board.addTasksObject(existingTask)
+                        }
+                        else{
+                            if let newTask = NSEntityDescription.insertNewObjectForEntityForName("Task", inManagedObjectContext: privateContext) as? Task{
+                                newTask.fillInfoFrom(aTaskRecord)
+                                board.addTasksObject(newTask)
+                            }
+                        }
+                        
+                    }catch{
+                        
+                    }
+                }
+                else{
+                    assertionFailure("Task \" \(aTaskRecord[TitleStringKey] as! String)\" does not contain board reference...")
+                }
+            }
+            
+            do{
+                try privateContext.save()
+                completion()
+            }catch{
+                completion()
+            }
+        }
+    }
+    
     func insertNewTaskFrom(info:TempTaskInfo) -> Task?
     {
         guard let newTask = NSEntityDescription.insertNewObjectForEntityForName("Task", inManagedObjectContext: self.mainQueueManagedObjectContext) as? Task else
@@ -700,30 +780,6 @@ class CoreDataManager
         }
     }
     
-    
-    func insertMany(tasks:[Task])
-    {
-        let aContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        aContext.parentContext = self.mainQueueManagedObjectContext
-        aContext.performBlock(){
-            for aTask in tasks
-            {
-                aContext.insertObject(aTask)
-            }
-            
-            if aContext.hasChanges
-            {
-                do{
-                    try aContext.save()
-                    print("\n - did insert Tasks into mainContext (not saved) ")
-                }
-                catch let privateError{
-                    print("\n - Could not save private context after inserting several tasks:")
-                    print("\(privateError)")
-                }
-            }
-        }
-    }
     
     func findTaskById(recordId:String) -> Task?
     {

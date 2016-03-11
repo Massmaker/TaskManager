@@ -46,7 +46,8 @@ extension ContactsTableViewController: ContactsHandlerDelegate{
             }
             else
             {
-                self?.contactsTableView.reloadSections(NSIndexSet(index:0), withRowAnimation: .Automatic)
+                //self?.contactsTableView.reloadSections(NSIndexSet(index:0), withRowAnimation: .Automatic)
+                self?.refreshContactsTable()
             }
         }
     }
@@ -59,8 +60,8 @@ extension ContactsTableViewController: ContactsHandlerDelegate{
     func contactsDidUpdate() {
         self.contactsTableView.scrollEnabled = true
         
-        self.contactsTableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic) //(NSIndexSet(index: 0))
-        
+        //self.contactsTableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic) //(NSIndexSet(index: 0))
+        self.refreshContactsTable()
         if self.refreshControl.refreshing
         {
             self.refreshControl.endRefreshing()

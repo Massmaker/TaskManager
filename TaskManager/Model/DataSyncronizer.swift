@@ -108,7 +108,50 @@ class DataSyncronizer {
             self.syncing = false
             objc_sync_exit(self)
             
-            postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
+            if let boards = anAppDelegate()?.coreDatahandler?.allBoards(){
+                var boardIDs = [String]()
+                
+                for aBoard in boards{
+                    if let boardId = aBoard.recordId{
+                        boardIDs.append(boardId)
+                    }
+                }
+                anAppDelegate()?.cloudKitHandler.findTasksForBoardIDs(boardIDs) { (tasks) -> () in
+                    guard let taskRecords = tasks else{
+                        objc_sync_enter(self)
+                        self.syncing = false
+                        objc_sync_exit(self)
+                        
+                        dispatchMain(){
+                            postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
+                        }
+                        
+                        return
+                    }
+                    
+                    anAppDelegate()?.coreDatahandler?.saveTasksFromRecords(taskRecords) { () -> () in
+                        
+                        dispatchMain(){
+                            anAppDelegate()?.coreDatahandler?.saveMainContext()
+                            
+                            objc_sync_enter(self)
+                            self.syncing = false
+                            objc_sync_exit(self)
+                            
+                            postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
+                        }
+                    }
+                }
+                
+            }
+            else{
+                
+                objc_sync_enter(self)
+                self.syncing = false
+                objc_sync_exit(self)
+                
+                postNotificationInMainThread(DataSyncronizerDidStopSyncronyzingNotificationName, object: DataSyncronizer.sharedSyncronizer)
+            }
         }
     }
     

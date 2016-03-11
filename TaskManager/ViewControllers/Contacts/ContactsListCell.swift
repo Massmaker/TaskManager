@@ -15,6 +15,7 @@ class ContactsListCell: UITableViewCell {
     @IBOutlet weak var phoneLabel: UILabel!
     @IBOutlet weak var avatarHolderView: UIView!
     @IBOutlet weak var avatarImageView: UIImageView!
+    @IBOutlet weak var currentTaskTitleLabel:UILabel!
     
     
     

@@ -7,15 +7,43 @@
 //
 
 import UIKit
+import CoreData
 
-class ContactsTableViewController: UIViewController, UITableViewDataSource , UITableViewDelegate{
+class ContactsTableViewController: UIViewController, UITableViewDataSource , UITableViewDelegate, NSFetchedResultsControllerDelegate{
 
     static let kContactListCellIdentifier = "ContactListCell"
     
     @IBOutlet weak var contactsTableView:UITableView!
     
+    @IBOutlet weak var contactsSwitch:UISegmentedControl!
+    
     lazy var contactsHandler:ContactsHandler = ContactsHandler.sharedInstance
     lazy var refreshControl = UIRefreshControl()
+    
+    var currentFetchedController:NSFetchedResultsController?
+    
+    lazy var regContactsFetchedController:NSFetchedResultsController? = {
+        
+        guard let mainContext = anAppDelegate()?.coreDatahandler?.getMainContext() else{
+            return nil
+        }
+        
+        let controller = NSFetchedResultsController(fetchRequest: CoreDataManager.registeredContactsFetchRequest, managedObjectContext:mainContext , sectionNameKeyPath: nil, cacheName: nil)
+        
+        return controller
+    }()
+    
+    lazy var unregContactsFetchedController:NSFetchedResultsController? = {
+        
+        guard let mainContext = anAppDelegate()?.coreDatahandler?.getMainContext() else{
+            return nil
+        }
+        
+        let controller = NSFetchedResultsController(fetchRequest: CoreDataManager.unregisteredContactsFetchRequest, managedObjectContext:mainContext , sectionNameKeyPath: nil, cacheName: nil)
+        
+        return controller
+    }()
+    
     
     
     override func viewDidLoad() {
@@ -27,6 +55,9 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
         self.contactsTableView.addSubview(refreshControl)
         
         self.contactsHandler.delegate = self //lazyly initialize and set the delegate
+        
+        self.contactsSwitch.selectedSegmentIndex = 0
+        self.contactsSwitchDidSwitch(self.contactsSwitch) // to perform initial fetch
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,8 +65,39 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: - 
+    @IBAction func contactsSwitchDidSwitch(sender:UISegmentedControl){
+        let currentSelectedIndex = sender.selectedSegmentIndex
+        
+        switch currentSelectedIndex{
+        case 0:
+            currentFetchedController = self.regContactsFetchedController
+        case 1:
+            currentFetchedController = self.unregContactsFetchedController
+        default:
+            break
+        }
+        
+        currentFetchedController?.delegate = self
+        do{
+            try currentFetchedController?.performFetch()
+            self.contactsTableView.reloadData()
+        }
+        catch let fetchError{
+            print(fetchError)
+        }
+    }
+    
+    func refreshContactsTable(){
+        self.contactsSwitchDidSwitch(self.contactsSwitch)
+    }
+    
+    //MARK: -
     func rescanContacts(sender:UIRefreshControl)
     {
+        self.unregContactsFetchedController?.delegate = nil
+        self.regContactsFetchedController?.delegate = nil
+        
         contactsHandler.delegate = self
         contactsHandler.configureAllOperations()
         
@@ -50,15 +112,33 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
 
     func contactForRow(row:Int) -> User {
         
-        let contacts = contactsHandler.allContacts
+        let users = currentFetchedController?.fetchedObjects as! [User]
         
-        return contacts[row]
+        return users[row]
+        
+        //let contacts = contactsHandler.allContacts
+        
+        //return contacts[row]
     }
     
     //MARK: - UITableViewDataSource
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if let controller = self.currentFetchedController, let sectionsInfo = controller.sections{
+            print("Contacts SectionInfo: \(sectionsInfo.count) ")
+            return sectionsInfo.count
+        }
+        return 0
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let contacts = contactsHandler.allContacts
-        return contacts.count
+        if let users = currentFetchedController?.fetchedObjects as? [User]{
+            print("Users: \(users.count)")
+            return users.count
+        }
+        return 0
+        
+        //let contacts = contactsHandler.allContacts
+        //return contacts.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -75,7 +155,23 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
         
         contactCell.nameLabel.text = contact.displayName
         contactCell.phoneLabel.text = contact.phone
-        contactCell.setRegistered(false)
+        
+        
+        if contactsSwitch.selectedSegmentIndex < 1{
+            contactCell.setRegistered(true)
+            if let phone = contact.phone{
+                contactCell.currentTaskTitleLabel.text = anAppDelegate()?.coreDatahandler?.findActiveTasksForUserById(phone)?.first?.title
+            }
+            else{
+                contactCell.currentTaskTitleLabel.text = nil
+            }
+        }
+        else{
+            contactCell.setRegistered(false)
+            contactCell.currentTaskTitleLabel.text = nil
+        }
+        
+        
         contactCell.avatarImageView.image = contact.avatarImage ?? testAvatarImage
         
         return contactCell
@@ -89,6 +185,52 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
         let contact = contactForRow(indexPath.row)
         self.performSegueWithIdentifier("ShowSelectedContactSegue", sender: contact)
     }
+    
+    //MARK: - NSFetchedResultsControllerDelegate
+    
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        self.contactsTableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        self.contactsTableView.endUpdates()
+        //self.contactsTableView.reloadData()
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        
+        switch type{
+        case .Update:
+            if let inPath = indexPath{
+                self.contactsTableView.reloadRowsAtIndexPaths([inPath], withRowAnimation: .Fade)
+            }
+            if let newPath = newIndexPath{
+                self.contactsTableView.reloadRowsAtIndexPaths([newPath], withRowAnimation: .None)
+            }
+        case .Insert:
+            if let inPath = indexPath{
+                self.contactsTableView.insertRowsAtIndexPaths([inPath], withRowAnimation: .None)
+            }
+            if let newPath = newIndexPath{
+                self.contactsTableView.insertRowsAtIndexPaths([newPath], withRowAnimation: .None)
+            }
+        default:
+            break
+        }
+        
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+        switch type{
+        case .Insert:
+            self.contactsTableView.reloadData()
+        case .Delete:
+            self.contactsTableView.reloadData()
+        default:
+            break
+        }
+    }
+    
     
     // MARK: - Navigation
 
