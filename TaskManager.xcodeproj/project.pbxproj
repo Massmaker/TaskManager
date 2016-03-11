@@ -24,6 +24,7 @@
 		F83D16031C4F825100E46E43 /* UserErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83D16021C4F825100E46E43 /* UserErrors.swift */; };
 		F83D666A1C7B4D72007E67E7 /* ActionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83D66681C7B4D72007E67E7 /* ActionController.swift */; };
 		F83D666B1C7B4D72007E67E7 /* ActionController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F83D66691C7B4D72007E67E7 /* ActionController.xib */; };
+		F83E8F891C93172400149A1A /* ContactsTableViewController + ContactCellTaskTapDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83E8F881C93172400149A1A /* ContactsTableViewController + ContactCellTaskTapDelegate.swift */; };
 		F84B4D651C4E66C70013D7F1 /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D641C4E66C70013D7F1 /* TasksViewController.swift */; };
 		F84B4D691C4E69240013D7F1 /* TasksHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D681C4E69240013D7F1 /* TasksHolder.swift */; };
 		F84B4D721C4E71C60013D7F1 /* TaskEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B4D711C4E71C60013D7F1 /* TaskEditViewController.swift */; };
@@ -149,6 +150,7 @@
 		F83D16021C4F825100E46E43 /* UserErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserErrors.swift; sourceTree = "<group>"; };
 		F83D66681C7B4D72007E67E7 /* ActionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionController.swift; sourceTree = "<group>"; };
 		F83D66691C7B4D72007E67E7 /* ActionController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionController.xib; sourceTree = "<group>"; };
+		F83E8F881C93172400149A1A /* ContactsTableViewController + ContactCellTaskTapDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContactsTableViewController + ContactCellTaskTapDelegate.swift"; sourceTree = "<group>"; };
 		F84B4D641C4E66C70013D7F1 /* TasksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksViewController.swift; sourceTree = "<group>"; };
 		F84B4D681C4E69240013D7F1 /* TasksHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksHolder.swift; sourceTree = "<group>"; };
 		F84B4D711C4E71C60013D7F1 /* TaskEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskEditViewController.swift; sourceTree = "<group>"; };
@@ -530,6 +532,7 @@
 				F8C2314F1C85EB2D003C600A /* ContactSelectableTableCell.xib */,
 				F8AF1BB31C91B95C001EB2B5 /* ContactsTableViewController.swift */,
 				F8AF1BB71C91BF70001EB2B5 /* ContactsTableViewController + ContactsHandlerDelegate.swift */,
+				F83E8F881C93172400149A1A /* ContactsTableViewController + ContactCellTaskTapDelegate.swift */,
 				F8AF1BB51C91B9E5001EB2B5 /* ContactsListCell.swift */,
 			);
 			path = Contacts;
@@ -858,6 +861,7 @@
 				F8067C4A1C60F9A800782E63 /* DisplayNameCapable.swift in Sources */,
 				F88669951C577A5200F56C0A /* BoardsTableViewCell.swift in Sources */,
 				F8832BC41C4FB64500D75FAE /* TaskErrors.swift in Sources */,
+				F83E8F891C93172400149A1A /* ContactsTableViewController + ContactCellTaskTapDelegate.swift in Sources */,
 				F84D68BC1C4CEB6900EF8A16 /* ErrorTaskBoard.swift in Sources */,
 				F84B51741C5A1A010041A248 /* Extensions+UIImage.swift in Sources */,
 				F8F8B25E1C7DC67F007A6F7D /* BoardsAnimatedHeader.swift in Sources */,

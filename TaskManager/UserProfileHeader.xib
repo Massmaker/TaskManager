@@ -27,7 +27,7 @@
                         <action selector="phoneButtonTap:" destination="iN0-l3-epB" eventType="touchUpInside" id="wqV-cJ-O05"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yJx-VH-I3J">
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yJx-VH-I3J">
                     <rect key="frame" x="399" y="38" width="44" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="aws-em-XBR"/>

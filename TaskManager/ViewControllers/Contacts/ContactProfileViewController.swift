@@ -78,22 +78,72 @@ class ContactProfileViewController: FormViewController {
                     }
             }
         
-            if let taskTaken = anAppDelegate()?.coreDatahandler?.findActiveTasksForUserById(contact.phone!)?.first
-            {
-                form
-                    +++
-                    Section("Current task")
-                    <<< LabelRow(){
-                        $0.title = taskTaken.title
-                    }.onCellSelection(){[weak self] (cell, row) -> () in
-                        self?.displayCurrentContactTask()
-                    }
-            }
+        checkFinishedTasksSection()
+        
     }
     
-    private func displayCurrentContactTask()
-    {
-        //TODO: show TaskEditView controller with current contact`s taken task
+    private func checkFinishedTasksSection(){
+        
+        //display section with finished tasks
+        if let userId = contact?.phone,  let finishedTasks = anAppDelegate()?.coreDatahandler?.findFinishedTasksByUserId(userId){
+            
+            let finishedTasksSectionTitle = NSLocalizedString("Finished tasks", comment: "header title for finished tasks by user or contact")
+            let headerHeight = CGFloat(30.0)
+            
+            //prepare Title header
+            var titleHeader = HeaderFooterView<TaskActionsSectionTitleHeader>(.NibFile(name:"TaskActionsSectionTitleHeader", bundle:nil))
+            
+            titleHeader.onSetupView = {titleHeader, _, _ in
+                
+                titleHeader.titleLabel.text = finishedTasksSectionTitle
+            }
+            
+            titleHeader.height = {headerHeight}
+            
+            let finishedTasksSection = Section(){ section in
+                section.header = titleHeader
+            }
+            
+            for aTask in finishedTasks{
+                let taskRow = self.finishedTaskRowFor(aTask.title!, date: aTask.finishedDate)
+                
+                taskRow.onCellSelection(){[weak self] (cell, row) -> () in
+                    self?.showTaskEditFor(aTask)
+                }
+                
+                finishedTasksSection <<< taskRow
+            }
+            
+            form[1] = finishedTasksSection
+        }
+        else{
+            if form.endIndex > 1{
+                form.removeAtIndex(1)
+            }
+        }
+    }
+    
+    private func finishedTaskRowFor(taskTitle:String, date:NSDate?) -> LabelRow {
+        let taskRow = LabelRow(){
+            $0.title = taskTitle
+            $0.value = date?.todayTimeOrDateStringRepresentation()
+            //$0.disabled = Condition(booleanLiteral: true)
+            $0.cell.detailTextLabel?.textColor = UIColor.appThemeColorBlue
+        }
+        
+        return taskRow
+    }
+    
+    func showTaskEditFor(task:Task){
+        guard let editNavVC = self.storyboard?.instantiateViewControllerWithIdentifier("TaskEditNavigationController") as? TaskEditNavigationController, editVC = editNavVC.viewControllers.first as? TaskEditViewController  else {
+            return
+        }
+        
+        editVC.taskEditingType = TaskEditType.EditCurrent(task: task)
+        
+        self.presentViewController(editNavVC, animated: true) { () -> Void in
+            
+        }
     }
 
 }

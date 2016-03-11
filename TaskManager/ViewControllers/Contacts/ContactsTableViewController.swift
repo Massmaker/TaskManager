@@ -28,7 +28,7 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
             return nil
         }
         
-        let controller = NSFetchedResultsController(fetchRequest: CoreDataManager.registeredContactsFetchRequest, managedObjectContext:mainContext , sectionNameKeyPath: nil, cacheName: nil)
+        let controller = NSFetchedResultsController(fetchRequest: CoreDataManager.registeredContactsFetchRequest, managedObjectContext:mainContext , sectionNameKeyPath: "lastName", cacheName: nil)
         
         return controller
     }()
@@ -39,7 +39,7 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
             return nil
         }
         
-        let controller = NSFetchedResultsController(fetchRequest: CoreDataManager.unregisteredContactsFetchRequest, managedObjectContext:mainContext , sectionNameKeyPath: nil, cacheName: nil)
+        let controller = NSFetchedResultsController(fetchRequest: CoreDataManager.unregisteredContactsFetchRequest, managedObjectContext:mainContext , sectionNameKeyPath: "lastName", cacheName: nil)
         
         return controller
     }()
@@ -58,6 +58,8 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
         
         self.contactsSwitch.selectedSegmentIndex = 0
         self.contactsSwitchDidSwitch(self.contactsSwitch) // to perform initial fetch
+        self.contactsTableView.estimatedRowHeight = 74.0
+        self.contactsTableView.rowHeight = UITableViewAutomaticDimension
     }
 
     override func didReceiveMemoryWarning() {
@@ -110,12 +112,9 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
         }
     }
 
-    func contactForRow(row:Int) -> User {
+    func contactForIndexPath(indexPath:NSIndexPath) -> User? {
         
-        let users = currentFetchedController?.fetchedObjects as! [User]
-        
-        return users[row]
-        
+        return self.currentFetchedController?.objectAtIndexPath(indexPath) as? User
         //let contacts = contactsHandler.allContacts
         
         //return contacts[row]
@@ -131,9 +130,10 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let users = currentFetchedController?.fetchedObjects as? [User]{
-            print("Users: \(users.count)")
-            return users.count
+        if let sections = currentFetchedController?.sections where sections.count > section{
+            let count = sections[section].numberOfObjects
+            print("Users count: \(count)")
+            return count
         }
         return 0
         
@@ -147,14 +147,18 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
             return UITableViewCell(style: .Default, reuseIdentifier: "Cell")
         }
         
-        let contact = contactForRow(indexPath.row)
+        guard let contact = contactForIndexPath(indexPath) else{
+            return contactCell
+        }
+        
+        contactCell.delegate = self
         
         let blueView = UIView(frame: CGRectMake(0,0,50,50))
         blueView.backgroundColor = UIColor.appThemeColorBlue
         contactCell.selectedBackgroundView = blueView
         
         contactCell.nameLabel.text = contact.displayName
-        contactCell.phoneLabel.text = contact.phone
+        //contactCell.phoneLabel.text = contact.phone
         
         
         if contactsSwitch.selectedSegmentIndex < 1{
@@ -182,10 +186,23 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        let contact = contactForRow(indexPath.row)
+        let contact = contactForIndexPath(indexPath)
         self.performSegueWithIdentifier("ShowSelectedContactSegue", sender: contact)
     }
     
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if let contact = self.contactForIndexPath(NSIndexPath(forRow: 0, inSection: section)){
+            if let displayName = contact.lastName where displayName.characters.count > 0{
+                return displayName.substringToIndex(contact.displayName.startIndex.advancedBy(1))
+            }
+        }
+        return nil
+    }
+    
+    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+        return nil
+    }
+ 
     //MARK: - NSFetchedResultsControllerDelegate
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
@@ -222,15 +239,14 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
     
     func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
         switch type{
-        case .Insert:
-            self.contactsTableView.reloadData()
         case .Delete:
-            self.contactsTableView.reloadData()
+            self.contactsTableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .None)
+        case .Insert:
+            self.contactsTableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .None)
         default:
             break
         }
     }
-    
     
     // MARK: - Navigation
 
@@ -246,6 +262,18 @@ class ContactsTableViewController: UIViewController, UITableViewDataSource , UIT
         }
         
         cProfileVC.contact = contact
+    }
+    
+    func showTaskEditFor(task:Task){
+        guard let editNavVC = self.storyboard?.instantiateViewControllerWithIdentifier("TaskEditNavigationController") as? TaskEditNavigationController, editVC = editNavVC.viewControllers.first as? TaskEditViewController  else {
+            return
+        }
+        
+        editVC.taskEditingType = TaskEditType.EditCurrent(task: task)
+        
+        self.presentViewController(editNavVC, animated: true) { () -> Void in
+            
+        }
     }
     
 }

@@ -29,9 +29,9 @@ class CoreDataManager
     private class func fetchRequestForContactsRegistered(registered:Bool) -> NSFetchRequest{
         
         let fetch = NSFetchRequest(entityName: "User")
-        let sortByFirstName = NSSortDescriptor(key: "firstName", ascending: true)
-        
-        fetch.sortDescriptors = [sortByFirstName]
+        let sortByFirstName = NSSortDescriptor(key: "firstName", ascending: true, selector: "localizedCaseInsensitiveCompare:")
+        let sortByLastname = NSSortDescriptor(key: "lastName", ascending: true, selector: "localizedCaseInsensitiveCompare:")
+        fetch.sortDescriptors = [sortByFirstName, sortByLastname]
         
         if registered{
             fetch.predicate = NSPredicate(format: "registered = YES")
