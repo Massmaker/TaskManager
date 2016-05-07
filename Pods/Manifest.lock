@@ -1,0 +1,21 @@
+PODS:
+  - Digits (1.15.1):
+    - TwitterCore (= 1.15.1)
+  - Eureka (1.3.1)
+  - Fabric (1.6.4)
+  - TwitterCore (1.15.1):
+    - Fabric
+
+DEPENDENCIES:
+  - Digits
+  - Eureka (~> 1.3)
+  - Fabric
+  - TwitterCore
+
+SPEC CHECKSUMS:
+  Digits: 369c517143ab4f9f35d77628540493a2042f8cc2
+  Eureka: 10df73e578ed8ec1f30c8fda5b4ffc8739786b74
+  Fabric: ed41fd62173c6bdea24ab02c9d7707161eabb750
+  TwitterCore: 12983a7464e34afbbf18881347898a9db526ac71
+
+COCOAPODS: 0.39.0
